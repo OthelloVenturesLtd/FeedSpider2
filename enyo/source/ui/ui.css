@@ -1,0 +1,38 @@
+.enyo-inline, .enyo-tool-decorator {
+	display: inline-block;
+}
+
+.enyo-children-inline > *, .enyo-tool-decorator > * {
+	display: inline-block;
+}
+
+.enyo-children-middle > *, .enyo-tool-decorator > * {
+	vertical-align: middle;
+}
+
+.enyo-positioned {
+	position: relative;
+}
+
+.enyo-fill {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.enyo-popup {
+	position: absolute;
+	z-index: 10;
+}
+
+.enyo-image.sized {
+	display: inline-block;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.enyo-image.contain {
+	background-size: contain;
+}
+.enyo-image.cover {
+	background-size: cover;
+}
