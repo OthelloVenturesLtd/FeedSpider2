@@ -9,27 +9,48 @@ enyo.kind({
 	kind: "FittableRows",
 	fit: true,
 	components:[
-		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", components: [
-			{kind: "onyx.Button", ontap: "helloWorldTap", style: "height:48px", components: [
-				{kind: "onyx.Icon", src: "assets/menu-icon.png"}
+		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
+			{kind: "onyx.MenuDecorator", components: [
+				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
+			    {kind: "onyx.Menu", components: [
+        			{kind: "onyx.MenuItem", content: "Add Subscription"},
+        			{content: "Help"},
+        			{classes: "onyx-menu-divider"},
+        			{content: "Logout"},
+    			]}
 			]},
-			{tag: "span", content: "FeedSpider 2", style:"font-weight: bold; text-align: center", fit:true},
-			{kind: "onyx.Button", ontap: "helloWorldTap", style: "height:48px", components: [
-				{kind: "onyx.Icon", src: "assets/refresh.png"}
-			]},
+			{tag: "span", content: "FeedSpider 2", style:"font-weight: bold; text-align: center", fit: true},
+			{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/refresh.png"}
 		]},
 		
-		//{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", components: [
-		//	{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/menu-icon.png"},
-		//	{tag: "span", content: "FeedSpider 2", style:"font-weight: bold"},
-		//	{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/refresh.png"}
-		//]},
-		
-		{kind: "enyo.Scroller", fit: true, components: [
-			{kind: "FeedSpider2.Divider"},
-			{name: "main", classes: "nice-padding", allowHtml: true}
-		], style: "background-color: #e6e3de"},
+		{name: "MainScroller", kind: "enyo.Scroller", fit: true, components: [
+			{kind: "FeedSpider2.Source", type: "All", title: "All Items", unreadCount: 100},
+			{kind: "FeedSpider2.Source", type: "Starred", title: "Starred", unreadCount: 0, last: true},
+			{kind: "FeedSpider2.Divider", title: "Subscriptions"},
+			{kind: "FeedSpider2.Source", type: "Folder", title: "Entertainment", unreadCount: 66},
+			{kind: "FeedSpider2.Source", type: "Folder", title: "Computing", unreadCount: 27},
+			{kind: "FeedSpider2.Source", type: "Feed", title: "PivotCE", unreadCount: 7, last: true}
+		], style: "background-color: #e6e3de; padding-top: 5px"},
 	],
+	
+  	create: function() {
+    	this.inherited(arguments);
+    	this.credentials = new Credentials()
+    	this.api = new Api()
+    	this.api.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this))
+	},
+	
+	loginSuccess: function() {
+    	console.log("Success!")
+    	this.api.getAllSubscriptions(function(subscriptions){console.log(subscriptions)}, this.loginFailure.bind(this))
+    	//this.credentials.save()
+    	//this.controller.stageController.swapScene("home", this.api)
+  	},
+
+  	loginFailure: function() {
+    	//this.controller.stageController.swapScene("credentials", this.credentials, true)
+  	},
+		
 	helloWorldTap: function(inSender, inEvent) {
 		this.api = new Api()
 		this.$.main.addContent("Hello World<br>");

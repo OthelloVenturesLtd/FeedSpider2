@@ -2,6 +2,7 @@ var TorApi = Class.create({
   
   login: function(credentials, success, failure) {
     var authSuccess = function(response) {
+      console.log(response.responseText)
       var authMatch = response.responseText.match(/Auth\=(.*)/)
       this.auth = authMatch ? authMatch[1] : ''
       success(this.auth)
@@ -9,7 +10,7 @@ var TorApi = Class.create({
 
     new Ajax.Request("https://theoldreader.com/reader/api/0/accounts/ClientLogin", {
       method: "post",
-      parameters: {client: "FeedSpider", accountType: "HOSTED_OR_GOOGLE", service: "reader", Email: credentials.email, Passwd: credentials.password},
+      parameters: {client: "FeedSpider2", accountType: "HOSTED_OR_GOOGLE", service: "reader", Email: credentials.email, Passwd: credentials.password},
       onSuccess: authSuccess,
       onFailure: failure
     })

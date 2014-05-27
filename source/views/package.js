@@ -1,4 +1,5 @@
 enyo.depends(
 	"views.js",
-	"divider.js"
+	"divider.js",
+	"source.js"
 );
