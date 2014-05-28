@@ -31,13 +31,21 @@ enyo.kind({
 			{kind: "FeedSpider2.Source", type: "Folder", title: "Computing", unreadCount: 27},
 			{kind: "FeedSpider2.Source", type: "Feed", title: "PivotCE", unreadCount: 7, last: true}
 		], style: "background-color: #e6e3de; padding-top: 5px"},
+		{name: "LoginDialog", kind: "FeedSpider2.LoginDialog"}
 	],
 	
   	create: function() {
     	this.inherited(arguments);
-    	this.credentials = new Credentials()
-    	this.api = new Api()
-    	this.api.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this))
+    	//this.credentials = new Credentials()
+    	//this.api = new Api()
+    	//this.api.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this))
+    	//console.log("Ping!");
+		//this.$.LoginDialog.show();
+	},
+	
+	rendered: function() {
+		this.inherited(arguments);
+		this.$.LoginDialog.show();
 	},
 	
 	loginSuccess: function() {
@@ -58,6 +66,50 @@ enyo.kind({
 	toolbarTap: function(inSender, inEvent) {
 		window.open("http://www.google.com")
 	},
+});
+
+enyo.kind({
+	name: "FeedSpider2.LoginDialog",
+	kind: "onyx.Popup",
+	modal: false,
+	autoDismiss: false,
+	floating: true,
+	centered: true,
+	scrim: true,
+	
+	style: "padding-top: 10px; padding-left: 20px; padding-right: 20px;  padding-bottom: 20px; width: 40%;",
+	components: [
+		{tag: "p", content: "Login", style: "text-align:center; font-weight: bold; font-size: 18px"},
+		{style: "text-align: center", components: [
+			{kind: "onyx.PickerDecorator", style: "width: 100%;", components: [
+				{classes: "onyx-dark", style: "width: 90%"},
+				{kind: "onyx.Picker", components: [
+					{content: "AOL Reader"},
+					{content: "BazQux Reader"},
+					{content: "Feedly"},
+					{content: "InoReader"},
+					{content: "OwnCloud News"},
+					{content: "Tiny Tiny RSS"},
+					{content: "The Old Reader", active: true}
+				]}
+			]},
+			{tag: "div", style: "margin: 10px"},
+			{kind: "onyx.InputDecorator", style: "width: 80%", components: [
+				{name: "usernameInput", style: "width: 100%", kind: "onyx.Input", placeholder: "Username"}
+			]},
+			{tag: "div", style: "margin: 10px"},
+			{kind: "onyx.InputDecorator", style: "width: 80%", components: [
+				{name: "passwordInput",  style: "width: 100%", kind: "onyx.Input", placeholder: "Password", type: "password"}
+			]},
+			/*{tag: "div", style: "margin: 10px"},
+			{kind: "onyx.InputDecorator", style: "width: 80%", components: [
+				{name: "serverURLInput",  style: "width: 100%", kind: "onyx.Input", placeholder: "Server URL", type: "url"}
+			]},*/
+			{tag: "div", style: "margin: 10px"},
+			{kind: "onyx.Button", classes: "onyx-affirmative", style: "width: 60%", content: "Login"}
+		]}
+	]
+	
 });
 
 enyo.kind({
