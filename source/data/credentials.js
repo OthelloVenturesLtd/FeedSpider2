@@ -1,71 +1,68 @@
 var Credentials = Class.create({
   initialize: function() {
-    this.email = "aressel@gmail.com"
-    this.password = "BenchMonk3y"
-    this.service = "tor"
-    /*this.email = this.emailCookie().get()
-    this.password = this.passwordCookie().get()
-    this.server = this.serverCookie().get()
-    if(this.serviceCookie().get())
+    this.email = this.emailCookie()
+    this.password = this.passwordCookie()
+    this.server = this.serverCookie()
+    if(this.serviceCookie())
     {
-    	this.service = this.serviceCookie().get()
+    	this.service = this.serviceCookie()
     }
     else
     {
     	this.service = "tor"
     }
-    this.id = this.idCookie().get()
-    this.accessToken = this.accessTokenCookie().get()
-    this.refreshToken = this.refreshTokenCookie().get()
-    this.tokenExpiry = this.tokenExpiryCookie().get()
-    this.tokenType = this.tokenTypeCookie().get()
-    this.plan = this.planCookie().get()*/
+    this.id = this.idCookie()
+    this.accessToken = this.accessTokenCookie()
+    this.refreshToken = this.refreshTokenCookie()
+    this.tokenExpiry = this.tokenExpiryCookie()
+    this.tokenType = this.tokenTypeCookie()
+    this.plan = this.planCookie()
   },
 
   save: function() {
-    if (this.email !== undefined){
-    	this.emailCookie().put(this.email)
+    if (this.email !== undefined || this.email !== null){
+    	this.setCookie("email", this.email)
     }
-    if (this.password !== undefined){
-    	this.passwordCookie().put(this.password)
+    if (this.password !== undefined || this.password !== null){
+    	this.setCookie("password", this.password)
     }
-    if (this.server !== undefined){
-    	this.serverCookie().put(this.server)
+    if (this.server !== undefined || this.server !== null){
+     	this.setCookie("server", this.server)
     }    
-    if (this.service !== undefined){
-    	this.serviceCookie().put(this.service)
+    if (this.service !== undefined || this.service !== null){
+    	this.setCookie("service", this.service)
     }
-    if (this.id !== undefined){
-	    this.idCookie().put(this.id)
+    if (this.id !== undefined || this.id !== null){
+	   	this.setCookie("id", this.id)
     }
-    if (this.accessToken !== undefined){
-	    this.accessTokenCookie().put(this.accessToken)
+    /if (this.accessToken !== undefined || this.accessToken !== null){
+	    this.setCookie("accessToken", this.accessToken)
     }
-    if (this.refreshToken !== undefined){    
-    	this.refreshTokenCookie().put(this.refreshToken)
+    if (this.refreshToken !== undefined || this.refreshToken !== null){    
+    	this.setCookie("refreshToken", this.refreshToken)
     }
-    if (this.tokenExpiry !== undefined){
-	    this.tokenExpiryCookie().put(this.tokenExpiry)
+    if (this.tokenExpiry !== undefined || this.tokenExpiry !== null){
+	    this.setCookie("tokenExpiry", this.tokenExpiry)
     }
-    if (this.tokenType !== undefined){
-    	this.tokenTypeCookie().put(this.tokenType)
+    if (this.tokenType !== undefined || this.tokenType !== null){
+    	this.setCookie("tokenType", this.tokenType)
     }
-    if (this.plan !== undefined){
-    	this.planCookie().put(this.plan)
-    }
+    if (this.plan !== undefined || this.plan !== null){
+    	this.setCookie("plan", this.plan)
+    }*
   },
   
   clear: function() {
-    this.emailCookie().remove()
-    this.passwordCookie().remove()
-    this.serverCookie().remove()
-    this.serviceCookie().remove()
-    this.idCookie().remove()
-    this.accessTokenCookie().remove()
-    this.refreshTokenCookie().remove()
-    this.tokenExpiryCookie().remove()
-    this.tokenTypeCookie().remove()
-    this.planCookie().remove()
+    this.removeCookie("email")
+    this.removeCookie("password")
+    this.removeCookie("server")
+    this.removeCookie("service")
+    this.removeCookie("id")
+    this.removeCookie("accessToken")
+    this.removeCookie("refreshToken")
+    this.removeCookie("tokenExpiry")
+    this.removeCookie("tokenType")
+    this.removeCookie("plan")
   },
 
   emailCookie: function() {
@@ -109,6 +106,21 @@ var Credentials = Class.create({
   },
 
   getCookie: function(name) {
-    return enyo.getCookie(name)
+    if (localStorage.getItem(name) == null)
+    {
+    	return undefined
+    }
+    else
+    {
+    	return localStorage.getItem(name)
+    }
+  },
+  
+  setCookie: function(name, value) {
+    localStorage.setItem(name, value)
+  },
+  
+  clearCookie: function(name) {
+  	localStorage.removeItem(name)
   }
 })
