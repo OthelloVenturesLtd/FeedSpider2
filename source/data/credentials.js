@@ -35,7 +35,7 @@ var Credentials = Class.create({
     if (this.id !== undefined || this.id !== null){
 	   	this.setCookie("id", this.id)
     }
-    /if (this.accessToken !== undefined || this.accessToken !== null){
+    if (this.accessToken !== undefined || this.accessToken !== null){
 	    this.setCookie("accessToken", this.accessToken)
     }
     if (this.refreshToken !== undefined || this.refreshToken !== null){    
@@ -49,7 +49,7 @@ var Credentials = Class.create({
     }
     if (this.plan !== undefined || this.plan !== null){
     	this.setCookie("plan", this.plan)
-    }*
+    }
   },
   
   clear: function() {
