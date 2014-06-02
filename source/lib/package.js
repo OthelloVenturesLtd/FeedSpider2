@@ -1,3 +1,4 @@
 enyo.depends(
-	"prototype.js"
+	"prototype.js",
+	"WebView.js"
 );

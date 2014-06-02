@@ -1,4 +1,6 @@
 enyo.depends(
+	"countable.js",
+	"article-container.js",
 	"data.js",
 	"credentials.js",
 	"api.js",
@@ -8,5 +10,11 @@ enyo.depends(
 	"ino-api.js",
 	"oc-api.js",
 	"tor-api.js",
-	"ttrss-api.js"
+	"ttrss-api.js",
+	"all-sources.js",
+	"all-articles.js",
+	"archived.js",
+	"fresh.js",
+	"shared.js",
+	"starred.js"
 );
