@@ -23,31 +23,58 @@ enyo.kind({
 			{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/refresh.png"}
 		]},
 		
-		{name: "MainList", kind: "enyo.Scroller", fit: true, components: [
-			{kind: "FeedSpider2.AllArticles", unreadCount: 100},
-			{kind: "FeedSpider2.Divider", title: "Subscriptions"},
-		], style: "background-color: #e6e3de; padding-top: 5px"},
+		{name: "MainList", kind: "enyo.Scroller", fit: true, style: "background-color: #e6e3de; padding-top: 5px"},
 		{name: "LoginDialog", kind: "FeedSpider2.LoginDialog", onLoginSuccess: "loginSuccess"}
 	],
 	
   	create: function() {
     	this.inherited(arguments);
+    	this.credentials = new Credentials();
 	},
 	
 	rendered: function() {
 		this.inherited(arguments);
 		//this.$.LoginDialog.show();
+		this.checkCredentials();
 	},
 	
 	loginSuccess: function(inSender, inEvent) {
     	this.$.LoginDialog.hide();
-    	this.api = inEvent;
+    	//this.api = inEvent; // Put this back when reinstating the login window.
     	this.sources = new AllSources(this.api);
     	this.loaded = true;
     	this.showAddSubscription = true;
     	
+    	for (var i = 0; i < this.sources.stickySources.items.length; i++) { 
+    		if(i == this.sources.stickySources.items.length - 1)
+    		{
+    			this.sources.stickySources.items[i].last = true;
+    		}
+    		this.sources.stickySources.items[i].setContainer(this.$.MainList)	
+    	}
+    	
+    	this.$.MainList.createComponent({kind: "FeedSpider2.Divider", title: "Subscriptions"})
+    	this.$.MainList.render()
+    	
     	return true;
-  	}
+  	},
+  	
+  	/* Begin TEMP Troubleshooting code */
+  	checkCredentials: function() {
+		this.credentials.service = "tor"
+		this.credentials.email = "aressel@gmail.com"
+		this.credentials.password = "BenchMonk3y"
+					
+		this.tryLogin();
+	},
+	
+	tryLogin: function() {
+		// Attempt login
+    	this.api = new Api();
+    	this.api.login(this.credentials, this.loginSuccess.bind(this), function(){});
+	}
+	/* End TEMP Troubleshooting Code */
+  	
 });
 
 enyo.kind({

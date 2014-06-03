@@ -14,8 +14,8 @@ enyo.kind({
 
 	components: [
 		{name: "source", kind: enyo.FittableColumns, noStretch: true, ontap: this.itemTap, style: "padding-top: 10px; padding-right: 10px;", components: [
-			{name: "sourceIcon", kind: "onyx.Icon", style: "margin-left: 10px; margin-top: 2px", src: this.icon},
-			{name: "sourceName", tag: "span", fit: true, content: this.title},
+			{name: "sourceIcon", kind: "onyx.Icon", style: "margin-left: 10px; margin-top: 2px"},
+			{name: "sourceName", tag: "span", fit: true},
 			{name: "sourceUnreadCount", tag: "span"}
 		]}
 	],
@@ -43,10 +43,14 @@ enyo.kind({
 		{
 			this.$.sourceUnreadCount.hide();
 		}
+	},
+	
+	rendered: function() {
 		if (this.last == false)
     	{
     		this.$.source.addStyles("border-bottom-width: 1px; border-bottom-style: groove");
     	}
+    	this.inherited(arguments);
 	},
 	
 	reset: function() {
