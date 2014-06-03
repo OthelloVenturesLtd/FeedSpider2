@@ -56,10 +56,7 @@ enyo.kind({
     		default:
     			this.$.sourceIcon.setSrc("assets/error.png");
     	}
-    	if (this.last == false)
-    	{
-    		this.addStyles("border-bottom-width: 1px; border-bottom-style: groove");
-    	}
+
     },
     
     toolbarTap: function(inSender, inEvent) {

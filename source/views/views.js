@@ -24,15 +24,8 @@ enyo.kind({
 		]},
 		
 		{name: "MainList", kind: "enyo.Scroller", fit: true, components: [
-			//{kind: "FeedSpider2.Source", type: "All", title: "All Items", unreadCount: 100},
-			//{kind: "FeedSpider2.Source", type: "Starred", title: "Starred", unreadCount: 0, last: true},
+			{kind: "FeedSpider2.AllArticles", unreadCount: 100},
 			{kind: "FeedSpider2.Divider", title: "Subscriptions"},
-			{name: "SubscriptionsList", kind: "enyo.Repeater", count: 50, fit: true, components: [
-				{kind: "FeedSpider2.Source", type: "All", title: "All Items", unreadCount: 100},
-			]}
-			//{kind: "FeedSpider2.Source", type: "Folder", title: "Entertainment", unreadCount: 66},
-			//{kind: "FeedSpider2.Source", type: "Folder", title: "Computing", unreadCount: 27},
-			//{kind: "FeedSpider2.Source", type: "Feed", title: "PivotCE", unreadCount: 7, last: true}
 		], style: "background-color: #e6e3de; padding-top: 5px"},
 		{name: "LoginDialog", kind: "FeedSpider2.LoginDialog", onLoginSuccess: "loginSuccess"}
 	],
@@ -43,7 +36,7 @@ enyo.kind({
 	
 	rendered: function() {
 		this.inherited(arguments);
-		this.$.LoginDialog.show();
+		//this.$.LoginDialog.show();
 	},
 	
 	loginSuccess: function(inSender, inEvent) {

@@ -4,31 +4,31 @@ var AllSources = Class.create({
 
     if (api.supportsAllArticles())
     {
-    	this.all = new AllArticles(api)
+    	this.all = new FeedSpider2.AllArticles(api)
     	this.stickySources.items.push(this.all)
     }
-  
+  	
     if (api.supportsFresh())
     {
-    	this.fresh = new Fresh(api)
+    	this.fresh = new FeedSpider2.Fresh(api)
     	this.stickySources.items.push(this.fresh)
     }
  
     if (api.supportsStarred())
     {
-    	this.starred = new Starred(api)
+    	this.starred = new FeedSpider2.Starred(api)
     	this.stickySources.items.push(this.starred)
     }
    
     if (api.supportsShared())
     {
-    	this.shared = new Shared(api)
+    	this.shared = new FeedSpider2.Shared(api)
     	this.stickySources.items.push(this.shared)
     }
     
     if (api.supportsArchived())
     {
-    	this.archived = new Archived(api)
+    	this.archived = new FeedSpider2.Archived(api)
     	this.stickySources.items.push(this.archived)
     }
 
