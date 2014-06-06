@@ -14,6 +14,7 @@ enyo.kind({
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
 			    {kind: "onyx.Menu", components: [
         			{kind: "onyx.MenuItem", content: "Add Subscription"},
+        			{name: "showHideFeedsMenuItem", kind: "onyx.MenuItem", ontap: "toggleFeeds"},
         			{content: "Help"},
         			{classes: "onyx-menu-divider"},
         			{content: "Logout"},
@@ -38,6 +39,13 @@ enyo.kind({
 	
 	rendered: function() {
 		this.inherited(arguments);
+		if (Preferences.hideReadFeeds()){
+			this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
+		}
+		else
+		{
+			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
+		}
 		//this.$.LoginDialog.show();
 		this.checkCredentials();
 	},
@@ -129,6 +137,22 @@ enyo.kind({
 		this.$.refreshButton.hide()
 		this.$.errorIcon.show()
 		this.$.smallSpinner.hide()
+	},
+
+	toggleFeeds: function() {
+		if (Preferences.hideReadFeeds()){
+			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
+			Preferences.setHideReadFeeds(false);
+          	this.reload();
+          	//this.filterAndRefresh();
+		}
+		else
+		{
+			this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
+			Preferences.setHideReadFeeds(true);
+          	this.reload();
+          	//this.filterAndRefresh();
+		}
 	},
 
   	/* Begin TEMP Troubleshooting code */

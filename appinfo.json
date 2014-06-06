@@ -1,0 +1,10 @@
+{
+	"id": "com.othelloventures.feedspider2",
+	"version": "0.1.0",
+	"vendor": "HP",
+	"type": "web",
+	"main": "index.html",
+	"title": "FeedSpider 2",
+	"icon": "icon.png",
+	"uiRevision": 2
+}

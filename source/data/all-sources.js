@@ -55,11 +55,18 @@ var AllSources = Class.create({
 
     self.subscriptions.sort(
       function() {
-        var hideReadFeeds = false // TODO: Implement Preferences  Preferences.hideReadFeeds()
-
+        //TODO: There is some problem with how this is being stored/retrieved. Figure it out.
+        var hideReadFeeds = Preferences.hideReadFeeds()
+        
         self.subscriptions.items.each(function(subscription) {
+
           if(!hideReadFeeds || (hideReadFeeds && subscription.unreadCount)) {
+            console.log("Ping")
             self.subscriptionSources.items.push(subscription)
+          }
+          else
+          {
+          	console.log("Pong")
           }
         })
         success()

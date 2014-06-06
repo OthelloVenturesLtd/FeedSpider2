@@ -72,8 +72,6 @@ enyo.kind({
 	},
 
 	sort: function(success, failure) {
-		//TODO: Implement Preferences
-		/*var self = this
 		if(Preferences.isManualFeedSort()) {
 			if (self.api.supportsManualSort())
 			{
@@ -81,15 +79,16 @@ enyo.kind({
 			}
 			else
 			{
-				Feeder.notify($L("Manual Sort Not Available"))
+				//TODO: Implement Notifications. Phonegap?
+				//Feeder.notify($L("Manual Sort Not Available"))
 				Preferences.setManualFeedSort(false)
 				this.sortAlphabetically(success, failure)
 			}
 		}
 		else 
-		{*/
+		{
 			this.sortAlphabetically(success, failure)
-		//}
+		}
 	},
 
 	sortAlphabetically: function(success) {
