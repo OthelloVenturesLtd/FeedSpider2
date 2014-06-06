@@ -32,8 +32,10 @@ enyo.kind({
 		
 		this.$.sourceIcon.setSrc(this.icon);
 		this.$.sourceName.setContent(this.title);
-		
-    	if (this.unreadCount > 0)
+	},
+	
+	rendered: function() {
+	    if (this.unreadCount > 0)
     	{
     		this.$.sourceName.setStyle("font-weight: bold");
     		this.$.sourceUnreadCount.setStyle("font-weight: bold");
@@ -41,11 +43,11 @@ enyo.kind({
     	} 
 		else
 		{
+    		this.$.sourceName.setStyle("");
+    		this.$.sourceUnreadCount.setStyle("");
 			this.$.sourceUnreadCount.hide();
 		}
-	},
-	
-	rendered: function() {
+		
 		if (this.last == false)
     	{
     		this.$.source.addStyles("border-bottom-width: 1px; border-bottom-style: groove");

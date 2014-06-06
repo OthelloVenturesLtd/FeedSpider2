@@ -20,7 +20,9 @@ enyo.kind({
     			]}
 			]},
 			{tag: "span", content: "FeedSpider 2", style:"font-weight: bold; text-align: center", fit: true},
-			{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/refresh.png"}
+			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", style: "display: none"},
+			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
+			{name: "refreshButton", kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/refresh.png"}
 		]},
 		
 		{name: "MainList", kind: "enyo.Scroller", fit: true, style: "background-color: #e6e3de; padding-top: 5px"},
@@ -30,6 +32,8 @@ enyo.kind({
   	create: function() {
     	this.inherited(arguments);
     	this.credentials = new Credentials();
+    	this.loaded = false;
+    	this.reloading = false;
 	},
 	
 	rendered: function() {
@@ -42,23 +46,91 @@ enyo.kind({
     	this.$.LoginDialog.hide();
     	//this.api = inEvent; // Put this back when reinstating the login window.
     	this.sources = new AllSources(this.api);
-    	this.loaded = true;
+    	this.loaded = false;
     	this.showAddSubscription = true;
     	
-    	for (var i = 0; i < this.sources.stickySources.items.length; i++) { 
-    		if(i == this.sources.stickySources.items.length - 1)
-    		{
-    			this.sources.stickySources.items[i].last = true;
-    		}
-    		this.sources.stickySources.items[i].setContainer(this.$.MainList)	
-    	}
-    	
-    	this.$.MainList.createComponent({kind: "FeedSpider2.Divider", title: "Subscriptions"})
-    	this.$.MainList.render()
-    	
+    	this.reload()
     	return true;
   	},
-  	
+
+	refresh: function() {
+		var self = this
+
+		var refreshComplete = function() {
+			self.refreshing = false
+			//TODO: Event handling
+			//Mojo.Event.send(document, Feeder.Event.refreshComplete, {sources: self.sources})
+		}
+
+		if(!self.refreshing) {
+			self.refreshing = true
+			self.sources.findAll(refreshComplete, refreshComplete)
+		}
+	},
+
+	reload: function() {
+		var self = this
+
+		if(!self.reloading) {
+			self.reloading = true
+			this.$.refreshButton.hide()
+			this.$.errorIcon.hide()
+			this.$.smallSpinner.show()
+
+			self.sources.findAll(
+				function() {
+					self.reloading = false
+					self.loaded = true
+					self.filterAndRefresh()
+				}.bind(this),
+
+				function() {
+					this.showError()
+				}.bind(this)
+			)
+		}
+	},
+
+	filterAndRefresh: function() {
+		var self = this
+		if(self.loaded) {
+			self.sources.sortAndFilter(
+				function() {
+					//NOTE TO SELF: This will likely cause replication. Find a better way to structure and update the list.
+					self.refreshList(self.$.MainList, self.sources.stickySources.items)
+			    	self.$.MainList.createComponent({kind: "FeedSpider2.Divider", title: "Subscriptions"})
+					self.refreshList(self.$.MainList, self.sources.subscriptionSources.items)
+					
+					self.$.MainList.render()
+					self.$.smallSpinner.hide()
+					self.$.refreshButton.show()
+				},
+
+				this.showError.bind(this)
+			)
+		}
+	},
+
+  	refreshList: function(list, items) {
+  	    for (var i = 0; i < items.length; i++) { 
+    		if(i == items.length - 1)
+    		{
+    			items[i].last = true;
+    		}
+    		items[i].setContainer(list)	
+    	}
+    	//list.mojo.noticeUpdatedItems(0, items)
+    	//list.mojo.setLength(items.length)
+  	},
+
+	showError: function() {
+		this.reloading = false
+		this.loaded = false
+		this.$.refreshButton.hide()
+		this.$.errorIcon.show()
+		this.$.smallSpinner.hide()
+	},
+
   	/* Begin TEMP Troubleshooting code */
   	checkCredentials: function() {
 		this.credentials.service = "tor"

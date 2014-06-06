@@ -31,9 +31,9 @@ var AllSources = Class.create({
     	this.archived = new FeedSpider2.Archived(api)
     	this.stickySources.items.push(this.archived)
     }
-
-    //this.subscriptions = new AllSubscriptions(api)
-    //this.subscriptionSources = {items: []}
+	
+    this.subscriptions = new FeedSpider2.AllSubscriptions(api)
+    this.subscriptionSources = {items: []}
   },
 
   findAll: function(success, failure) {
@@ -55,14 +55,13 @@ var AllSources = Class.create({
 
     self.subscriptions.sort(
       function() {
-        var hideReadFeeds = Preferences.hideReadFeeds()
+        var hideReadFeeds = false // TODO: Implement Preferences  Preferences.hideReadFeeds()
 
         self.subscriptions.items.each(function(subscription) {
           if(!hideReadFeeds || (hideReadFeeds && subscription.unreadCount)) {
             self.subscriptionSources.items.push(subscription)
           }
         })
-
         success()
       },
 
