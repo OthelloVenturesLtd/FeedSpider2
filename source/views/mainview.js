@@ -12,10 +12,12 @@ enyo.kind({
 			{kind: "onyx.MenuDecorator", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
 			    {kind: "onyx.Menu", components: [
-        			{kind: "onyx.MenuItem", content: "Add Subscription"},
-        			{name: "showHideFeedsMenuItem", kind: "onyx.MenuItem", ontap: "toggleFeeds"},
-        			{content: "Help"},
-        			{classes: "onyx-menu-divider"},
+        			//{kind: "onyx.MenuItem", content: "Add Subscription"},
+        			//{name: "showHideFeedsMenuItem", kind: "onyx.MenuItem", ontap: "toggleFeeds"},
+        			//{classes: "onyx-menu-divider"},
+        			//{name: "preferencesMenuItem", kind: "onyx.MenuItem", ontap: "openPreferences", content: "Preferences"},
+        			//{content: "Help"},
+        			//{classes: "onyx-menu-divider"},
         			{content: "Logout"},
     			]}
 			]},
@@ -39,11 +41,11 @@ enyo.kind({
 	rendered: function() {
 		this.inherited(arguments);
 		if (Preferences.hideReadFeeds()){
-			this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
+			//this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
 		}
 		else
 		{
-			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
+			//this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
 		}
 		//this.$.LoginDialog.show();
 		this.checkCredentials();
@@ -104,6 +106,7 @@ enyo.kind({
 			self.sources.sortAndFilter(
 				function() {
 					//NOTE TO SELF: This will likely cause replication. Find a better way to structure and update the list.
+					//TODO: Causes Replication. Figure out better way of handling this behaviour.
 					self.refreshList(self.$.MainList, self.sources.stickySources.items)
 			    	self.$.MainList.createComponent({kind: "FeedSpider2.Divider", title: "Subscriptions"})
 					self.refreshList(self.$.MainList, self.sources.subscriptionSources.items)
@@ -146,15 +149,15 @@ enyo.kind({
 		if (Preferences.hideReadFeeds()){
 			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
 			Preferences.setHideReadFeeds(false);
-          	this.reload();
-          	//this.filterAndRefresh();
+          	//this.reload();
+          	this.filterAndRefresh();
 		}
 		else
 		{
 			this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
 			Preferences.setHideReadFeeds(true);
-          	this.reload();
-          	//this.filterAndRefresh();
+          	//this.reload();
+          	this.filterAndRefresh();
 		}
 	},
 
