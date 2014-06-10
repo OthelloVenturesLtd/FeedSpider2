@@ -7,7 +7,7 @@
 enyo.kind({
 	name: "FeedSpider2.Application",
 	kind: "enyo.Application",
-	view: "FeedSpider2.MainView"
+	view: "FeedSpider2.BasePanels"
 });
 
 enyo.ready(function () {
