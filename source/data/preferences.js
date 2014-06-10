@@ -221,7 +221,7 @@ Preferences = {
   getCookie: function(name, defaultValue) {
     if (localStorage.getItem(name) != null)
     {
-    	return localStorage.getItem(name)
+    	return JSON.parse(localStorage.getItem(name))
     }
     else
     {
@@ -240,7 +240,7 @@ Preferences = {
 
   setCookie: function(name, value) {
     console.log("setting " + name + " to " + value)
-    localStorage.setItem(name, value)
+    localStorage.setItem(name, JSON.stringify(value))
     //this.cookieFor(name).put(value)
   },
 
