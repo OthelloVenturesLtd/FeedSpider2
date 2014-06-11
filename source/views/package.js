@@ -3,5 +3,6 @@ enyo.depends(
 	"divider.js",
 	"mainview.js",
 	"logindialog.js",
-	"groupbox.js"
+	"groupbox.js",
+	"preferencesview.js"
 );
