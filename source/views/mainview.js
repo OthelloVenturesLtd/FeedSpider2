@@ -11,7 +11,7 @@ enyo.kind({
 	
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
-			{kind: "onyx.MenuDecorator", ontap: "openHelp", components: [
+			{kind: "onyx.MenuDecorator", ontap: "openPreferences", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
 			    {kind: "onyx.Menu", components: [
         			//{kind: "onyx.MenuItem", content: "Add Subscription"},
@@ -50,7 +50,7 @@ enyo.kind({
 			//this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
 		}
 		//this.$.LoginDialog.show();
-		//this.checkCredentials();
+		this.checkCredentials();
 	},
 	
 	openPreferences: function() {
@@ -65,6 +65,7 @@ enyo.kind({
     	this.$.LoginDialog.hide();
     	//this.api = inEvent; // Put this back when reinstating the login window.
     	this.sources = new AllSources(this.api);
+    	this.parent.sources = this.sources
     	this.loaded = false;
     	this.showAddSubscription = true;
     	

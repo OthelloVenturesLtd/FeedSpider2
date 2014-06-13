@@ -4,7 +4,9 @@ enyo.kind({
 	fit: true,
 	
 	published: {
-		previousPage: ""
+		previousPage: "",
+		sources: "",
+		subscriptions: ""
 	},
 	
 	events: {
@@ -161,7 +163,7 @@ enyo.kind({
 					]},
 					{name: "notificationFeedsSelectionRow", kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
 						{kind: "enyo.FittableColumns", noStretch: true, style: "width: 100%; padding: 5px", components: [
-							{kind: "onyx.Button", classes: "onyx-blue", content: "Select Feeds", style: "width: 100%"}
+							{kind: "onyx.Button", classes: "onyx-blue", content: "Select Feeds", style: "width: 100%", ontap: "selectFeeds"}
 						]}
 					]}
 				]}
@@ -176,6 +178,7 @@ enyo.kind({
 				]}
 			]},
 		]},
+		{name: "notificationFeedsDialog", kind: "FeedSpider2.NotificationFeedsDialog", onComplete: "feedSelectionComplete"}
 	],
 	
 	create: function() {
@@ -376,12 +379,18 @@ enyo.kind({
 	},
 
 	selectFeeds: function() {
-		this.controller.stageController.pushScene("notification-feeds")
+		this.$.notificationFeedsDialog.setSources(this.sources)
+		this.$.notificationFeedsDialog.show()
 	},
 
 	weLoveLefties: function() {
+		//NOTE: This feature was never fully implemented in the original.
 		Preferences.setLeftyFriendly(Preferences.isLeftyFriendly() ? false : true)
 		this.setLeftyClass()
+	},
+	
+	feedSelectionComplete: function() {
+		this.$.notificationFeedsDialog.hide()
 	},
 
 	handleGoBack: function() {

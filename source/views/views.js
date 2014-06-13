@@ -20,6 +20,7 @@ enyo.kind({
 	},
 	
 	openPreferences: function(inSender, inEvent) {
+		this.$.preferences.setSources(this.sources)
 		this.$.preferences.setPreviousPage(inEvent)
 		this.setIndex(this.selectPanelByName("preferences"))
 	},
