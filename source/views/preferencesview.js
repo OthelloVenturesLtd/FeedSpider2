@@ -3,16 +3,24 @@ enyo.kind({
 	kind: "FittableRows",
 	fit: true,
 	
+	published: {
+		previousPage: ""
+	},
+	
+	events: {
+		onGoBack: ""
+	},
+	
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
-			{kind: "onyx.IconButton", src: "assets/go-back.png"},
+			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
 			{tag: "span", content: "Preferences", style:"font-weight: bold; text-align: center", fit: true},
 			{kind: "onyx.Icon"}, //This is here to keep the header centered.
 		]},
 		{kind: "enyo.Scroller", fit: true, style: "background-color: #e6e3de; padding: 10px", components: [
 			{tag: "div", classes: "feedspider-groupbox", components: [
 				{tag: "div", classes: "feedspider-groupbox-header", content: "General"},
-				{tag: "div", classes: "feedspider-groupbox-body", components:[
+				{name: "generalGroupbox", tag: "div", classes: "feedspider-groupbox-body", style: "width: 100%", components:[
 					{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
 						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Allow landscape"},
 						{name: "allowLandscape", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setAllowLandscape"}
@@ -120,8 +128,42 @@ enyo.kind({
 			]},
 			{tag: "div", classes: "feedspider-groupbox", components: [
 				{tag: "div", classes: "feedspider-groupbox-header", content: "Notifications"},
-				{tag: "div", classes: "feedspider-groupbox-body-single", components:[
-					{content: "Hello World"},
+				{name: "notificationsBody", tag: "div", components:[
+					{kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
+						{kind: "onyx.PickerDecorator", style: "width:100%;", components: [
+							{layoutKind: "FittableColumnsLayout", noStretch: true, style: "padding-left: 10px; width:100%; background-color: #e6e3de; border-width: 0px; border-radius: 0px; background: none", components: [
+								{name: "notificationIntervalPickerHeader", tag: "span", fit: true, style: "text-align: left; width: 100%; color: black"},
+								{kind: "onyx.Icon", src: "assets/downarrow.png"},
+							]},
+							{name: "notificationIntervalPicker", kind: "onyx.Picker", onChange: "setNotificationInterval",components: [
+								{content: "Off", value: "00:00:00"},
+								//{content: "30 Seconds", value: "00:00:30"},
+								{content: "5 Minutes", value: "00:05:00"},
+								{content: "15 Minutes", value: "00:15:00"},
+								{content: "30 Minutes", value: "00:30:00"},
+								{content: "1 Hour", value: "01:00:00"},
+								{content: "4 Hours", value: "04:00:00"},
+								{content: "8 Hours", value: "08:00:00"}
+    						]}
+						]},
+					]},
+					{name: "notificationFeedsRow", kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
+						{kind: "onyx.PickerDecorator", style: "width:100%;", components: [
+							{layoutKind: "FittableColumnsLayout", noStretch: true, style: "padding-left: 10px; width:100%; background-color: #e6e3de; border-width: 0px; border-radius: 0px; background: none", components: [
+								{name: "notificationFeedsPickerHeader", tag: "span", fit: true, style: "text-align: left; width: 100%; color: black"},
+								{kind: "onyx.Icon", src: "assets/downarrow.png"},
+							]},
+							{name: "notificationFeedsPicker", kind: "onyx.Picker", onChange: "setNotificationFeeds",components: [
+								{content: "Any feed", value: "any"},
+								{content: "Selected feeds", value: "selected"}
+    						]}
+						]},
+					]},
+					{name: "notificationFeedsSelectionRow", kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
+						{kind: "enyo.FittableColumns", noStretch: true, style: "width: 100%; padding: 5px", components: [
+							{kind: "onyx.Button", classes: "onyx-blue", content: "Select Feeds", style: "width: 100%"}
+						]}
+					]}
 				]}
 			]},
 			{tag: "div", classes: "feedspider-groupbox", components: [
@@ -139,40 +181,27 @@ enyo.kind({
 	create: function() {
     	this.inherited(arguments);
 
-		this.intervalChoices = {choices: [
-		  {label: "Off", value: "00:00:00"},
-		  //{label: "30 Seconds", value: "00:00:30"},
-		  {label: "5 Minutes", value: "00:05:00"},
-		  {label: "15 Minutes", value: "00:15:00"},
-		  {label: "30 Minutes", value: "00:30:00"},
-		  {label: "1 Hour", value: "01:00:00"},
-		  {label: "4 Hours", value: "04:00:00"},
-		  {label: "8 Hours", value: "08:00:00"}
-		]}
-
-		this.notificationFeedsChoices = {choices: [
-		  {label: "Any feed", value: "any"},
-		  {label: "Selected feeds", value: "selected"}
-		]}
-
+		//Setup checkboxes
 		this.$.allowLandscape.checked = Preferences.allowLandscape()
 		this.$.gestureScrolling.checked = Preferences.gestureScrolling()
-		this.sortOrder = (Preferences.isOldestFirst() ? "oldest": "newest")
 		this.$.hideReadFeeds.checked = Preferences.hideReadFeeds()
 		this.$.hideReadArticles.checked = Preferences.hideReadArticles()
 		this.$.backAfterMarkRead.checked = Preferences.goBackAfterMarkAsRead()
-		this.fontSize = Preferences.fontSize()
 		this.$.combineFolders.checked = Preferences.combineFolders()
+		this.$.markReadScroll.value = Preferences.markReadAsScroll()
+		this.$.feedlySortEngagement.checked = Preferences.isFeedlySortEngagement()
+		this.$.shortenURLs.checked = Preferences.isShortenURLs()
+
+		//Get Picker values
+		this.sortOrder = (Preferences.isOldestFirst() ? "oldest": "newest")
+		this.fontSize = Preferences.fontSize()
 		this.feedSortOrder = (Preferences.isManualFeedSort() ? "manual": "alphabetical")
 		this.theme = Preferences.getTheme()
-		this.debug = {value: Preferences.isDebugging()} //TODO: Decide whether to eliminate debugging or not.
-		this.$.markReadScroll.value = Preferences.markReadAsScroll()
-		this.notificationInterval = {value: Preferences.notificationInterval()}
-		this.notificationFeeds = {value: Preferences.anyOrSelectedFeedsForNotifications()}
-		this.notificationFeedSelection = {buttonLabel: "Select Feeds"} // ?? Double-check and see if this is necessary.
-		this.$.feedlySortEngagement.checked = Preferences.isFeedlySortEngagement()
-		this.$.shortenURLs = Preferences.isShortenURLs()
+		this.debug = Preferences.isDebugging() //TODO: Decide whether to eliminate debugging or not.
+		this.notificationInterval = Preferences.notificationInterval()
+		this.notificationFeeds = Preferences.anyOrSelectedFeedsForNotifications()
 
+		//Cache Existing Values
 		this.originalAllowLandscape = Preferences.allowLandscape()
 		this.originalSortOrder = Preferences.isOldestFirst()
 		this.originalHideReadFeeds = Preferences.hideReadFeeds()
@@ -183,19 +212,40 @@ enyo.kind({
 		this.originalNotificationInterval = Preferences.notificationInterval()
 		this.originalFeedlySortEngagement = Preferences.isFeedlySortEngagement()
 		
+		//Cache current values (this prevents additional callbacks when setting up pickers)
 		this.currentTheme = Preferences.getTheme()
 		this.currentFeedSortOrder = (Preferences.isManualFeedSort() ? "manual": "alphabetical")
 		this.currentSortOrder = (Preferences.isOldestFirst() ? "oldest": "newest")
 		this.currentFontSize = Preferences.fontSize()
+		this.currentNotificationInterval = Preferences.notificationInterval()
+		this.currentNotificationFeeds = Preferences.anyOrSelectedFeedsForNotifications()
 		
 		//Set Pickers
-		this.setPickers(this.$.themePicker, this.$.themePickerHeader, this.theme)
-		this.setPickers(this.$.feedSortOrderPicker, this.$.feedSortOrderPickerHeader, this.feedSortOrder)
-		this.setPickers(this.$.sortOrderPicker, this.$.sortOrderPickerHeader, this.sortOrder)
-		this.setPickers(this.$.fontSizePicker, this.$.fontSizePickerHeader, this.fontSize)
+		this.setPicker(this.$.themePicker, this.$.themePickerHeader, this.theme)
+		this.setPicker(this.$.feedSortOrderPicker, this.$.feedSortOrderPickerHeader, this.feedSortOrder)
+		this.setPicker(this.$.sortOrderPicker, this.$.sortOrderPickerHeader, this.sortOrder)
+		this.setPicker(this.$.fontSizePicker, this.$.fontSizePickerHeader, this.fontSize)
+		this.setPicker(this.$.notificationIntervalPicker, this.$.notificationIntervalPickerHeader, this.notificationInterval)
+		this.setPicker(this.$.notificationFeedsPicker, this.$.notificationFeedsPickerHeader, this.notificationFeeds)
+		
+		//Set up Notifications groupbox
+		this.showAndHideStuff()
 	},
 	
-	setPickers: function(picker, header, pref) {
+	rendered: function()
+	{
+		this.inherited(arguments);
+		
+		//Fix pickers - there is a rendering error if the pickers have their width set if they are hidden 
+		this.$.themePickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
+		this.$.feedSortOrderPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
+		this.$.sortOrderPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
+		this.$.fontSizePickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
+		this.$.notificationIntervalPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
+		this.$.notificationFeedsPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
+	},
+	
+	setPicker: function(picker, header, pref) {
 		for (var i = 0; i < picker.controls.length; i++) {
         	if (picker.controls[i].value === pref) {
             	picker.setSelected(picker.controls[i]);
@@ -206,23 +256,22 @@ enyo.kind({
 	
 	showAndHideStuff: function() {
 		if(Preferences.notificationInterval() == "00:00:00") {
-		  this.controller.get("notification-feeds-row").hide()
-		  this.controller.get("notification-feed-selection-row").hide()
-		  this.controller.get("notifications-row").addClassName("last")
+		  this.$.notificationFeedsRow.hide()
+		  this.$.notificationFeedsSelectionRow.hide()
+		  this.$.notificationsBody.removeClass("feedspider-groupbox-body")
+		  this.$.notificationsBody.addClass("feedspider-groupbox-body-single")
 		}
 		else {
-		  this.controller.get("notification-feeds-row").show()
-		  this.controller.get("notifications-row").removeClassName("last")
-		  this.controller.get("notification-feeds-row").addClassName("last")
+		  this.$.notificationsBody.removeClass("feedspider-groupbox-body-single")
+		  this.$.notificationsBody.addClass("feedspider-groupbox-body")
+		  this.$.notificationFeedsPickerHeader.addStyles({"width" : this.$.notificationIntervalPickerHeader.domStyles.width})
+		  this.$.notificationFeedsRow.show()
 
 		  if(Preferences.anyOrSelectedFeedsForNotifications() == "any") {
-			this.controller.get("notification-feeds-row").addClassName("last")
-			this.controller.get("notification-feed-selection-row").hide()
+		  	this.$.notificationFeedsSelectionRow.hide()
 		  }
 		  else {
-			this.controller.get("notification-feeds-row").removeClassName("last")
-			this.controller.get("notification-feed-selection-row").show()
-			this.controller.get("notification-feed-selection-row").addClassName("last")
+		  	this.$.notificationFeedsSelectionRow.show()
 		  }
 		}
 	},
@@ -281,7 +330,6 @@ enyo.kind({
 	setFeedSortOrder: function(inSender, inEvent) {
 		if (inEvent.selected.value != this.currentFeedSortOrder)
 		{
-			console.log(inEvent)
 			this.currentFeedSortOrder = inEvent.selected.value
 			Preferences.setManualFeedSort(inEvent.selected.value == "manual")
 			this.$.feedSortOrderPickerHeader.content = inEvent.selected.content
@@ -299,16 +347,24 @@ enyo.kind({
 		}
 	},
 
-	setNotificationInterval: function() {
-		Preferences.setNotificationInterval(this.notificationInterval.value)
-		this.showAndHideStuff()
-		this.controller.getSceneScroller().mojo.revealBottom()
+	setNotificationInterval: function(inSender, inEvent) {
+		if (inEvent.selected.value != this.currentNotificationInterval)
+		{
+			this.currentNotificationInterval = inEvent.selected.value
+			Preferences.setNotificationInterval(inEvent.selected.value)
+			this.showAndHideStuff()
+			this.$.notificationIntervalPickerHeader.content = inEvent.selected.content
+		}
 	},
 
-	setNotificationFeeds: function() {
-		Preferences.setAnyOrSelectedFeedsForNotification(this.notificationFeeds.value)
-		this.showAndHideStuff()
-		this.controller.getSceneScroller().mojo.revealBottom()
+	setNotificationFeeds: function(inSender, inEvent) {
+		if (inEvent.selected.value != this.currentNotificationFeeds)
+		{
+			this.currentNotificationFeeds = inEvent.selected.value
+			Preferences.setAnyOrSelectedFeedsForNotification(inEvent.selected.value)
+			this.showAndHideStuff()
+			this.$.notificationFeedsPickerHeader.content = inEvent.selected.content
+		}
 	},
 
 	setDebugging: function() {
@@ -330,7 +386,8 @@ enyo.kind({
 
 	handleGoBack: function() {
 		if (this.originalNotificationInterval != Preferences.notificationInterval()) {
-		  Mojo.Controller.getAppController().assistant.handleLaunch({action: "notificationIntervalChange"})
+		  //TODO: Notifications
+		  //Mojo.Controller.getAppController().assistant.handleLaunch({action: "notificationIntervalChange"})
 		}
 
 		changes = {}
@@ -344,6 +401,6 @@ enyo.kind({
 		if (this.originalTheme != Preferences.getTheme()) changes.themeChanged = true
 		if (this.originalFeedlySortEngagement != Preferences.isFeedlySortEngagement()) changes.sortOrderChanged = true
 
-		this.controller.stageController.popScene(changes)
+		this.doGoBack({lastPage: this.previousPage, changes: changes})
 	},
 });

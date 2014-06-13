@@ -5,11 +5,12 @@ enyo.kind({
 	
 	events: {
 		onSwitchPanels: "",
+		onOpenPreferences: ""
 	},
 	
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
-			{kind: "onyx.MenuDecorator", components: [
+			{kind: "onyx.MenuDecorator", ontap: "openPreferences", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
 			    {kind: "onyx.Menu", components: [
         			//{kind: "onyx.MenuItem", content: "Add Subscription"},
@@ -49,6 +50,10 @@ enyo.kind({
 		}
 		//this.$.LoginDialog.show();
 		this.checkCredentials();
+	},
+	
+	openPreferences: function() {
+		this.doOpenPreferences(this)
 	},
 	
 	loginSuccess: function(inSender, inEvent) {

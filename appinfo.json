@@ -1,7 +1,7 @@
 {
 	"id": "com.othelloventures.feedspider2",
 	"version": "0.1.0",
-	"vendor": "HP",
+	"vendor": "Othello Ventures Ltd.",
 	"type": "web",
 	"main": "index.html",
 	"title": "FeedSpider 2",
