@@ -8,11 +8,11 @@ enyo.kind({
 	kind: "Panels",
 	draggable: false,
 	arrangerKind: "CardSlideInArranger",
-	components: [
-		{name: "main", kind: "FeedSpider2.MainView", onSwitchPanels: "switchPanels", onOpenPreferences: "openPreferences"},
+	components: [		
+		{name: "main", kind: "FeedSpider2.MainView", onSwitchPanels: "switchPanels"},
 		{name: "article", kind: "FeedSpider2.ArticleView"},
 		{name: "preferences", kind: "FeedSpider2.PreferencesView", onGoBack: "closePreferences"},
-		
+		{name: "help", kind: "FeedSpider2.HelpView", onGoBack: "closePanel"}
 	],
 	
 	switchPanels: function(inSender, inEvent) {
@@ -24,9 +24,18 @@ enyo.kind({
 		this.setIndex(this.selectPanelByName("preferences"))
 	},
 	
+	openHelp: function(inSender, inEvent) {
+		this.$.help.setPreviousPage(inEvent)
+		this.setIndex(this.selectPanelByName("help"))
+	},
+	
 	closePreferences: function(inSender, inEvent) {
 		//TODO: Handle Changes
 		this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
+	},
+	
+	closePanel: function(inSender, inEvent) {
+		this.setIndex(this.selectPanelByName(inEvent.name))
 	}
 });
 

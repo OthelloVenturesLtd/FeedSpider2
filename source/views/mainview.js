@@ -5,12 +5,13 @@ enyo.kind({
 	
 	events: {
 		onSwitchPanels: "",
-		onOpenPreferences: ""
+		onOpenPreferences: "openPreferences",
+		onOpenHelp: "openHelp"
 	},
 	
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
-			{kind: "onyx.MenuDecorator", ontap: "openPreferences", components: [
+			{kind: "onyx.MenuDecorator", ontap: "openHelp", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
 			    {kind: "onyx.Menu", components: [
         			//{kind: "onyx.MenuItem", content: "Add Subscription"},
@@ -49,11 +50,15 @@ enyo.kind({
 			//this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
 		}
 		//this.$.LoginDialog.show();
-		this.checkCredentials();
+		//this.checkCredentials();
 	},
 	
 	openPreferences: function() {
 		this.doOpenPreferences(this)
+	},
+	
+	openHelp: function() {
+		this.doOpenHelp(this)
 	},
 	
 	loginSuccess: function(inSender, inEvent) {

@@ -4,5 +4,6 @@ enyo.depends(
 	"mainview.js",
 	"logindialog.js",
 	"groupbox.js",
-	"preferencesview.js"
+	"preferencesview.js",
+	"helpview.js"
 );
