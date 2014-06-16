@@ -1,6 +1,7 @@
 enyo.depends(
 	"views.js",
 	"divider.js",
+	"baseview.js",
 	"mainview.js",
 	"logindialog.js",
 	"notificationfeedsdialog.js",

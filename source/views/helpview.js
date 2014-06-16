@@ -1,6 +1,6 @@
 enyo.kind({
 	name: "FeedSpider2.HelpView",
-	kind: "FittableRows",
+	kind: "FeedSpider2.BaseView",
 	fit: true,
 	
 	published: {

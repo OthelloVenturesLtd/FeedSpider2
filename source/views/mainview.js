@@ -1,17 +1,12 @@
+//TODO: handle activate/deactivate
 enyo.kind({
 	name: "FeedSpider2.MainView",
-	kind: "FittableRows",
+	kind: "FeedSpider2.BaseView",
 	fit: true,
-	
-	events: {
-		onSwitchPanels: "",
-		onOpenPreferences: "openPreferences",
-		onOpenHelp: "openHelp"
-	},
 	
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
-			{kind: "onyx.MenuDecorator", ontap: "openPreferences", components: [
+			{kind: "onyx.MenuDecorator", ontap: "openHelp", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
 			    {kind: "onyx.Menu", components: [
         			//{kind: "onyx.MenuItem", content: "Add Subscription"},
@@ -51,14 +46,6 @@ enyo.kind({
 		}
 		//this.$.LoginDialog.show();
 		this.checkCredentials();
-	},
-	
-	openPreferences: function() {
-		this.doOpenPreferences(this)
-	},
-	
-	openHelp: function() {
-		this.doOpenHelp(this)
 	},
 	
 	loginSuccess: function(inSender, inEvent) {
@@ -138,7 +125,7 @@ enyo.kind({
     		{
     			items[i].last = true;
     		}
-    		items[i].setContainer(list)	
+    		items[i].setContainer(list)
     	}
     	//list.mojo.noticeUpdatedItems(0, items)
     	//list.mojo.setLength(items.length)
@@ -171,6 +158,86 @@ enyo.kind({
           	this.filterAndRefresh();
 		}
 	},
+	
+	//BEGIN CODE TO BE PORTED
+	sourceTapped: function(inSender, inEvent) {
+		if(inEvent.isFolder && !Preferences.combineFolders()) {
+			console.log("Folder!")
+			//this.controller.stageController.pushScene("folder", this.api, event.item)
+		}
+		else {
+			console.log("Feed!")
+			//this.controller.stageController.pushScene("articles", this.api, event.item)
+		}
+		return true
+	},
+
+	sourcesReordered: function(event) {
+		var beforeSubscription = null
+
+		if(event.toIndex < this.sources.subscriptionSources.items.length - 1) {
+			var beforeIndex = event.toIndex
+
+			if(event.fromIndex < event.toIndex) {
+				beforeIndex += 1
+			}
+
+			beforeSubscription = this.sources.subscriptionSources.items[beforeIndex]
+		}
+
+		this.sources.subscriptions.move(event.item, beforeSubscription)
+	},
+
+	sourceDeleted: function(event) {
+		this.sources.subscriptions.remove(event.item)
+	},
+
+	divide: function(source) {
+		return source.divideBy
+	},	
+
+	articleRead: function(event) {
+		Log.debug("1 item marked read in " + event.subscriptionId)
+		this.sources.articleRead(event.subscriptionId)
+		//TODO: Check Active Panel
+		if(this.active) this.filterAndRefresh()
+	},
+
+	articleNotRead: function(event) {
+		Log.debug("1 item marked not read in " + event.subscriptionId)
+		this.sources.articleNotRead(event.subscriptionId)
+		//TODO: Check Active Panel
+		if(this.active) this.filterAndRefresh()
+	},
+
+	markedAllRead: function(event) {
+		Log.debug(event.count + " items marked read in " + event.id)
+
+		if(event.id == "user/-/state/com.google/reading-list") {
+			this.sources.nukedEmAll()
+		}
+		else {
+			this.sources.markedAllRead(event.count)
+		}
+
+		this.filterAndRefresh()
+	},
+
+	folderDeleted: function() {
+		this.reload()
+	},
+
+	doSearch: function(query) {
+		if(this.api.supportsSearch())
+		{
+			this.controller.stageController.pushScene("articles", this.api, new Search(this.api, query))
+		}
+		else
+		{
+			Feeder.notify($L("Search Not Available"))
+		}
+	},
+	//END CODE TO BE PORTED
 
   	/* Begin TEMP Troubleshooting code */
   	checkCredentials: function() {
