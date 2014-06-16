@@ -10,6 +10,8 @@ enyo.kind({
 	arrangerKind: "CardSlideInArranger",
 	components: [		
 		{name: "main", kind: "FeedSpider2.MainView", onSwitchPanels: "switchPanels"},
+		{name: "folder", kind: "FeedSpider2.FolderView", onSwitchPanels: "switchPanels"},
+		{name: "feed", kind: "FeedSpider2.FeedView", onSwitchPanels: "switchPanels"},
 		{name: "article", kind: "FeedSpider2.ArticleView"},
 		{name: "preferences", kind: "FeedSpider2.PreferencesView", onGoBack: "closePreferences"},
 		{name: "help", kind: "FeedSpider2.HelpView", onGoBack: "closePanel"}
