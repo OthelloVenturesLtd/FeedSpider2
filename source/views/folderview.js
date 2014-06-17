@@ -28,7 +28,7 @@ enyo.kind({
 			{kind: "onyx.Icon"}, //This is here to keep the header centered.
 			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", style: "display: none"},
 			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
-			{name: "refreshButton", kind: "onyx.IconButton", ontap: "switchPanels", src: "assets/refresh.png"}
+			{name: "refreshButton", kind: "onyx.IconButton"}
 		]},
 		
 		{name: "MainList", kind: "enyo.Scroller", fit: true, style: "background-color: #e6e3de; padding-top: 5px"},
