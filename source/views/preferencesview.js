@@ -4,13 +4,8 @@ enyo.kind({
 	fit: true,
 	
 	published: {
-		previousPage: "",
 		sources: "",
 		subscriptions: ""
-	},
-	
-	events: {
-		onGoBack: ""
 	},
 	
 	components:[

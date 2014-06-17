@@ -6,7 +6,7 @@ enyo.kind({
 	
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
-			{kind: "onyx.MenuDecorator", ontap: "openHelp", components: [
+			{kind: "onyx.MenuDecorator", ontap: "openPreferences", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
 			    {kind: "onyx.Menu", components: [
         			//{kind: "onyx.MenuItem", content: "Add Subscription"},
@@ -46,6 +46,11 @@ enyo.kind({
 		}
 		//this.$.LoginDialog.show();
 		this.checkCredentials();
+	},
+
+	activate: function(changes) {
+		this.filterAndRefresh()
+		//this.listenForSearch()
 	},
 	
 	loginSuccess: function(inSender, inEvent) {
@@ -119,18 +124,6 @@ enyo.kind({
 		}
 	},
 
-  	refreshList: function(list, items) {
-  	    for (var i = 0; i < items.length; i++) { 
-    		if(i == items.length - 1)
-    		{
-    			items[i].last = true;
-    		}
-    		items[i].setContainer(list)
-    	}
-    	//list.mojo.noticeUpdatedItems(0, items)
-    	//list.mojo.setLength(items.length)
-  	},
-
 	showError: function() {
 		this.reloading = false
 		this.loaded = false
@@ -163,7 +156,7 @@ enyo.kind({
 	sourceTapped: function(inSender, inEvent) {
 		if(inEvent.isFolder && !Preferences.combineFolders()) {
 			console.log("Folder!")
-			//this.controller.stageController.pushScene("folder", this.api, event.item)
+			this.doSwitchPanels({target: "folder", api: this.api, folder: inEvent, previousPage: this})
 		}
 		else {
 			console.log("Feed!")

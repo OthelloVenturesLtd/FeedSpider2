@@ -8,6 +8,7 @@ enyo.kind({
     	this.title = title
     	this.icon = "assets/folder-grey.png"
     	this.divideBy = "Subscriptions" //$L("Subscriptions")
+    	//TODO: Fix title - should be "All" within folders
     	this.stickySubscriptions = [this]
     	this.subscriptions = new FeedSpider2.FolderSubscriptions(api, this.id)
     	this.setUnreadCount(0)

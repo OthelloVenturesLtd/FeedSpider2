@@ -3,10 +3,15 @@ enyo.kind({
 	kind: "FittableRows",
 	fit: true,
 
+	published: {
+		previousPage: "",
+	},
+
 	events: {
-		onSwitchPanels: "",
+		onSwitchPanels: "switchPanels",
 		onOpenPreferences: "openPreferences",
-		onOpenHelp: "openHelp"
+		onOpenHelp: "openHelp",
+		onGoBack: ""
 	},
 	
 	handlers: {
@@ -51,6 +56,18 @@ enyo.kind({
 
 		body.addClassName("theme-" + Preferences.getTheme())
 	},
+
+  	refreshList: function(list, items) {
+  	    for (var i = 0; i < items.length; i++) { 
+    		if(i == items.length - 1)
+    		{
+    			items[i].last = true;
+    		}
+    		items[i].setContainer(list)
+    	}
+    	//list.mojo.noticeUpdatedItems(0, items)
+    	//list.mojo.setLength(items.length)
+  	},
 
 	//TODO: Port
 	setLeftyClass: function() {
@@ -125,6 +142,7 @@ enyo.kind({
 		}
 	},
 
+	//TODO: Set up event handlers to trigger this when the top bar is tapped 
 	scrollToTop: function() {
 		this.controller.getSceneScroller().mojo.scrollTo(0, 0, true)
 	},

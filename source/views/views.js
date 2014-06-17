@@ -10,7 +10,7 @@ enyo.kind({
 	arrangerKind: "CardSlideInArranger",
 	components: [		
 		{name: "main", kind: "FeedSpider2.MainView", onSwitchPanels: "switchPanels"},
-		{name: "folder", kind: "FeedSpider2.FolderView", onSwitchPanels: "switchPanels"},
+		{name: "folder", kind: "FeedSpider2.FolderView", onSwitchPanels: "switchPanels", onGoBack: "closePanel"},
 		{name: "feed", kind: "FeedSpider2.FeedView", onSwitchPanels: "switchPanels"},
 		{name: "article", kind: "FeedSpider2.ArticleView"},
 		{name: "preferences", kind: "FeedSpider2.PreferencesView", onGoBack: "closePreferences"},
@@ -18,7 +18,19 @@ enyo.kind({
 	],
 	
 	switchPanels: function(inSender, inEvent) {
-		this.setIndex(this.selectPanelByName("article"))
+		switch(inEvent.target) {
+			case "folder":
+				this.$.folder.setApi(inEvent.api);
+				this.$.folder.setFolder(inEvent.folder);
+				this.$.folder.setPreviousPage(inEvent.previousPage);
+				this.$.folder.activate()
+				this.setIndex(this.selectPanelByName("folder"))
+				break;
+			case "feed":
+				break;
+			case "article":
+				break;
+		}
 	},
 	
 	openPreferences: function(inSender, inEvent) {
@@ -38,6 +50,7 @@ enyo.kind({
 	},
 	
 	closePanel: function(inSender, inEvent) {
+		inEvent.activate()
 		this.setIndex(this.selectPanelByName(inEvent.name))
 	}
 });
