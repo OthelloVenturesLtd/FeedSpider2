@@ -5,6 +5,7 @@ enyo.depends(
 	"mainview.js",
 	"folderview.js",
 	"feedview.js",
+	"articleview.js",
 	"logindialog.js",
 	"notificationfeedsdialog.js",
 	"groupbox.js",

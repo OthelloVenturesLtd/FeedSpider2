@@ -99,6 +99,7 @@ enyo.kind({
 	foundArticles: function(scrollToTop) {
 		this.refreshList(this.$.MainList, this.subscription.items)
 
+		this.$.MainList.render()
 		if(scrollToTop) {
 			//this.controller.getSceneScroller().mojo.revealTop()
 		}
@@ -133,6 +134,10 @@ enyo.kind({
 			this.$.markAllRead.hide()
 		}
 	},
+
+	handleGoBack: function() {
+		this.doGoBack(this.previousPage)
+	},	
 
 //TODO: Port from here
 	articleTapped: function(event) {

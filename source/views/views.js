@@ -11,7 +11,7 @@ enyo.kind({
 	components: [		
 		{name: "main", kind: "FeedSpider2.MainView", onSwitchPanels: "switchPanels"},
 		{name: "folder", kind: "FeedSpider2.FolderView", onSwitchPanels: "switchPanels", onGoBack: "closePanel"},
-		{name: "feed", kind: "FeedSpider2.FeedView", onSwitchPanels: "switchPanels"},
+		{name: "feed", kind: "FeedSpider2.FeedView", onSwitchPanels: "switchPanels", onGoBack: "closePanel"},
 		{name: "article", kind: "FeedSpider2.ArticleView"},
 		{name: "preferences", kind: "FeedSpider2.PreferencesView", onGoBack: "closePreferences"},
 		{name: "help", kind: "FeedSpider2.HelpView", onGoBack: "closePanel"}
@@ -55,39 +55,8 @@ enyo.kind({
 	},
 	
 	closePanel: function(inSender, inEvent) {
-		//TODO: COnsider refactoring this to handle an object like closePreferences
+		//TODO: Consider refactoring this to handle an object like closePreferences
 		inEvent.activate()
 		this.setIndex(this.selectPanelByName(inEvent.name))
 	}
-});
-
-enyo.kind({
-	name: "FeedSpider2.ArticleView",
-	kind: "FittableRows",
-	fit: true,
-	components:[
-		{kind: "onyx.Toolbar", components: [
-			{tag: "p", content: "Title"},
-			{tag: "p", content: "Feed"},
-			{tag: "p", content: "Author"}
-		], ontap: "toolbarTap"},
-		{kind: "enyo.Scroller", fit: true, components: [
-			{name: "main", classes: "nice-padding", allowHtml: true}
-		]},
-		{kind: "onyx.Toolbar", components: [
-			{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/previous-article.png", style: "padding-right: 50px"},
-			{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/go-back-footer.png", style: "padding-right: 50px"},
-			{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/read-footer-on.png", style: "padding-right: 50px"},
-			{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/starred-footer.png", style: "padding-right: 50px"},
-			{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/sendto-footer.png", style: "padding-right: 50px"},
-			{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/next-article.png"},
-		]}
-	],
-	helloWorldTap: function(inSender, inEvent) {
-		this.api = new Api()
-		this.$.main.addContent(this.api.version());
-	},
-	toolbarTap: function(inSender, inEvent) {
-		window.open("http://www.google.com")
-	},
 });
