@@ -12,7 +12,7 @@ enyo.kind({
 		{name: "main", kind: "FeedSpider2.MainView", onSwitchPanels: "switchPanels"},
 		{name: "folder", kind: "FeedSpider2.FolderView", onSwitchPanels: "switchPanels", onGoBack: "closePanel"},
 		{name: "feed", kind: "FeedSpider2.FeedView", onSwitchPanels: "switchPanels", onGoBack: "closePanel"},
-		{name: "article", kind: "FeedSpider2.ArticleView"},
+		{name: "article", kind: "FeedSpider2.ArticleView", onSwitchPanels: "switchPanels", onGoBack: "closePanel"},
 		{name: "preferences", kind: "FeedSpider2.PreferencesView", onGoBack: "closePreferences"},
 		{name: "help", kind: "FeedSpider2.HelpView", onGoBack: "closePanel"}
 	],
@@ -34,6 +34,12 @@ enyo.kind({
 				this.setIndex(this.selectPanelByName("feed"))
 				break;
 			case "article":
+				this.$.article.setArticle(inEvent.article);
+				this.$.article.setScrollingIndex(inEvent.scrollingIndex);
+				this.$.article.setArticleContainer(inEvent.articleContainer);
+				this.$.article.setPreviousPage(inEvent.previousPage);
+				this.$.article.activate()
+				this.setIndex(this.selectPanelByName("article"))
 				break;
 		}
 	},

@@ -8,6 +8,10 @@ enyo.kind({
 		subscription: "",
 	},
 	
+	handlers: {
+		onArticleTap: "articleTapped",
+	},
+	
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
 			{kind: "onyx.MenuDecorator", ontap: "openHelp", components: [
@@ -35,7 +39,6 @@ enyo.kind({
 	
   	create: function() {
     	this.inherited(arguments);
-    	this.credentials = new Credentials();
     	this.loaded = false;
     	this.reloading = false;
 	},
@@ -140,12 +143,13 @@ enyo.kind({
 	},	
 
 //TODO: Port from here
-	articleTapped: function(event) {
-		if(!event.item.load_more) {
+	articleTapped: function(inSender, inEvent) {
+		this.doSwitchPanels({target: "article", article: inEvent, scrollingIndex: 0, articleContainer: this.subscription, previousPage: this})
+		/*if(!event.item.load_more) {
 			event.item.index = event.index
 			this.tappedIndex = event.index
 			this.controller.stageController.pushScene("article", event.item, 0, this.subscription)
-		}
+		}*/
 	},
 
 	divide: function(article) {
