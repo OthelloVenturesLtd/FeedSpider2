@@ -78,7 +78,7 @@ enyo.kind({
 	},
 
 	sourceTapped: function(inSender, inEvent) {
-		//this.controller.stageController.pushScene("articles", this.api, event.item)
+		this.doSwitchPanels({target: "feed", api: this.api, subscription: inEvent, previousPage: this})
 	},
 
 //PORT FROM HERE

@@ -27,6 +27,11 @@ enyo.kind({
 				this.setIndex(this.selectPanelByName("folder"))
 				break;
 			case "feed":
+				this.$.feed.setApi(inEvent.api);
+				this.$.feed.setSubscription(inEvent.subscription);
+				this.$.feed.setPreviousPage(inEvent.previousPage);
+				this.$.feed.activate()
+				this.setIndex(this.selectPanelByName("feed"))
 				break;
 			case "article":
 				break;
@@ -50,6 +55,7 @@ enyo.kind({
 	},
 	
 	closePanel: function(inSender, inEvent) {
+		//TODO: COnsider refactoring this to handle an object like closePreferences
 		inEvent.activate()
 		this.setIndex(this.selectPanelByName(inEvent.name))
 	}

@@ -152,19 +152,17 @@ enyo.kind({
 		}
 	},
 	
-	//BEGIN CODE TO BE PORTED
 	sourceTapped: function(inSender, inEvent) {
 		if(inEvent.isFolder && !Preferences.combineFolders()) {
-			console.log("Folder!")
 			this.doSwitchPanels({target: "folder", api: this.api, folder: inEvent, previousPage: this})
 		}
 		else {
-			console.log("Feed!")
-			//this.controller.stageController.pushScene("articles", this.api, event.item)
+			this.doSwitchPanels({target: "feed", api: this.api, subscription: inEvent, previousPage: this})
 		}
 		return true
 	},
 
+	//BEGIN CODE TO BE PORTED
 	sourcesReordered: function(event) {
 		var beforeSubscription = null
 

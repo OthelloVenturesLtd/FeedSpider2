@@ -24,5 +24,6 @@ enyo.depends(
 	"starred.js",
 	"subscription.js",
 	"folder.js",
-	"folder-subscriptions.js"
+	"folder-subscriptions.js",
+	"article.js"
 );
