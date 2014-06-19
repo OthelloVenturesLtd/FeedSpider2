@@ -34,7 +34,7 @@ enyo.kind({
 			{name: "markAllRead", kind: "onyx.IconButton", ontap: "switchPanels", src: "assets/mark-all-read.png"}
 		]},
 		
-		{name: "MainList", kind: "enyo.Scroller", fit: true, style: "background-color: #e6e3de; padding-top: 5px"},
+		{name: "MainList", kind: "enyo.Scroller", fit: true, style: "padding-top: 5px"},
 	],
 	
   	create: function() {
