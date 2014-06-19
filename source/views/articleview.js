@@ -18,7 +18,7 @@ enyo.kind({
 				]},
 				{tag: "div", style:"background: url('assets/rightarrow.png') no-repeat center; width: 20px; height: 56px"},
 			], ontap: "toolbarTap"},
-			{name: "summary", allowHtml: true, classes: "article-summary medium"},
+			{name: "summary", allowHtml: true, classes: "article-summary"},
 		]},
 		{kind: "onyx.Toolbar", style: "padding-left: 0px; padding-right: 0px", components: [
 			{style: "width: 18%; text-align:center; margin-left: 0px; margin-right: 0px;", components: [
@@ -51,11 +51,10 @@ enyo.kind({
 		this.$.subscription.setContent(this.articleContainer.api.titleFor(this.article.subscriptionId))
 		this.$.author.setContent(this.article.author ? "by " + this.article.author : "")
 		this.$.summary.setContent(this.article.summary)
-		console.log(this.$.summary)
 		//this.articleContainer.highlight(this.controller.get("summary"))
-		/*this.setFontSize()
+		this.setFontSize()
 
-		if(this.article.isRead) {
+		/*if(this.article.isRead) {
 			this.controller.get("read").addClassName("on")
 		}
 
@@ -80,16 +79,15 @@ enyo.kind({
 		//window.open("http://www.google.com")
 	},
 
-//TODO PORT FROM HERE	
 	setFontSize: function() {
-		var summary = this.controller.get("summary")
-		summary.removeClassName("tiny")
-		summary.removeClassName("small")
-		summary.removeClassName("medium")
-		summary.removeClassName("large")
-		summary.addClassName(Preferences.fontSize())
+		this.$.summary.removeClass("tiny")
+		this.$.summary.removeClass("small")
+		this.$.summary.removeClass("medium")
+		this.$.summary.removeClass("large")
+		this.$.summary.addClass(Preferences.fontSize())
 	},
 
+//TODO PORT FROM HERE
 	setStarred: function(event) {
 		this.toggleState(event.target, "Star")
 	},
