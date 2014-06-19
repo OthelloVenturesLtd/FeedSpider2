@@ -8,6 +8,7 @@ enyo.kind({
 	kind: "Panels",
 	draggable: false,
 	arrangerKind: "CardSlideInArranger",
+
 	components: [		
 		{name: "main", kind: "FeedSpider2.MainView", onSwitchPanels: "switchPanels"},
 		{name: "folder", kind: "FeedSpider2.FolderView", onSwitchPanels: "switchPanels", onGoBack: "closePanel"},
@@ -16,6 +17,11 @@ enyo.kind({
 		{name: "preferences", kind: "FeedSpider2.PreferencesView", onGoBack: "closePreferences"},
 		{name: "help", kind: "FeedSpider2.HelpView", onGoBack: "closePanel"}
 	],
+	
+	create: function(){
+		this.inherited(arguments);
+		this.addClass("theme-" + Preferences.getTheme());
+	},
 	
 	switchPanels: function(inSender, inEvent) {
 		switch(inEvent.target) {
@@ -57,6 +63,10 @@ enyo.kind({
 	
 	closePreferences: function(inSender, inEvent) {
 		//TODO: Handle Changes
+		if (inEvent.changes.themeChanged)
+		{
+			this.handleThemeChanged()
+		}
 		this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
 	},
 	
@@ -64,5 +74,13 @@ enyo.kind({
 		//TODO: Consider refactoring this to handle an object like closePreferences
 		inEvent.activate()
 		this.setIndex(this.selectPanelByName(inEvent.name))
+	},
+	
+	handleThemeChanged: function() {
+		this.removeClass("theme-dark");
+		this.removeClass("theme-grey");
+		this.removeClass("theme-light");
+		
+		this.addClass("theme-" + Preferences.getTheme());
 	}
 });

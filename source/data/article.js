@@ -13,10 +13,10 @@ enyo.kind({
 
 	components: [
 		{name: "source", layoutKind: enyo.FittableRowsLayout, noStretch: true, ontap: "itemTapped", style: "", components: [
-			{name: "articleName", tag: "span", style: "padding-left: 10px; padding-top: 10px;"},
+			{name: "articleName", tag: "span", classes: "article-title", style: "padding-left: 10px; padding-top: 10px;"},
 			{layoutKind: "FittableColumnsLayout", components: [
 				{name: "starredIcon", tag: "div", style:"background: url('assets/starred-grey.png') no-repeat left bottom; width: 16px; height: 24px; margin-left: 10px; display:none"},
-				{name: "articleOrigin", fit: true, style: "padding-left: 10px; padding-top: 8px; font-size: 14px; color: #999; display:none;"},
+				{name: "articleOrigin", fit: true, classes: "article-origin", style: "padding-left: 10px; padding-top: 8px; display:none;"},
 			]},
 			{name: "borderContainer", style: "padding-top: 12px; width: 100%"}
 		]}

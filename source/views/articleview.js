@@ -9,16 +9,16 @@ enyo.kind({
 	},
 	
 	components:[
-		{kind: "enyo.Scroller", style: "background-color: #e6e3de;", fit: true, components: [
-			{name: "articleHeader", kind: "FittableColumns", style: "background-color: white; padding: 10px; border-bottom: black solid 1px", components: [
+		{kind: "enyo.Scroller", fit: true, components: [
+			{name: "articleHeader", kind: "FittableColumns", classes: "article-header", components: [
 				{fit: true, components: [
-					{name: "title", style: "font-weight: bold;"},
-					{name: "subscription", style: "padding-top: 2px; font-size: 14px; color: #999;"},
-					{name: "author", style: "padding-top: 2px; font-size: 14px; color: #999;"}
+					{name: "title", classes: "article-title", style: "font-weight: bold;"},
+					{name: "subscription", classes: "article-subscription"},
+					{name: "author", classes: "article-author"}
 				]},
 				{tag: "div", style:"background: url('assets/rightarrow.png') no-repeat center; width: 20px; height: 56px"},
 			], ontap: "toolbarTap"},
-			{name: "summary", allowHtml: true, style: "padding: 10px"},
+			{name: "summary", allowHtml: true, classes: "article-summary medium"},
 		]},
 		{kind: "onyx.Toolbar", style: "padding-left: 0px; padding-right: 0px", components: [
 			{style: "width: 18%; text-align:center; margin-left: 0px; margin-right: 0px;", components: [
@@ -51,6 +51,7 @@ enyo.kind({
 		this.$.subscription.setContent(this.articleContainer.api.titleFor(this.article.subscriptionId))
 		this.$.author.setContent(this.article.author ? "by " + this.article.author : "")
 		this.$.summary.setContent(this.article.summary)
+		console.log(this.$.summary)
 		//this.articleContainer.highlight(this.controller.get("summary"))
 		/*this.setFontSize()
 
