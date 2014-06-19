@@ -12,6 +12,11 @@ enyo.kind({
 		this.sortId = data.sortid
 		this.categories = data.categories
 	},
+	
+	rendered: function() {
+		this.$.sourceIcon.addClass("subscription-rss");
+		this.inherited(arguments);				
+	},
 
 	belongsToFolder: function() {
 		return this.categories && this.categories.length

@@ -14,6 +14,11 @@ enyo.kind({
 		this.canMarkAllRead = false;
 	},
 
+	rendered: function() {
+		this.$.sourceIcon.addClass("subscription-archived");
+		this.inherited(arguments);				
+	},
+
 	makeApiCall: function(continuation, success, failure) {
 		this.api.getAllArchived(continuation, success, failure)
 	},

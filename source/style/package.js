@@ -4,6 +4,7 @@ enyo.depends(
 	"FS-FeedView.less",
 	"FS-GroupBox.less",
 	"FS-Preferences.less",
+	"FS-Subscription.less",
 	"FS-Article.less",
 	"FS-Theme.less"
 );

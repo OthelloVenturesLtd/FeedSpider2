@@ -17,6 +17,11 @@ enyo.kind({
     	this.isFolder = true
 	},
 
+	rendered: function() {
+		this.$.sourceIcon.addClass("subscription-folder");
+		this.inherited(arguments);				
+	},
+
 	makeApiCall: function(continuation, success, failure) {
 		this.api.getAllArticlesFor(this.id, continuation, success, failure)
 	},

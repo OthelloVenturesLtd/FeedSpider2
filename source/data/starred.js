@@ -14,6 +14,11 @@ enyo.kind({
 		this.canMarkAllRead = false;
 	},
 
+	rendered: function() {
+		this.$.sourceIcon.addClass("subscription-star");
+		this.inherited(arguments);				
+	},
+
 	makeApiCall: function(continuation, success, failure) {
 		this.api.getAllStarred(continuation, success, failure)
 	},

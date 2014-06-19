@@ -17,10 +17,10 @@ enyo.kind({
 	},
 
 	components: [
-		{name: "source", kind: enyo.FittableColumns, noStretch: true, ontap: "itemTapped", style: "padding-top: 10px; padding-right: 10px;", components: [
-			{name: "sourceIcon", kind: "onyx.Icon", style: "margin-left: 10px; margin-top: 2px"},
-			{name: "sourceName", tag: "span", fit: true},
-			{name: "sourceUnreadCount", tag: "span"}
+		{name: "source", kind: enyo.FittableColumns, noStretch: true, ontap: "itemTapped", components: [
+			{name: "sourceIcon", style: "height: 50px; width: 30px;"},
+			{name: "sourceName", classes: "subscription-title", tag: "span", fit: true},
+			{name: "sourceUnreadCount", classes: "subscription-count", tag: "span"}
 		]}
 	],
 	
