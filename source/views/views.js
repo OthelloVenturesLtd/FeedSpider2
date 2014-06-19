@@ -14,13 +14,13 @@ enyo.kind({
 		{name: "folder", kind: "FeedSpider2.FolderView", onSwitchPanels: "switchPanels", onGoBack: "closePanel"},
 		{name: "feed", kind: "FeedSpider2.FeedView", onSwitchPanels: "switchPanels", onGoBack: "closePanel"},
 		{name: "article", kind: "FeedSpider2.ArticleView", onSwitchPanels: "switchPanels", onGoBack: "closePanel"},
-		{name: "preferences", kind: "FeedSpider2.PreferencesView", onGoBack: "closePreferences"},
+		{name: "preferences", kind: "FeedSpider2.PreferencesView", onGoBack: "closePreferences", onSetTheme: "handleThemeChanged"},
 		{name: "help", kind: "FeedSpider2.HelpView", onGoBack: "closePanel"}
 	],
 	
 	create: function(){
 		this.inherited(arguments);
-		this.addClass("theme-" + Preferences.getTheme());
+		this.handleThemeChanged();
 	},
 	
 	switchPanels: function(inSender, inEvent) {
@@ -77,10 +77,13 @@ enyo.kind({
 	},
 	
 	handleThemeChanged: function() {
+		var theme = Preferences.getTheme()
 		this.removeClass("theme-dark");
 		this.removeClass("theme-grey");
 		this.removeClass("theme-light");
 		
-		this.addClass("theme-" + Preferences.getTheme());
+		this.addClass("theme-" + theme);
+		
+		this.$.preferences.setDialogTheme(theme);
 	}
 });

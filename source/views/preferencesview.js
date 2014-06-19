@@ -7,6 +7,10 @@ enyo.kind({
 		sources: "",
 		subscriptions: ""
 	},
+
+	events: {
+		onSetTheme: "",
+	},
 	
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
@@ -14,7 +18,7 @@ enyo.kind({
 			{tag: "span", content: "Preferences", style:"font-weight: bold; text-align: center", fit: true},
 			{kind: "onyx.Icon"}, //This is here to keep the header centered.
 		]},
-		{kind: "enyo.Scroller", fit: true, style: "background-color: #e6e3de; padding: 10px", components: [
+		{kind: "enyo.Scroller", fit: true, style: "padding: 10px", components: [
 			{tag: "div", classes: "feedspider-groupbox", components: [
 				{tag: "div", classes: "feedspider-groupbox-header", content: "General"},
 				{name: "generalGroupbox", tag: "div", classes: "feedspider-groupbox-body", style: "width: 100%", components:[
@@ -29,7 +33,7 @@ enyo.kind({
 					{kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
 						{kind: "onyx.PickerDecorator", style: "width:100%;", components: [
 							{layoutKind: "FittableColumnsLayout", noStretch: true, style: "padding-left: 10px; width:100%; background-color: #e6e3de; border-width: 0px; border-radius: 0px; background: none", components: [
-								{name: "themePickerHeader", tag: "span", fit: true, style: "text-align: left; width: 100%; color: black"},
+								{name: "themePickerHeader", tag: "span", fit: true, classes: "feedspider-picker-header", style: "text-align: left; width: 100%"},
 								{kind: "onyx.Icon", src: "assets/downarrow.png"},
 							]},
 							{name: "themePicker", kind: "onyx.Picker", onChange: "setTheme",components: [
@@ -55,7 +59,7 @@ enyo.kind({
 					{kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
 						{kind: "onyx.PickerDecorator", style: "width:100%;", components: [
 							{layoutKind: "FittableColumnsLayout", noStretch: true, style: "padding-left: 10px; width:100%; background-color: #e6e3de; border-width: 0px; border-radius: 0px; background: none", components: [
-								{name: "feedSortOrderPickerHeader", tag: "span", fit: true, style: "text-align: left; width: 100%; color: black"},
+								{name: "feedSortOrderPickerHeader", tag: "span", fit: true, classes: "feedspider-picker-header", style: "text-align: left; width: 100%;"},
 								{kind: "onyx.Icon", src: "assets/downarrow.png"},
 							]},
 							{name: "feedSortOrderPicker", kind: "onyx.Picker", onChange: "setFeedSortOrder",components: [
@@ -72,7 +76,7 @@ enyo.kind({
 					{kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
 						{kind: "onyx.PickerDecorator", style: "width:100%;", components: [
 							{layoutKind: "FittableColumnsLayout", noStretch: true, style: "padding-left: 10px; width:100%; background-color: #e6e3de; border-width: 0px; border-radius: 0px; background: none", components: [
-								{name: "sortOrderPickerHeader", tag: "span", fit: true, style: "text-align: left; width: 100%; color: black"},
+								{name: "sortOrderPickerHeader", tag: "span", classes: "feedspider-picker-header", fit: true, style: "text-align: left; width: 100%;"},
 								{kind: "onyx.Icon", src: "assets/downarrow.png"},
 							]},
 							{name: "sortOrderPicker", kind: "onyx.Picker", onChange: "setSortOrder",components: [
@@ -84,7 +88,7 @@ enyo.kind({
 					{kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
 						{kind: "onyx.PickerDecorator", style: "width:100%;", components: [
 							{layoutKind: "FittableColumnsLayout", noStretch: true, style: "padding-left: 10px; width:100%; background-color: #e6e3de; border-width: 0px; border-radius: 0px; background: none", components: [
-								{name: "fontSizePickerHeader", tag: "span", fit: true, style: "text-align: left; width: 100%; color: black"},
+								{name: "fontSizePickerHeader", tag: "span", classes: "feedspider-picker-header", fit: true, style: "text-align: left; width: 100%;"},
 								{kind: "onyx.Icon", src: "assets/downarrow.png"},
 							]},
 							{name: "fontSizePicker", kind: "onyx.Picker", onChange: "setFontSize",components: [
@@ -129,7 +133,7 @@ enyo.kind({
 					{kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
 						{kind: "onyx.PickerDecorator", style: "width:100%;", components: [
 							{layoutKind: "FittableColumnsLayout", noStretch: true, style: "padding-left: 10px; width:100%; background-color: #e6e3de; border-width: 0px; border-radius: 0px; background: none", components: [
-								{name: "notificationIntervalPickerHeader", tag: "span", fit: true, style: "text-align: left; width: 100%; color: black"},
+								{name: "notificationIntervalPickerHeader", tag: "span", fit: true, classes: "feedspider-picker-header", style: "text-align: left; width: 100%;"},
 								{kind: "onyx.Icon", src: "assets/downarrow.png"},
 							]},
 							{name: "notificationIntervalPicker", kind: "onyx.Picker", onChange: "setNotificationInterval",components: [
@@ -147,7 +151,7 @@ enyo.kind({
 					{name: "notificationFeedsRow", kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
 						{kind: "onyx.PickerDecorator", style: "width:100%;", components: [
 							{layoutKind: "FittableColumnsLayout", noStretch: true, style: "padding-left: 10px; width:100%; background-color: #e6e3de; border-width: 0px; border-radius: 0px; background: none", components: [
-								{name: "notificationFeedsPickerHeader", tag: "span", fit: true, style: "text-align: left; width: 100%; color: black"},
+								{name: "notificationFeedsPickerHeader", tag: "span", fit: true, classes: "feedspider-picker-header", style: "text-align: left; width: 100%;"},
 								{kind: "onyx.Icon", src: "assets/downarrow.png"},
 							]},
 							{name: "notificationFeedsPicker", kind: "onyx.Picker", onChange: "setNotificationFeeds",components: [
@@ -274,6 +278,14 @@ enyo.kind({
 		}
 	},
 
+	setDialogTheme: function(theme) {
+		this.$.notificationFeedsDialog.removeClass("theme-dark-dialog");
+		this.$.notificationFeedsDialog.removeClass("theme-grey-dialog");
+		this.$.notificationFeedsDialog.removeClass("theme-light-dialog");
+		
+		this.$.notificationFeedsDialog.addClass("theme-" + theme + "-dialog");		
+	},
+
 	setShortenURLs: function() {
 		Preferences.setShortenURLs(this.$.shortenURLs.checked)
 	},
@@ -340,8 +352,7 @@ enyo.kind({
 			this.currentTheme = inEvent.selected.value
 			Preferences.setTheme(inEvent.selected.value)
 			this.$.themePickerHeader.content = inEvent.selected.content
-			//TODO: Theme Handling
-			//$super()
+			this.doSetTheme();
 		}
 	},
 

@@ -19,7 +19,7 @@ enyo.kind({
 	
 	components: [
 		{layoutKind: "FittableRowsLayout", style: "height: 100%", components: [
-			{name: "FeedsList", kind: "enyo.Scroller", style: "background-color: #e6e3de; border-radius: 5px;", fit: true},
+			{name: "FeedsList", classes: "feeds-list", kind: "enyo.Scroller", style: "border-radius: 5px;", fit: true},
 			{name: "FeedsListButton", kind: "onyx.Button", content: "Done", classes: "onyx-affirmative", style: "width:50%; margin-top: 5px;", ontap: "closeDialog"},
 		]}
 	],
@@ -56,7 +56,7 @@ enyo.kind({
 		feedId: ""
 	},
 	
-	style: "padding: 5px 8px; color: black; border-color: #aaaaaa; border-style: solid; border-width: 0 0 1px 0",
+	style: "padding: 5px 8px; border-color: #aaaaaa; border-style: solid; border-width: 0 0 1px 0",
 	
 	components: [
 		{name: "notificationFeedCheckbox", kind: "onyx.Checkbox", onchange: "addRemoveFeed"},
