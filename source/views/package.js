@@ -8,7 +8,6 @@ enyo.depends(
 	"articleview.js",
 	"logindialog.js",
 	"notificationfeedsdialog.js",
-	"groupbox.js",
 	"preferencesview.js",
 	"helpview.js"
 );
