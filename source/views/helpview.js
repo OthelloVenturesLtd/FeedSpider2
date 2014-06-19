@@ -17,7 +17,7 @@ enyo.kind({
 			{tag: "span", content: "Help", style:"font-weight: bold; text-align: center", fit: true},
 			{kind: "onyx.Icon"}, //This is here to keep the header centered.
 		]},
-		{kind: "enyo.Scroller", fit: true, style: "background-color: #e6e3de; padding: 10px", components: [
+		{kind: "enyo.Scroller", fit: true, style: "padding: 10px", components: [
 			{tag: "div", content: "FeedSpider 2", style: "font-size: 24px; font-weight: bold"},
 			{tag: "div", content: "Version 0.1.0 by Othello Ventures Ltd."},
 			{tag: "br"},
@@ -37,7 +37,7 @@ enyo.kind({
 			]},
 			{tag: "br"},
 			{tag: "div", components: [
-				{tag: "div", content: "Reach us through"},
+				{tag: "div", content: "Reach us through:"},
 				{tag: "ul", components: [
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "http://twitter.com/feedspiderapp"}, content: "twitter" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "mailto:feedspider@feedspider.net"}, content: "email" }]},
