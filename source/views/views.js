@@ -73,7 +73,7 @@ enyo.kind({
 				this.handleFontSizeChanged()
 			}
 		}
-		console.log("Ping!")
+
 		inEvent.lastPage.activate()
 		this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
 	},
