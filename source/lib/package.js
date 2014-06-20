@@ -1,4 +1,5 @@
 enyo.depends(
 	"prototype.js",
-	"json2.js"
+	"json2.js",
+	"log.js"
 );
