@@ -25,10 +25,10 @@ enyo.kind({
 				{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/previous-article.png"},
 			]},
 			{style: "width: 16%; text-align:center; margin-left: 0px; margin-right: 0px;", components: [
-				{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/go-back-footer.png"},
+				{kind: "onyx.IconButton", ontap: "handleGoBack", src: "assets/go-back-footer.png"},
 			]},
 			{style: "width: 16%; text-align:center; margin-left: 0px; margin-right: 0px;", components: [
-				{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/read-footer-on.png"},
+				{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/read-footer.png"},
 			]},
 			{style: "width: 16%; text-align:center; margin-left: 0px; margin-right: 0px;", components: [
 				{kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/starred-footer.png"},
@@ -84,6 +84,10 @@ enyo.kind({
 		this.$.summary.removeClass("medium")
 		this.$.summary.removeClass("large")
 		this.$.summary.addClass(fontSize)
+	},
+
+	handleGoBack: function() {
+		this.doGoBack({lastPage: this.previousPage, scrollingIndex: this.scrollingIndex})
 	},
 
 //TODO PORT FROM HERE

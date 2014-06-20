@@ -3,14 +3,6 @@ enyo.kind({
 	kind: "FeedSpider2.BaseView",
 	fit: true,
 	
-	published: {
-		previousPage: ""
-	},
-	
-	events: {
-		onGoBack: ""
-	},
-	
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
@@ -57,6 +49,6 @@ enyo.kind({
 	],
 	
 	handleGoBack: function() {
-		this.doGoBack(this.previousPage)
+		this.doGoBack({lastPage: this.previousPage})
 	},
 })

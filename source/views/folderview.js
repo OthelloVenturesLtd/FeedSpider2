@@ -147,6 +147,6 @@ enyo.kind({
 	},
 	
 	handleGoBack: function() {
-		this.doGoBack(this.previousPage)
+		this.doGoBack({lastPage: this.previousPage})
 	},	
 });

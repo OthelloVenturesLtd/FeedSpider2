@@ -10,12 +10,12 @@ enyo.kind({
 	arrangerKind: "CardSlideInArranger",
 
 	components: [		
-		{name: "main", kind: "FeedSpider2.MainView", onSwitchPanels: "switchPanels"},
-		{name: "folder", kind: "FeedSpider2.FolderView", onSwitchPanels: "switchPanels", onGoBack: "closePanel"},
-		{name: "feed", kind: "FeedSpider2.FeedView", onSwitchPanels: "switchPanels", onGoBack: "closePanel"},
-		{name: "article", kind: "FeedSpider2.ArticleView", onSwitchPanels: "switchPanels", onGoBack: "closePanel"},
-		{name: "preferences", kind: "FeedSpider2.PreferencesView", onGoBack: "closePreferences", onSetTheme: "handleThemeChanged"},
-		{name: "help", kind: "FeedSpider2.HelpView", onGoBack: "closePanel"}
+		{name: "main", kind: "FeedSpider2.MainView"},
+		{name: "folder", kind: "FeedSpider2.FolderView"},
+		{name: "feed", kind: "FeedSpider2.FeedView"},
+		{name: "article", kind: "FeedSpider2.ArticleView"},
+		{name: "preferences", kind: "FeedSpider2.PreferencesView", onSetTheme: "handleThemeChanged"},
+		{name: "help", kind: "FeedSpider2.HelpView"}
 	],
 	
 	create: function(){
@@ -48,39 +48,34 @@ enyo.kind({
 				this.$.article.activate()
 				this.setIndex(this.selectPanelByName("article"))
 				break;
+			case "preferences":
+				this.$.preferences.setSources(this.sources)
+				this.$.preferences.setPreviousPage(inEvent.previousPage)
+				this.setIndex(this.selectPanelByName("preferences"))
+				break;
+			case "help":
+				this.$.help.setPreviousPage(inEvent.previousPage)
+				this.setIndex(this.selectPanelByName("help"))
+				break;
 		}
-	},
-	
-	openPreferences: function(inSender, inEvent) {
-		this.$.preferences.setSources(this.sources)
-		this.$.preferences.setPreviousPage(inEvent)
-		this.setIndex(this.selectPanelByName("preferences"))
-	},
-	
-	openHelp: function(inSender, inEvent) {
-		this.$.help.setPreviousPage(inEvent)
-		this.setIndex(this.selectPanelByName("help"))
-	},
-	
-	closePreferences: function(inSender, inEvent) {
-		//TODO: Handle Changes
-		if (inEvent.changes.themeChanged)
-		{
-			this.handleThemeChanged()
-		}
-		
-		if (inEvent.changes.fontSizeChanged)
-		{
-			this.handleFontSizeChanged()
-		}
-		
-		this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
 	},
 	
 	closePanel: function(inSender, inEvent) {
-		//TODO: Consider refactoring this to handle an object like closePreferences
-		inEvent.activate()
-		this.setIndex(this.selectPanelByName(inEvent.name))
+		if(inSender.name === "preferences")
+		{
+			if (inEvent.changes.themeChanged)
+			{
+				this.handleThemeChanged()
+			}
+		
+			if (inEvent.changes.fontSizeChanged)
+			{
+				this.handleFontSizeChanged()
+			}
+		}
+		console.log("Ping!")
+		inEvent.lastPage.activate()
+		this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
 	},
 	
 	handleThemeChanged: function() {

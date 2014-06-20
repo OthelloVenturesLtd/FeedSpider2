@@ -9,9 +9,7 @@ enyo.kind({
 
 	events: {
 		onSwitchPanels: "switchPanels",
-		onOpenPreferences: "openPreferences",
-		onOpenHelp: "openHelp",
-		onGoBack: ""
+		onGoBack: "closePanel"
 	},
 	
 	handlers: {
@@ -19,11 +17,11 @@ enyo.kind({
 	},
 	
 	openPreferences: function() {
-		this.doOpenPreferences(this)
+		this.doSwitchPanels({target: "preferences", previousPage: this})
 	},
 	
 	openHelp: function() {
-		this.doOpenHelp(this)
+		this.doSwitchPanels({target: "help", previousPage: this})
 	},
 	
 	create: function() {
