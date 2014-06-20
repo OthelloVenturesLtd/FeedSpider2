@@ -52,7 +52,6 @@ enyo.kind({
 		this.$.author.setContent(this.article.author ? "by " + this.article.author : "")
 		this.$.summary.setContent(this.article.summary)
 		//this.articleContainer.highlight(this.controller.get("summary"))
-		this.setFontSize()
 
 		/*if(this.article.isRead) {
 			this.controller.get("read").addClassName("on")
@@ -79,12 +78,12 @@ enyo.kind({
 		//window.open("http://www.google.com")
 	},
 
-	setFontSize: function() {
+	setFontSize: function(fontSize) {
 		this.$.summary.removeClass("tiny")
 		this.$.summary.removeClass("small")
 		this.$.summary.removeClass("medium")
 		this.$.summary.removeClass("large")
-		this.$.summary.addClass(Preferences.fontSize())
+		this.$.summary.addClass(fontSize)
 	},
 
 //TODO PORT FROM HERE

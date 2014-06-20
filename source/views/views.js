@@ -21,6 +21,7 @@ enyo.kind({
 	create: function(){
 		this.inherited(arguments);
 		this.handleThemeChanged();
+		this.handleFontSizeChanged();
 	},
 	
 	switchPanels: function(inSender, inEvent) {
@@ -67,6 +68,12 @@ enyo.kind({
 		{
 			this.handleThemeChanged()
 		}
+		
+		if (inEvent.changes.fontSizeChanged)
+		{
+			this.handleFontSizeChanged()
+		}
+		
 		this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
 	},
 	
@@ -85,5 +92,10 @@ enyo.kind({
 		this.addClass("theme-" + theme);
 		
 		this.$.preferences.setDialogTheme(theme);
+	},
+	
+	handleFontSizeChanged: function() {
+		this.$.article.setFontSize(Preferences.fontSize());
 	}
+	
 });
