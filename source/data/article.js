@@ -11,6 +11,7 @@ enyo.kind({
 		onArticleTap: "",
 	},
 
+	//TODO: Make sure that the entire object is a tappable item
 	components: [
 		{name: "source", layoutKind: enyo.FittableRowsLayout, noStretch: true, ontap: "itemTapped", style: "", components: [
 			{name: "articleName", tag: "span", classes: "article-title", style: "padding-left: 10px; padding-top: 10px;"},
@@ -219,8 +220,7 @@ enyo.kind({
 	},
 
 	_setState: function(apiState, localProperty, localValue, success, failure, sticky) {
-		//TODO: Log class
-		//Log.debug("setting article state - " + apiState)
+		Log.debug("setting article state - " + apiState)
 
 		if(apiState.match(/Read/) && this.readLocked) {
 			Feeder.notify("Read state has been locked by the service")
@@ -230,7 +230,7 @@ enyo.kind({
 			this[localProperty] = localValue
 
 			var onComplete = function() {
-				//TODO: Event Handling
+				//TODO: Event Handling - this needs to be bubbled up and handled by the main window
 				//Mojo.Event.send(document, "Article" + apiState, {subscriptionId: this.subscriptionId})
 				success(true)
 			}.bind(this)

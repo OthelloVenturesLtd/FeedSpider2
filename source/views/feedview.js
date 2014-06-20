@@ -144,6 +144,8 @@ enyo.kind({
 
 //TODO: Port from here
 	articleTapped: function(inSender, inEvent) {
+		inEvent.index = this.subscription.items.indexOf(inEvent)
+		this.tappedIndex = inEvent.index
 		this.doSwitchPanels({target: "article", article: inEvent, scrollingIndex: 0, articleContainer: this.subscription, previousPage: this})
 		/*if(!event.item.load_more) {
 			event.item.index = event.index
