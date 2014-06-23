@@ -11,16 +11,16 @@ enyo.kind({
 	
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
-			{kind: "onyx.MenuDecorator", ontap: "openHelp", components: [
+			{kind: "onyx.MenuDecorator", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
-			    {kind: "onyx.Menu", components: [
-        			//{kind: "onyx.MenuItem", content: "Add Subscription"},
-        			//{name: "showHideFeedsMenuItem", kind: "onyx.MenuItem", ontap: "toggleFeeds"},
-        			//{classes: "onyx-menu-divider"},
-        			//{name: "preferencesMenuItem", kind: "onyx.MenuItem", ontap: "openPreferences", content: "Preferences"},
-        			//{content: "Help"},
-        			//{classes: "onyx-menu-divider"},
-        			{content: "Logout"},
+			    {kind: "onyx.Menu", floating: true, components: [
+        			{content: "Refresh", ontap: "triggerRefresh"},
+        			{name: "showHideFeedsMenuItem", ontap: "toggleFeeds"},
+        			{classes: "onyx-menu-divider"},
+        			{content: "Preferences", ontap: "openPreferences"},
+        			{content: "Help", ontap: "openHelp"},
+        			{classes: "onyx-menu-divider"},
+        			{content: "Logout", ontap: "handleLogout"},
     			]}
 			]},
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
@@ -38,19 +38,16 @@ enyo.kind({
     	this.inherited(arguments);
     	//this.setupSearch()
 	},
-	
-	rendered: function() {
-		this.inherited(arguments);
+
+	activate: function(changes) {
 		if (Preferences.hideReadFeeds()){
-			//this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
+			this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
 		}
 		else
 		{
-			//this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
+			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
 		}
-	},
-
-	activate: function(changes) {
+		
 		this.$.title.setContent(this.folder.title)
 		this.filterAndRefresh()
 		//this.listenForSearch()

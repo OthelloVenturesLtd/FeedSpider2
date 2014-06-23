@@ -24,14 +24,6 @@ enyo.kind({
 		this.doSwitchPanels({target: "help", previousPage: this})
 	},
 	
-	create: function() {
-		this.inherited(arguments);
-		
-		//TODO: Implement Theming		
-		//this.setTheme()
-    	//this.setLeftyClass()
-	},
-	
 	rendered: function() {
 		this.inherited(arguments);
 		
@@ -41,20 +33,52 @@ enyo.kind({
 			PalmSystem.setWindowOrientation(Preferences.allowLandscape() ? "free" : "up");
 		}
 	},
-
-	//TODO: BEGIN PORTING FROM HERE
-	setTheme: function() {
-		var body = this.controller.document.body
-
-		$w(body.className).each(function(className) {
-			if(className.startsWith("theme-")) {
-				body.removeClassName(className)
-			}
-		})
-
-		body.addClassName("theme-" + Preferences.getTheme())
+	
+	toggleFeeds: function() {
+		if (Preferences.hideReadFeeds()){
+			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
+			Preferences.setHideReadFeeds(false);
+          	//this.reload();
+          	this.filterAndRefresh();
+		}
+		else
+		{
+			this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
+			Preferences.setHideReadFeeds(true);
+          	//this.reload();
+          	this.filterAndRefresh();
+		}
 	},
 
+	toggleArticles: function() {
+		if (Preferences.hideReadFeeds()){
+			this.$.showHideArticlesMenuItem.setContent("Hide Read Articles")
+			Preferences.setHideReadArticles(false);
+          	//this.reload();
+          	this.filterAndRefresh();
+		}
+		else
+		{
+			this.$.showHideArticlesMenuItem.setContent("Show Read Articles")
+			Preferences.setHideReadArticles(true);
+          	//this.reload();
+          	this.filterAndRefresh();
+		}
+	},
+
+	addSubscription: function() {
+		//TODO: Implement
+	},
+	
+	handleLogout: function() {
+		//TODO: Implement
+	},
+		
+	triggerRefresh: function() {
+		//TODO: Implement
+	},
+
+	//TODO: BEGIN PORTING FROM HERE
   	refreshList: function(list, items) {
   	    for (var i = 0; i < items.length; i++) { 
     		if(i == items.length - 1)

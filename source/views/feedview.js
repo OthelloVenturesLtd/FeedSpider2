@@ -14,16 +14,16 @@ enyo.kind({
 	
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
-			{kind: "onyx.MenuDecorator", ontap: "openHelp", components: [
+			{kind: "onyx.MenuDecorator", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
-			    {kind: "onyx.Menu", components: [
-        			//{kind: "onyx.MenuItem", content: "Add Subscription"},
-        			//{name: "showHideFeedsMenuItem", kind: "onyx.MenuItem", ontap: "toggleFeeds"},
-        			//{classes: "onyx-menu-divider"},
-        			//{name: "preferencesMenuItem", kind: "onyx.MenuItem", ontap: "openPreferences", content: "Preferences"},
-        			//{content: "Help"},
-        			//{classes: "onyx-menu-divider"},
-        			{content: "Logout"},
+			    {kind: "onyx.Menu", floating: true, components: [
+        			{content: "Refresh", ontap: "triggerRefresh"},
+        			{name: "showHideArticlesMenuItem", ontap: "toggleArticles"},
+        			{classes: "onyx-menu-divider"},
+        			{content: "Preferences", ontap: "openPreferences"},
+        			{content: "Help", ontap: "openHelp"},
+        			{classes: "onyx-menu-divider"},
+        			{content: "Logout", ontap: "handleLogout"},
     			]}
 			]},
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
@@ -42,20 +42,17 @@ enyo.kind({
     	this.loaded = false;
     	this.reloading = false;
 	},
-	
-	rendered: function() {
-		this.inherited(arguments);
-		if (Preferences.hideReadFeeds()){
-			//this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
-		}
-		else
-		{
-			//this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
-		}
-	},
 
 	activate: function(changes_or_scroll) {
 		//$super(changes_or_scroll)
+		if (Preferences.hideReadArticles()){
+			this.$.showHideArticlesMenuItem.setContent("Show Read Articles")
+		}
+		else
+		{
+			this.$.showHideArticlesMenuItem.setContent("Hide Read Articles")
+		}
+
 		this.$.title.setContent(this.subscription.title)
 		this.subscription.reset()
 		this.findArticles()

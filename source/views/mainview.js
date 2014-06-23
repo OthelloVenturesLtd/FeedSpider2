@@ -6,15 +6,15 @@ enyo.kind({
 	
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
-			{kind: "onyx.MenuDecorator", ontap: "openPreferences", components: [
+			{kind: "onyx.MenuDecorator", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
-			    {kind: "onyx.Menu", components: [
-        			//{kind: "onyx.MenuItem", content: "Add Subscription"},
-        			//{name: "showHideFeedsMenuItem", kind: "onyx.MenuItem", ontap: "toggleFeeds"},
-        			//{classes: "onyx-menu-divider"},
-        			//{name: "preferencesMenuItem", kind: "onyx.MenuItem", ontap: "openPreferences", content: "Preferences"},
-        			//{content: "Help"},
-        			//{classes: "onyx-menu-divider"},
+			    {kind: "onyx.Menu", floating: true, components: [
+        			{kind: "onyx.MenuItem", content: "Add Subscription"},
+        			{name: "showHideFeedsMenuItem", kind: "onyx.MenuItem", ontap: "toggleFeeds"},
+        			{classes: "onyx-menu-divider"},
+        			{name: "preferencesMenuItem", kind: "onyx.MenuItem", ontap: "openPreferences", content: "Preferences"},
+        			{content: "Help"},
+        			{classes: "onyx-menu-divider"},
         			{content: "Logout"},
     			]}
 			]},
@@ -37,18 +37,19 @@ enyo.kind({
 	
 	rendered: function() {
 		this.inherited(arguments);
-		if (Preferences.hideReadFeeds()){
-			//this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
-		}
-		else
-		{
-			//this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
-		}
 		//this.$.LoginDialog.show();
 		this.checkCredentials();
 	},
 
 	activate: function(changes) {
+		if (Preferences.hideReadFeeds()){
+			this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
+		}
+		else
+		{
+			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
+		}
+		
 		this.filterAndRefresh()
 		//this.listenForSearch()
 	},
@@ -134,22 +135,6 @@ enyo.kind({
 	
 	switchPanels: function() {
 		this.doSwitchPanels(this)
-	},
-
-	toggleFeeds: function() {
-		if (Preferences.hideReadFeeds()){
-			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
-			Preferences.setHideReadFeeds(false);
-          	//this.reload();
-          	this.filterAndRefresh();
-		}
-		else
-		{
-			this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
-			Preferences.setHideReadFeeds(true);
-          	//this.reload();
-          	this.filterAndRefresh();
-		}
 	},
 	
 	sourceTapped: function(inSender, inEvent) {
