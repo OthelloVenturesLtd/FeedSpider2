@@ -17,13 +17,13 @@ enyo.kind({
 			{kind: "onyx.MenuDecorator", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
 			    {kind: "onyx.Menu", floating: true, components: [
-        			{content: "Refresh", ontap: "triggerRefresh"},
-        			{name: "showHideArticlesMenuItem", ontap: "toggleArticles"},
+        			{content: "Refresh", onSelect: "triggerRefresh"},
+        			{name: "showHideArticlesMenuItem", onSelect: "toggleArticles"},
         			{classes: "onyx-menu-divider"},
-        			{content: "Preferences", ontap: "openPreferences"},
-        			{content: "Help", ontap: "openHelp"},
+        			{content: "Preferences", onSelect: "openPreferences"},
+        			{content: "Help", onSelect: "openHelp"},
         			{classes: "onyx-menu-divider"},
-        			{content: "Logout", ontap: "handleLogout"},
+        			{content: "Logout", onSelect: "handleLogout"},
     			]}
 			]},
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},

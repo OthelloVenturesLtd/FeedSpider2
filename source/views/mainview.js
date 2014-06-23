@@ -9,13 +9,13 @@ enyo.kind({
 			{kind: "onyx.MenuDecorator", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
 			    {kind: "onyx.Menu", floating: true, components: [
-        			{kind: "onyx.MenuItem", content: "Add Subscription"},
-        			{name: "showHideFeedsMenuItem", kind: "onyx.MenuItem", ontap: "toggleFeeds"},
+        			{content: "Add Subscription", onSelect: "addSubscription"},
+        			{name: "showHideFeedsMenuItem", onSelect: "toggleFeeds"},
         			{classes: "onyx-menu-divider"},
-        			{name: "preferencesMenuItem", kind: "onyx.MenuItem", ontap: "openPreferences", content: "Preferences"},
-        			{content: "Help"},
+        			{content: "Preferences", onSelect: "openPreferences"},
+        			{content: "Help", onSelect: "openHelp"},
         			{classes: "onyx-menu-divider"},
-        			{content: "Logout"},
+        			{content: "Logout", onSelect: "handleLogout"},
     			]}
 			]},
 			{tag: "span", content: "FeedSpider 2", style:"font-weight: bold; text-align: center", fit: true},
