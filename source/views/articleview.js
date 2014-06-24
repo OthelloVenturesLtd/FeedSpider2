@@ -34,7 +34,12 @@ enyo.kind({
 				{name: "starredButton", kind: "onyx.IconButton", ontap: "setStarred", src: "assets/starred-footer.png"},
 			]},
 			{style: "width: 16%; text-align:center; margin-left: 0px; margin-right: 0px;", components: [
-				{name: "sendToButton", kind: "onyx.IconButton", ontap: "helloWorldTap", src: "assets/sendto-footer.png"},
+				{kind: "onyx.MenuDecorator", components: [
+					{name: "sendToButton", kind: "onyx.IconButton", src: "assets/sendto-footer.png"},
+					{name: "sharingMenu", kind: "onyx.Menu", floating: true, components: [
+        				//{name: "configureItem", content: "Configure...", onTap: "configureSharing"},
+    				]}
+				]},
 			]},
 			{style: "width: 18%; text-align:center; margin-left: 0px; margin-right: 0px;", components: [
 				{name: "nextButton", kind: "onyx.IconButton", ontap: "nextArticle", src: "assets/next-article.png"},
@@ -60,6 +65,8 @@ enyo.kind({
 	},
 
 	activate: function(changes) {
+		var self = this
+		
 		this.$.title.setContent(this.article.title)
 		this.$.subscription.setContent(this.articleContainer.api.titleFor(this.article.subscriptionId))
 		this.$.author.setContent(this.article.author ? "by " + this.article.author : "")
@@ -72,6 +79,10 @@ enyo.kind({
 		if(!this.article.isRead && !this.article.keepUnread) {
 			this.toggleState(this.$.readButton, "Read")
 		}
+		sharingMenu = Sharing.getPopupFor(this)
+		sharingMenu.each(function(item){
+			item.setContainer(self.$.sharingMenu)
+		})
 	},
 
 	setFontSize: function(fontSize) {
