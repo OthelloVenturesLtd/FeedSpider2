@@ -9,7 +9,7 @@ enyo.kind({
 	},
 	
 	components:[
-		{kind: "enyo.Scroller", fit: true, components: [
+		{kind: "enyo.Scroller", fit: true, ondragfinish: "dragSwitchArticle", components: [
 			{name: "articleHeader", kind: "FittableColumns", classes: "article-header", components: [
 				{fit: true, components: [
 					{name: "title", classes: "article-title", style: "font-weight: bold;"},
@@ -44,6 +44,19 @@ enyo.kind({
 	
 	rendered: function() {
 		this.inherited(arguments);
+	},
+	
+	dragSwitchArticle: function(inSender, inEvent) {
+		if(inEvent.horizontal) {
+			if (inEvent.xDirection == -1)
+			{
+				this.nextArticle()
+			}
+			if (inEvent.xDirection == 1)
+			{
+				this.previousArticle()
+			}
+		}
 	},
 
 	activate: function(changes) {
