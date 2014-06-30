@@ -302,7 +302,12 @@ var BQApi = Class.create({
       requestHeaders: this._requestHeaders(),
       onFailure: failure,
       onSuccess: function(response) {
-        var articles = JSON2.parse(response.responseText)
+        if(response.responseJSON) {
+        	var	articles = response.responseJSON
+        }
+        else {
+        	var articles = JSON2.parse(response.responseText)
+        }
         success(articles.items, articles.id, articles.continuation)
       }
     })

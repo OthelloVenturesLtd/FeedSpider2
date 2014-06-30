@@ -416,7 +416,12 @@ var TTRSSApi = Class.create({
 		method: "post",
 		postBody: JSON.stringify(parameters),
 		onSuccess: function(response){
-			var articles = JSON2.parse(response.responseText)
+	        if(response.responseJSON) {
+				var	articles = response.responseJSON
+			}
+			else {
+				var articles = JSON2.parse(response.responseText)
+			}
 
 			//Do post-processing to conform articles to FeedSpider spec
 			articles.content.each(function(article) {

@@ -335,7 +335,12 @@ var OCApi = Class.create({
 		parameters: parameters,
 		requestHeaders: this._requestHeaders(),
 		onSuccess: function(response){
-			var articles = JSON2.parse(response.responseText)
+	        if(response.responseJSON) {
+				var	articles = response.responseJSON
+			}
+			else {
+				var articles = JSON2.parse(response.responseText)
+			}
 			var lastArticleId = 0
 			OCApi.NEWESTITEMID = 0
 			
