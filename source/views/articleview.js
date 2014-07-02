@@ -8,6 +8,10 @@ enyo.kind({
 		articleContainer: ""
 	},
 	
+	handlers: {
+        onSelect: "sendTo"
+    },
+	
 	components:[
 		{kind: "enyo.Scroller", fit: true, ondragfinish: "dragSwitchArticle", components: [
 			{name: "articleHeader", kind: "FittableColumns", classes: "article-header", components: [
@@ -170,29 +174,60 @@ enyo.kind({
 		}
 	},
 
-//TODO PORT FROM HERE
+	openInBrowser: function() {
+		if(this.article.url) {
+			if (enyo.platform.webos)
+			{
+				var request = new enyo.ServiceRequest({
+					service: "palm://com.palm.applicationManager",
+					method: "open"
+				});
+				request.go({id: "com.palm.app.browser", params: { target: this.article.url } }); //any params would go in here
+			}
+			else if (enyo.platform.firefoxOS)
+			{
+				var openURL = new MozActivity({
+					name: "view",
+					data: {
+						type: "url", // Possibly text/html in future versions
+						url: this.article.url
+					}
+				});
+			}
+			else if (enyo.platform.ie || enyo.platform.safari || enyo.platform.chrome || enyo.platform.firefox)
+			{
+				var ref = window.open(this.article.url, "_blank");
+			}
+			else
+			{
+				var ref = window.open(this.article.url, "_system", "location=yes");	
+			}
+		}
+	},
 
-	sendTo: function(event) {
-		this.controller.popupSubmenu({
-			placeNear: this.controller.get("sendto"),
-			items: Sharing.getPopupFor(this.article),
-			onChoose: Sharing.handleSelection.bind(Sharing, this.article, this.controller)
+	sendTo: function(inSender, inEvent) {
+		var self = this
+				
+		if (inEvent.originator.command == "configure")
+		{
+			//TODO: Port Configuration dialog
+			//case "configure":           controller.stageController.pushScene("configure-sharing", Sharing.items)
+		}
+		else
+		{
+			Sharing.handleSelection(this.article, inEvent.originator.command)
+		}
+		
+		//TODO: Fix
+		//Refresh Sharing Menu
+		this.$.sharingMenu.destroyComponents()
+		sharingMenu = Sharing.getPopupFor(this)
+		sharingMenu.each(function(item){
+			item.setContainer(self.$.sharingMenu)
 		})
 	},
 
-	openInBrowser: function() {
-		if(this.article.url) {
-			this.controller.serviceRequest("palm://com.palm.applicationManager", {
-				method: "open",
-				parameters: {
-					id: "com.palm.app.browser",
-					params: {
-						target: this.article.url
-					}
-				}
-			})
-		}
-	},
+//TODO PORT FROM HERE
 
 	loadingMoreArticles: function(arrow) {
 		this.controller.get(arrow).addClassName("working")
