@@ -42,7 +42,7 @@ var Api = Class.create({
 	else
 	{
 		// No supported service to log into
-		failure
+		failure()
 	}
   },
   

@@ -3,6 +3,7 @@
 	For more complex applications, you might choose to separate these kind definitions 
 	into multiple files under this folder.
 */
+//TODO: Handle oauth provider logouts on "logout" capture the oauth provider used in the onpagechanged method of the oauth iframe
 enyo.kind({
 	name: "FeedSpider2.BasePanels",
 	kind: "Panels",

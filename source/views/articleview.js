@@ -218,7 +218,6 @@ enyo.kind({
 			Sharing.handleSelection(this.article, inEvent.originator.command)
 		}
 		
-		//TODO: Fix
 		//Refresh Sharing Menu
 		this.$.sharingMenu.destroyComponents()
 		sharingMenu = Sharing.getPopupFor(this)

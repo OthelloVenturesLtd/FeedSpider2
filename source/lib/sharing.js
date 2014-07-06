@@ -89,7 +89,6 @@ var Sharing = {
         item = Object.clone(item)
 
         if(item.command) {
-          //TODO: FIX!!
           if(article.articleContainer.api.supportsShared() == true && item.command == "share-with-google") {
 			if(item.command == "share-with-google" && article.isShared) {
 				item.command = "unshare-with-google"

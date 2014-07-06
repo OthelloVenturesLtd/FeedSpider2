@@ -53,16 +53,16 @@ var Credentials = Class.create({
   },
   
   clear: function() {
-    this.removeCookie("email")
-    this.removeCookie("password")
-    this.removeCookie("server")
-    this.removeCookie("service")
-    this.removeCookie("id")
-    this.removeCookie("accessToken")
-    this.removeCookie("refreshToken")
-    this.removeCookie("tokenExpiry")
-    this.removeCookie("tokenType")
-    this.removeCookie("plan")
+    this.clearCookie("email")
+    this.clearCookie("password")
+    this.clearCookie("server")
+    this.clearCookie("service")
+    this.clearCookie("id")
+    this.clearCookie("accessToken")
+    this.clearCookie("refreshToken")
+    this.clearCookie("tokenExpiry")
+    this.clearCookie("tokenType")
+    this.clearCookie("plan")
   },
 
   emailCookie: function() {

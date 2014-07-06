@@ -7,7 +7,7 @@ enyo.kind({
 	centered: true,
 	scrim: true,
 	
-	style: "padding-top: 10px; padding-left: 20px; padding-right: 20px;  padding-bottom: 20px; width: 40%;",
+	style: "padding-top: 10px; padding-left: 20px; padding-right: 20px;  padding-bottom: 20px; width: 80%;",
 	
 	events: {
 		onLoginSuccess: "",	
@@ -53,6 +53,10 @@ enyo.kind({
 		{name: "loginSpinner", style: "text-align: center; display: none", components: [
 			{kind: "onyx.Spinner", style: "background: url('assets/login-spinner.gif') no-repeat 0 0;width: 132px; height: 132px"},
 			{tag: "p", content: "Logging In...", style: "text-align:center; font-weight: bold; font-size: 20px"},
+		]},
+		{name: "oAuthBrowserWrapper", kind: "enyo.FittableRows", style: "width: 100%; text-align: left; display: none", components: [
+			{name: "backButton", kind: "onyx.IconButton", style: "margin-bottom: 5px;", ontap: "browserGoBack", src: "assets/go-back.png"},
+			{name: "oAuthBrowser", kind: "FeedSpider2.OAuthIFrame", style: "height: 300px; width: 100%;", onOAuthSuccess: "oasuccess", onCodeGot: "codegot", onOAuthFailure: "oafailure"}
 		]}
 	],
 	
@@ -127,21 +131,68 @@ enyo.kind({
 		
 		// Hide the window and put up the spinner
 		this.$.loginWindow.hide();
-		this.$.loginSpinner.show();
+		if (this.credentials.service == "feedly" || this.credentials.service == "aol")
+		{
+			this.$.oAuthBrowserWrapper.show();
+		}
+		else
+		{
+			this.$.loginSpinner.show();
+		}
 		this.render();
 		
 		// Attempt login
     	this.api = new Api();
-    	this.api.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this));
+    	this.api.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this), this);
 	},
 	
-	loginSuccess: function(){
+	codegot: function(inSender, inEvent) {
+		this.$.oAuthBrowserWrapper.hide();
+		this.$.loginSpinner.show();
+		this.render();
+	},
+	
+	oasuccess: function(inSender, inEvent) {
+		//Set up the credentials object
+		this.credentials.email = false;
+		this.credentials.password = false;
+		this.credentials.id = inEvent.id;
+		this.credentials.refreshToken = inEvent.refresh_token;
+		this.credentials.accessToken = inEvent.access_token;
+		this.credentials.tokenType = inEvent.token_type;
+		this.credentials.plan = inEvent.plan;
+		
+		var expiryDate = new Date();
+		expiryDate.setSeconds(expiryDate.getSeconds() + inEvent.expires_in);
+		this.credentials.tokenExpiry = expiryDate.getTime();
+		
+		this.api.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this), this);
+	},
+	
+	browserGoBack: function(inSender, inEvent)
+	{	
+		var self = this;
+		
+		canGoBack = this.$.oAuthBrowser.eventNode.getCanGoBack()
+		
+		canGoBack.onsuccess = function(){
+			if (this.result) {
+				self.$.oAuthBrowser.eventNode.goBack()
+			}
+			else {
+				self.$.oAuthBrowserWrapper.hide();
+				self.$.loginWindow.show();
+			}
+		}
+	},
+	
+	loginSuccess: function() {
 		//On success, bubble up a success event, and pass the primed API
 		this.credentials.save();
 		this.doLoginSuccess(this.api);
 	},
 	
-	loginFailure: function(){
+	loginFailure: function() {
 		//On failure, populate the fields
 		for (var i = 0; i < this.$.servicePicker.controls.length; i++) {
         	if (this.$.servicePicker.controls[i].value === this.credentials.service) {
@@ -159,6 +210,7 @@ enyo.kind({
 		}
 		
 		//Next, hide the spinner and clear the window
+		this.$.oAuthBrowserWrapper.hide();
 		this.$.loginSpinner.hide();
 		this.$.errorMessage.show();
 		this.$.loginWindow.show();

@@ -31,12 +31,13 @@ var FeedlyApi = Class.create({
 			accessTokenMethod:'POST', // Optional - 'GET' by default if not specified
 			client_id: FeedlyApi.CLIENT_ID,
 			client_secret: FeedlyApi.CLIENT_SECRET,
-			redirect_uri:'urn:ietf:wg:oauth:2.0:oob', // Optional - 'oob' by default if not specified
+			redirect_uri: 'http://localhost', //'urn:ietf:wg:oauth:2.0:oob', // Optional - 'oob' by default if not specified
         	response_type:'code', // now only support code
         	scope: ['https://cloud.feedly.com/subscriptions'],
         	service: credentials.service       	
 	 	};
-	 controller.stageController.pushScene('oauth',oauthConfig);
+	 	
+	 	controller.$.oAuthBrowser.beginOAuth(oauthConfig)
 	 }
   },
 
