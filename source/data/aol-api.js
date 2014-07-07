@@ -31,12 +31,13 @@ var AolApi = Class.create({
 			accessTokenMethod:'POST', // Optional - 'GET' by default if not specified
 			client_id: AolApi.CLIENT_ID,
 			client_secret: AolApi.CLIENT_SECRET,
-			redirect_uri:'urn:ietf:wg:oauth:2.0:oob', // Optional - 'oob' by default if not specified
+			redirect_uri:'http://localhost', // Optional - 'oob' by default if not specified
 			response_type:'code', // now only support code
 			scope: ['reader'], //for example, this is instagram scope
-			service: credentials.service
+			service: credentials.service,
+			additionalParameters: "&supportedIdType=facebook,google,twitter"
 		 };
-		 controller.stageController.pushScene('oauth',oauthConfig);
+		 controller.$.oAuthBrowser.beginOAuth(oauthConfig)
 	 }
   },
 
@@ -648,5 +649,5 @@ var AolApi = Class.create({
 
 AolApi.BASE_URL = "https://reader.aol.com/reader/api/0/"
 AolApi.AUTH_URL = "https://api.screenname.aol.com/auth/"
-AolApi.CLIENT_ID = "fe1CgOIzMHHjg_5E";
-AolApi.CLIENT_SECRET = "2fHTh5uZTiUOsy-gs_l3";
+AolApi.CLIENT_ID = "fe1Ppj5QlsIQJ0KB";
+AolApi.CLIENT_SECRET = "zYM0uCDKw75PZbzxp4qY";
