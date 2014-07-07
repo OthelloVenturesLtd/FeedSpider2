@@ -37,13 +37,13 @@ enyo.kind({
 			]},
 			{name: "passwordGroup", components: [
 				{kind: "onyx.InputDecorator", style: "width: 80%", components: [
-					{name: "passwordInput",  style: "width: 100%", kind: "onyx.Input", placeholder: "Password", type: "password", onfocus: "checkFocus", onblur: "checkBlur"}
+					{name: "passwordInput",  style: "width: 100%; color: white", kind: "onyx.Input", placeholder: "Password", type: "password", onfocus: "checkFocus", onblur: "checkBlur"}
 				]},
 				{tag: "div", style: "margin: 10px"},
 			]},
 			{name: "serverURLGroup", components: [
 				{kind: "onyx.InputDecorator", style: "width: 80%", components: [
-					{name: "serverURLInput",  style: "width: 100%", kind: "onyx.Input", placeholder: "Server URL", type: "url", oninput: "checkKeys", onfocus: "checkFocus", onblur: "checkBlur"}
+					{name: "serverURLInput",  style: "width: 100%; color: white", kind: "onyx.Input", placeholder: "Server URL", type: "url", oninput: "checkKeys", onfocus: "checkFocus", onblur: "checkBlur"}
 				]},
 				{tag: "div", style: "margin: 10px"},
 			]},
@@ -167,6 +167,10 @@ enyo.kind({
 		this.credentials.tokenExpiry = expiryDate.getTime();
 		
 		this.api.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this), this);
+	},
+	
+	oafailure: function(inSender, inEvent) {
+		this.loginFailure();
 	},
 	
 	browserGoBack: function(inSender, inEvent)
