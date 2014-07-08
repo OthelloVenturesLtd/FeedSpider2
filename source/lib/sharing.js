@@ -89,10 +89,10 @@ var Sharing = {
         item = Object.clone(item)
 
         if(item.command) {
-          if(article.articleContainer.api.supportsShared() == true && item.command == "share-with-google") {
+          if(article.api.supportsShared() == true && item.command == "share-with-google") {
 			if(item.command == "share-with-google" && article.isShared) {
 				item.command = "unshare-with-google"
-				item.content = "Unshare"
+				item.label = "Unshare"
 			}
           	
           	addItem(item)

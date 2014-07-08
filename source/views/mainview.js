@@ -37,8 +37,8 @@ enyo.kind({
 	
 	rendered: function() {
 		this.inherited(arguments);
-		this.$.LoginDialog.show();
-		//this.checkCredentials();
+		//this.$.LoginDialog.show();
+		this.checkCredentials();
 	},
 
 	activate: function(changes) {
@@ -56,7 +56,7 @@ enyo.kind({
 	
 	loginSuccess: function(inSender, inEvent) {
     	this.$.LoginDialog.hide();
-    	this.api = inEvent; // Put this back when reinstating the login window.
+    	//this.api = inEvent; // Put this back when reinstating the login window.
     	this.sources = new AllSources(this.api);
     	this.parent.sources = this.sources
     	this.loaded = false;

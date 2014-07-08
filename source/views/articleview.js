@@ -83,7 +83,7 @@ enyo.kind({
 		if(!this.article.isRead && !this.article.keepUnread) {
 			this.toggleState(this.$.readButton, "Read")
 		}
-		sharingMenu = Sharing.getPopupFor(this)
+		sharingMenu = Sharing.getPopupFor(this.article)
 		sharingMenu.each(function(item){
 			item.setContainer(self.$.sharingMenu)
 		})
@@ -219,11 +219,12 @@ enyo.kind({
 		}
 		
 		//Refresh Sharing Menu
-		this.$.sharingMenu.destroyComponents()
-		sharingMenu = Sharing.getPopupFor(this)
+		this.$.sharingMenu = new onyx.Menu();
+		sharingMenu = Sharing.getPopupFor(this.article)
 		sharingMenu.each(function(item){
 			item.setContainer(self.$.sharingMenu)
 		})
+		this.$.sharingMenu.render()
 	},
 
 //TODO PORT FROM HERE
