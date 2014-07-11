@@ -109,7 +109,10 @@ var InoApi = Class.create({
   },
 
   searchSubscriptions: function(query, success, failure) {
-    var self = this
+    //Not supported by InoReader API. Auto-Fail
+    failure()
+    
+    /*var self = this
 
     new Ajax.Request(InoApi.BASE_URL + "feed-finder", {
       method: "get",
@@ -120,7 +123,7 @@ var InoApi = Class.create({
         var subscriptions = response.responseText.evalJSON().items
         success(subscriptions)
       }
-    })
+    })*/
   },
 
   addSubscription: function(url, success, failure) {
