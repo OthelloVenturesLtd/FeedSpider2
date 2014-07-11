@@ -79,8 +79,7 @@ enyo.kind({
 			}
 			else
 			{
-				//TODO: Implement Notifications. Phonegap?
-				//Feeder.notify($L("Manual Sort Not Available"))
+				Feeder.notify($L("Manual Sort Not Available"))
 				Preferences.setManualFeedSort(false)
 				this.sortAlphabetically(success, failure)
 			}

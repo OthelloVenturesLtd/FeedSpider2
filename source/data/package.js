@@ -1,4 +1,5 @@
 enyo.depends(
+	"feeder.js",
 	"countable.js",
 	"article-container.js",
 	"subscription-container.js",

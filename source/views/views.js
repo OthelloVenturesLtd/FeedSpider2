@@ -3,7 +3,34 @@
 	For more complex applications, you might choose to separate these kind definitions 
 	into multiple files under this folder.
 */
-//TODO: Handle oauth provider logouts on "logout" capture the oauth provider used in the onpagechanged method of the oauth iframe
+enyo.kind({
+	name: "FeedSpider2.Home",
+	kind: "FittableRows",
+	
+	handlers: {
+		onPopupMessage: "handlePopupMessage"
+	},
+	
+	components: [
+		{kind: "FeedSpider2.BasePanels", fit: true},
+		{kind: "Notification", name: "notif"}
+	],
+	
+	rendered: function(){
+		this.inherited(arguments);
+	},
+	
+	handlePopupMessage: function(inSender, inEvent) {
+		this.$.notif.sendNotification({
+			title: inEvent.title,
+			theme: "notification.Firefox",
+			stay: false,
+			duration: 1
+		})
+		return true
+	}
+});
+
 enyo.kind({
 	name: "FeedSpider2.BasePanels",
 	kind: "Panels",

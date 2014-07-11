@@ -144,15 +144,13 @@ var Sharing = {
 
   shareWithGoogle: function(article) {
     article.turnShareOn(function() {
-      console.log("Article shared")
-      //Feeder.notify($L("Article shared"))
+      Feeder.notify($L("Article shared"))
     })
   },
 
   unshareWithGoogle: function(article) {
     article.turnShareOff(function() {
-      //Feeder.notify($L("Article unshared"))
-      console.log("Article unshared")
+      Feeder.notify($L("Article unshared"))
     })
   },
 

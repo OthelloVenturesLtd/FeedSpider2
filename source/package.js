@@ -6,6 +6,8 @@ enyo.depends(
 	//"Theme.less",	// uncomment this line, and follow the steps described in Theme.less
 	// webos-lib webOS compatibility library
 	"$lib/webos-lib",
+	// Notification theme library
+	"$lib/NotificationTheme",
 	// CSS/LESS style files
 	"style",
 	// Libraries
