@@ -239,7 +239,6 @@ enyo.kind({
 		this.$.loginSpinner.hide();
 		this.$.errorMessage.show();
 		this.$.loginWindow.show();
-		this.render();
 	},
 
 	checkFocus: function(source, event) {
