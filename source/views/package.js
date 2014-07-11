@@ -10,5 +10,6 @@ enyo.depends(
 	"logindialog.js",
 	"notificationfeedsdialog.js",
 	"preferencesview.js",
-	"helpview.js"
+	"helpview.js",
+	"addview.js"
 );

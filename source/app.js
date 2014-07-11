@@ -7,7 +7,11 @@
 enyo.kind({
 	name: "FeedSpider2.Application",
 	kind: "enyo.Application",
-	view: "FeedSpider2.BasePanels"
+	view: "FeedSpider2.Home",
+	
+	handlePopupMessage: function(message) {
+		this.waterfallDown("onPopupMessage", message, this);
+	}
 });
 
 enyo.ready(function () {
