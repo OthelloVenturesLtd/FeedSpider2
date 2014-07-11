@@ -67,6 +67,13 @@ enyo.kind({
 		this.credentials = new Credentials();
 	},
 	
+	rendered: function() {
+		this.inherited(arguments);
+		if(((this.credentials.service !== "ttrss" || this.credentials.service !== "oc") && this.credentials.email && this.credentials.password) || ((this.credentials.service === "ttrss" || this.credentials.service === "oc") && this.credentials.email && this.credentials.password && this.credentials.server) || this.credentials.service === "feedly" || this.credentials.service === "aol" ) {
+			this.tryLoginWithSavedCredentials();
+		}        
+	},
+	
 	setService: function() {
 		//This method is called like this since it is the onchange handler for the servicePicker, so is initially called before
 		//the groups are created - so we need to ignore it on the first run (ie. the groups don't yet exist)
@@ -139,7 +146,21 @@ enyo.kind({
 		{
 			this.$.loginSpinner.show();
 		}
-		this.render();
+		
+		// Attempt login
+    	this.api = new Api();
+    	this.api.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this), this);
+	},
+
+	tryLoginWithSavedCredentials: function() {
+		//Clear Fields
+		this.$.usernameInput.setValue("");
+		this.$.passwordInput.setValue("");
+		this.$.serverURLInput.setValue("");
+		
+		// Hide the window and put up the spinner
+		this.$.loginWindow.hide();
+		this.$.loginSpinner.show();
 		
 		// Attempt login
     	this.api = new Api();

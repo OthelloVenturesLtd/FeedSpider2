@@ -20,34 +20,34 @@ var Credentials = Class.create({
   },
 
   save: function() {
-    if (this.email !== undefined || this.email !== null){
+    if (this.email !== undefined && this.email !== null){
     	this.setCookie("email", this.email)
     }
-    if (this.password !== undefined || this.password !== null){
+    if (this.password !== undefined && this.password !== null){
     	this.setCookie("password", this.password)
     }
-    if (this.server !== undefined || this.server !== null){
+    if (this.server !== undefined && this.server !== null){
      	this.setCookie("server", this.server)
     }    
-    if (this.service !== undefined || this.service !== null){
+    if (this.service !== undefined && this.service !== null){
     	this.setCookie("service", this.service)
     }
-    if (this.id !== undefined || this.id !== null){
+    if (this.id !== undefined && this.id !== null){
 	   	this.setCookie("id", this.id)
     }
-    if (this.accessToken !== undefined || this.accessToken !== null){
+    if (this.accessToken !== undefined && this.accessToken !== null){
 	    this.setCookie("accessToken", this.accessToken)
     }
-    if (this.refreshToken !== undefined || this.refreshToken !== null){    
+    if (this.refreshToken !== undefined && this.refreshToken !== null){    
     	this.setCookie("refreshToken", this.refreshToken)
     }
-    if (this.tokenExpiry !== undefined || this.tokenExpiry !== null){
+    if (this.tokenExpiry !== undefined && this.tokenExpiry !== null){
 	    this.setCookie("tokenExpiry", this.tokenExpiry)
     }
-    if (this.tokenType !== undefined || this.tokenType !== null){
+    if (this.tokenType !== undefined && this.tokenType !== null){
     	this.setCookie("tokenType", this.tokenType)
     }
-    if (this.plan !== undefined || this.plan !== null){
+    if (this.plan !== undefined && this.plan !== null){
     	this.setCookie("plan", this.plan)
     }
   },
@@ -112,12 +112,12 @@ var Credentials = Class.create({
     }
     else
     {
-    	return localStorage.getItem(name)
+    	return JSON.parse(localStorage.getItem(name))
     }
   },
   
   setCookie: function(name, value) {
-    localStorage.setItem(name, value)
+    localStorage.setItem(name, JSON.stringify(value))
   },
   
   clearCookie: function(name) {
