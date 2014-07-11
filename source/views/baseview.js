@@ -32,6 +32,13 @@ enyo.kind({
 		if (window.PalmSystem) {
 			PalmSystem.setWindowOrientation(Preferences.allowLandscape() ? "free" : "up");
 		}
+		//TODO: Figure out how to handle changing orientation on the fly. Currently requires a relaunch of the app.
+		if (enyo.platform.firefoxOS) {
+			if(Preferences.allowLandscape())
+			{
+				result = screen.mozUnlockOrientation();
+			}
+		}
 	},
 	
 	toggleFeeds: function() {
