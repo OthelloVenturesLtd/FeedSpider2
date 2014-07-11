@@ -83,10 +83,13 @@ enyo.kind({
 		if(!this.article.isRead && !this.article.keepUnread) {
 			this.toggleState(this.$.readButton, "Read")
 		}
-		sharingMenu = Sharing.getPopupFor(this.article)
-		sharingMenu.each(function(item){
-			item.setContainer(self.$.sharingMenu)
-		})
+		if (enyo.platform.webos || enyo.platform.firefoxOS)
+		{
+			sharingMenu = Sharing.getPopupFor(this.article)
+			sharingMenu.each(function(item){
+				item.setContainer(self.$.sharingMenu)
+			})
+		}
 	},
 
 	setFontSize: function(fontSize) {

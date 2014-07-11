@@ -2,7 +2,6 @@ var TorApi = Class.create({
   
   login: function(credentials, success, failure) {
     var authSuccess = function(response) {
-      console.log(response.responseText)
       var authMatch = response.responseText.match(/Auth\=(.*)/)
       this.auth = authMatch ? authMatch[1] : ''
       success(this.auth)
