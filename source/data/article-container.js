@@ -88,7 +88,7 @@ enyo.kind({
 	},
 	
 	itemTapped: function() {
-		this.bubbleUp("onSourceTap", this)
+		this.doSourceTap(this)
 	}
 	
 });

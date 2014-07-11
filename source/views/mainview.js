@@ -24,7 +24,16 @@ enyo.kind({
 			{name: "refreshButton", kind: "onyx.IconButton", ontap: "switchPanels", src: "assets/refresh.png"}
 		]},
 		
-		{name: "MainList", kind: "enyo.Scroller", fit: true, style: "padding-top: 5px;"},
+		{name: "MainList", kind: "AroundList", fit: true, count: 0, style:"width: 100%;", onSetupItem: "setupItem", aboveComponents: [
+			{name: "stickySources", kind: "enyo.FittableRows"},
+			{name: "subscriptionsDivider", kind: "FeedSpider2.Divider", title: "Subscriptions", showing: false}	
+		], components: [
+			{name: "source", style: "width: 100%; border-bottom-width: 1px; border-bottom-style: groove", layoutKind: "enyo.FittableColumnsLayout", components: [
+				{name: "sourceIcon", style: "height: 50px; width: 30px;"},
+				{name: "sourceName", classes: "subscription-title", tag: "span", fit: true},
+				{name: "sourceUnreadCount", classes: "subscription-count", tag: "span"}
+			]}
+		]},
 		{name: "LoginDialog", kind: "FeedSpider2.LoginDialog", onLoginSuccess: "loginSuccess"},
 	],
 	
@@ -65,6 +74,32 @@ enyo.kind({
     	this.reload()
     	return true;
   	},
+
+	setupItem: function(inSender, inEvent) {
+		var i = inEvent.index;
+		var item = this.sources.subscriptionSources.items[i];
+		
+		this.$.sourceName.setContent(item.title);
+		
+		this.$.sourceIcon.addRemoveClass("subscription-folder", item.isFolder);
+		this.$.sourceIcon.addRemoveClass("subscription-rss", !item.isFolder);
+
+		if (item.unreadCount > 0)
+    	{
+    		this.$.sourceName.setStyle("font-weight: bold");
+    		this.$.sourceUnreadCount.setStyle("float: right; font-weight: bold");
+    		this.$.sourceUnreadCount.setContent(item.unreadCount); 		
+    	} 
+		else
+		{
+    		this.$.sourceName.setStyle("");
+    		this.$.sourceUnreadCount.setStyle("");
+			this.$.sourceUnreadCount.setContent("");
+			this.$.sourceUnreadCount.hide();
+		}
+		
+		return true;
+	},
 
 	refresh: function() {
 		var self = this
@@ -109,11 +144,11 @@ enyo.kind({
 		if(self.loaded) {
 			self.sources.sortAndFilter(
 				function() {
-					//NOTE TO SELF: This will likely cause replication. Find a better way to structure and update the list.
 					//TODO: Causes Replication. Figure out better way of handling this behaviour.
-					self.refreshList(self.$.MainList, self.sources.stickySources.items)
-			    	self.$.MainList.createComponent({kind: "FeedSpider2.Divider", title: "Subscriptions"})
-					self.refreshList(self.$.MainList, self.sources.subscriptionSources.items)
+					self.refreshList(self.$.stickySources, self.sources.stickySources.items)
+					self.$.subscriptionsDivider.show()
+					self.$.MainList.setCount(self.sources.subscriptionSources.items.length);
+					//self.refreshList(self.$.MainList, self.sources.subscriptionSources.items)
 					
 					self.$.MainList.render()
 					self.$.smallSpinner.hide()
