@@ -6,5 +6,6 @@ enyo.depends(
 	"FS-Preferences.less",
 	"FS-Subscription.less",
 	"FS-Article.less",
+	"FS-Add.less",
 	"FS-Theme.less"
 );

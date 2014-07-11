@@ -43,13 +43,18 @@ enyo.kind({
 		{name: "feed", kind: "FeedSpider2.FeedView"},
 		{name: "article", kind: "FeedSpider2.ArticleView"},
 		{name: "preferences", kind: "FeedSpider2.PreferencesView", onSetTheme: "handleThemeChanged"},
-		{name: "help", kind: "FeedSpider2.HelpView"}
+		{name: "help", kind: "FeedSpider2.HelpView"},
+		{name: "add", kind: "FeedSpider2.AddView"}		
 	],
 	
 	create: function(){
 		this.inherited(arguments);
 		this.handleThemeChanged();
 		this.handleFontSizeChanged();
+	},
+
+	rendered: function(){
+		this.inherited(arguments);
 	},
 	
 	switchPanels: function(inSender, inEvent) {
@@ -84,6 +89,12 @@ enyo.kind({
 			case "help":
 				this.$.help.setPreviousPage(inEvent.previousPage)
 				this.setIndex(this.selectPanelByName("help"))
+				break;
+			case "add":
+				this.$.add.setApi(inEvent.api);
+				this.$.add.setPreviousPage(inEvent.previousPage)
+				this.$.add.activate()
+				this.setIndex(this.selectPanelByName("add"))
 				break;
 		}
 	},

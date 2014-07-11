@@ -67,7 +67,7 @@ enyo.kind({
 	},
 
 	addSubscription: function() {
-		//TODO: Implement
+		this.doSwitchPanels({target: "add", previousPage: this, api: this.api})
 	},
 	
 	handleLogout: function() {
