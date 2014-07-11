@@ -20,21 +20,18 @@ enyo.kind({
     			{name: "query", kind: "onyx.Input", style: "width: 100%", placeholder: "Enter URL or Search Query"}
 			]},
 			{kind: "onyx.Button", style: "width: 100%;", content: "Search", classes: "onyx-affirmative", ontap: "search"},
-			{name: "feedDetail", style: "width: 100%;", components: [
-				{name: "feedUrl"},
-				{name: "feedContent"},
-				{kind: "onyx.Button", style: "width: 95%; margin:auto;", content: "Add", classes: "onyx-affirmative", ontap: "add"},
-			]},
-		//{kind: "onyx.Button", style: "width: 95%; margin:auto;", content: "Add", classes: "onyx-affirmative", ontap: "add"},
-			//{fit: true, components: [
-				{name: "list", kind: "List", style:"width: 100%;", count: 0, multiSelect: false, onSetupItem: "setupItem", ontap: "itemTapped", components: [
-					{name: "item", style: "	border: 1px solid silver; padding: 14px; font-size: 14px;", components: [
-						{name: "title"}
+			{name: "list", kind: "List", style:"width: 100%;", count: 0, multiSelect: false, onSetupItem: "setupItem", ontap: "itemTapped", components: [
+				{name: "item", style: "	border: 1px solid silver; padding: 14px; font-size: 14px;", components: [
+					{kind: "enyo.FittableColumns", components: [
+						{kind: "enyo.FittableRows", style: "width: 80%", components: [
+							{name: "title"},
+							{name: "feedUrl"},
+						]},	
+						{name: "addButton", kind: "onyx.Button", style: "width: 40px; margin:auto;", showing:false, content: "Add", classes: "onyx-affirmative", ontap: "add"}
 					]}
-				]},
-			//]},
+				]}
+			]},
 		]},
-		//{kind: "onyx.Button", style: "width: 95%; margin:auto;", content: "Add", classes: "onyx-affirmative", ontap: "add"},
 ],
 	
 	activate: function() {
@@ -43,7 +40,6 @@ enyo.kind({
 		this.$.blankIcon.show()
 		this.$.query.value = ""
 		this.$.list.count = 0
-		this.$.feedDetail.hide()
 	},
 	
 	handleGoBack: function() {
@@ -55,8 +51,15 @@ enyo.kind({
 		this.$.errorIcon.hide()
 		this.$.smallSpinner.show()
 		this.$.list.count = 0
-		this.$.feedDetail.hide()
 		this.api.addSubscription(this.$.query.value, this.subscriptionAdded.bind(this), this.subscriptionAddFailure.bind(this))
+	},
+
+	add: function() {
+		this.$.blankIcon.hide()
+		this.$.errorIcon.hide()
+		this.$.smallSpinner.show()
+		var item = this.subscriptions.items[this.selectedIndex];
+		this.api.addSubscription(item.url, this.subscriptionAdded.bind(this), this.subscriptionAddFailure.bind(this))
 	},
 
 	subscriptionAdded: function() {
@@ -101,24 +104,25 @@ enyo.kind({
 		Feeder.notify($L("Unable to add subscription"))
 	},
 
-	showSubscription: function(event) {
-		this.controller.stageController.pushScene("add-detail", this.api, event.item)
-	},
-
 	setupItem: function(inSender, inEvent) {
 		var i = inEvent.index;
 		var item = this.subscriptions.items[i];
 		this.$.title.setContent(item.title);
+		this.$.feedUrl.setContent(item.url);
 		this.$.item.addRemoveClass("list-add-selected", inSender.isSelected(i));
+		if (inSender.isSelected(i))
+		{
+			this.$.addButton.show()
+		}
+		else
+		{
+			this.$.addButton.hide()
+		}
 		return true;
 	},
 
 	itemTapped: function(inSender, inEvent) {
-		var i = inEvent.index;
-		var item = this.subscriptions.items[i];
-		this.$.feedUrl.setContent(item.url);
-		this.$.feedContent.setContent(item.content);
-		this.$.feedDetail.show()
+		this.selectedIndex = inEvent.index;		
 	},
 
 	buildSubscription: function(json) {
