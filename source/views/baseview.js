@@ -94,8 +94,6 @@ enyo.kind({
     		}
     		items[i].setContainer(list)
     	}
-    	//list.mojo.noticeUpdatedItems(0, items)
-    	//list.mojo.setLength(items.length)
   	},
 
 	//TODO: Port

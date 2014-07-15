@@ -47,7 +47,6 @@ enyo.kind({
 	rendered: function() {
 		this.inherited(arguments);
 		this.$.LoginDialog.show();
-		//this.checkCredentials();
 	},
 
 	activate: function(changes) {
@@ -60,7 +59,6 @@ enyo.kind({
 		}
 		
 		this.filterAndRefresh()
-		//this.listenForSearch()
 	},
 	
 	loginSuccess: function(inSender, inEvent) {
@@ -238,32 +236,5 @@ enyo.kind({
 		this.reload()
 	},
 
-	doSearch: function(query) {
-		if(this.api.supportsSearch())
-		{
-			this.controller.stageController.pushScene("articles", this.api, new Search(this.api, query))
-		}
-		else
-		{
-			Feeder.notify($L("Search Not Available"))
-		}
-	},
 	//END CODE TO BE PORTED
-
-  	/* Begin TEMP Troubleshooting code */
-  	checkCredentials: function() {
-		this.credentials.service = "ino"
-		this.credentials.email = "aressel@gmail.com"
-		this.credentials.password = "macmaster"
-					
-		this.tryLogin();
-	},
-	
-	tryLogin: function() {
-		// Attempt login
-    	this.api = new Api();
-    	this.api.login(this.credentials, this.loginSuccess.bind(this), function(){});
-	}
-	/* End TEMP Troubleshooting Code */
-  	
 });
