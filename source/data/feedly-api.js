@@ -570,7 +570,7 @@ var FeedlyApi = Class.create({
 	if (this._checkTokenExpiry)
 	{
 		try {
-			var req = new XMLHttpRequest()
+			var req = new XMLHttpRequest({mozSystem: true})
 			req.open("PUT", url, true)
 			req.setRequestHeader('Content-Type', 'application/json')
 			req.setRequestHeader('Authorization', "OAuth " + this.credentials.accessToken)
@@ -604,7 +604,7 @@ var FeedlyApi = Class.create({
 	if (this._checkTokenExpiry)
 	{
 		try {
-			var req = new XMLHttpRequest()
+			var req = new XMLHttpRequest({mozSystem: true})
 			req.open("DELETE", url, true)
 			req.setRequestHeader('Authorization', "OAuth " + this.credentials.accessToken)
 			req.send()
@@ -648,7 +648,7 @@ var FeedlyApi = Class.create({
     	}
     	
     	try {
-        	var req = new XMLHttpRequest()
+        	var req = new XMLHttpRequest({mozSystem: true})
         	req.open("POST", FeedlyApi.BASE_URL + "auth/token", false)
         	req.setRequestHeader('Content-Type', 'application/json')
         	req.send(JSON.stringify(parameters))

@@ -544,7 +544,7 @@ var OCApi = Class.create({
   //UPDATED 1.2.1
   _ajaxPut: function(params, url, success, failure) {
 	try {
-		var req = new XMLHttpRequest()
+		var req = new XMLHttpRequest({mozSystem: true})
 		req.open("PUT", url, true)
 		req.setRequestHeader('Content-Type', 'application/json')
 		req.setRequestHeader('Authorization', "Basic " + this.auth)
@@ -571,7 +571,7 @@ var OCApi = Class.create({
   //UPDATED 1.2.1
   _ajaxDelete: function(url, success, failure) {
 	try {
-		var req = new XMLHttpRequest()
+		var req = new XMLHttpRequest({mozSystem: true})
 		req.open("DELETE", url, true)
 		req.setRequestHeader('Authorization', "Basic " + this.auth)
 		req.send()
