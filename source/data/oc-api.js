@@ -88,7 +88,7 @@ var OCApi = Class.create({
   
   //UPDATED 1.2.1
   unsubscribe: function(feed) {
-    if(feed.constructor == Folder) {
+    if(feed.isFolder) {
       Mojo.Event.send(document, "FolderDeleted", {id: feed.id})
       this.removeLabel(feed)
     }

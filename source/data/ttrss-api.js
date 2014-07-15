@@ -119,7 +119,7 @@ var TTRSSApi = Class.create({
   
   //UPDATED 1.1.0
   unsubscribe: function(feed) {
-    if(feed.constructor == Folder) {
+    if(feed.isFolder) {
       Feeder.notify($L("Folder Delete Not Supported"))
       Mojo.Event.send(document, "FolderDeleted", {id: feed.id})
       //this.removeLabel(feed)

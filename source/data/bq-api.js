@@ -74,7 +74,7 @@ var BQApi = Class.create({
 
   //UPDATED 1.0.1
   unsubscribe: function(feed) {
-    if(feed.constructor == Folder) {
+    if(feed.isFolder) {
       this.removeLabel(feed)
     }
     else {

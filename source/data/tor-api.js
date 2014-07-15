@@ -70,7 +70,7 @@ var TorApi = Class.create({
   },
 
   unsubscribe: function(feed) {
-    if(feed.constructor == Folder) {
+    if(feed.isFolder) {
       this.removeLabel(feed)
     }
     else {

@@ -101,7 +101,7 @@ var AolApi = Class.create({
 
   //UPDATED 1.2.0
   unsubscribe: function(feed) {
-    if(feed.constructor == Folder) {
+    if(feed.isFolder) {
       this.removeLabel(feed)
     }
     else {

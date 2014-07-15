@@ -100,7 +100,7 @@ var FeedlyApi = Class.create({
 
   //UPDATED 0.9.5
   unsubscribe: function(feed) {
-    if(feed.constructor == Folder) {
+    if(feed.isFolder) {
       this.removeLabel(feed)
     }
     else {
