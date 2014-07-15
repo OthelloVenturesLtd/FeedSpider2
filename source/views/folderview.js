@@ -36,7 +36,6 @@ enyo.kind({
 	
   	create: function() {
     	this.inherited(arguments);
-    	//this.setupSearch()
 	},
 
 	activate: function(changes) {
@@ -50,7 +49,6 @@ enyo.kind({
 		
 		this.$.title.setContent(this.folder.title)
 		this.filterAndRefresh()
-		//this.listenForSearch()
 	},
 
 	filterAndRefresh: function() {
@@ -79,16 +77,6 @@ enyo.kind({
 	},
 
 //PORT FROM HERE
-	folderRendered: function(listWidget, itemModel, itemNode) {
-		if(itemModel.constructor == Folder) {
-			itemNode.down(".folder-title").update($L("All"))
-		}
-
-		if(itemModel.unreadCount) {
-			itemNode.addClassName("unread")
-		}
-	},
-
 	sourcesReordered: function(event) {
 		var beforeSubscription = null
 
@@ -107,17 +95,6 @@ enyo.kind({
 
 	sourceDeleted: function(event) {
 		this.folder.subscriptions.remove(event.item)
-	},
-
-	doSearch: function(query) {
-		if(this.api.supportsSearch())
-		{
-			this.controller.stageController.pushScene("articles", this.api, new Search(this.folder.api, query, this.folder.id))
-		}
-		else
-		{
-			Feeder.notify($L("Search Not Available"))
-		}
 	},
 
 	refresh: function() {
