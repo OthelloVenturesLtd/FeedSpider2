@@ -535,7 +535,7 @@ var TorApi = Class.create({
   
   //UPDATED 0.9.5
   supportsManualSort: function() {
-	return true
+	return false
   }
 })
 
