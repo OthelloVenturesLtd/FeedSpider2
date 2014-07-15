@@ -38,7 +38,7 @@ enyo.kind({
 		this.$.smallSpinner.hide()
 		this.$.errorIcon.hide()
 		this.$.blankIcon.show()
-		this.$.query.value = ""
+		this.$.query.setValue("")
 		this.$.list.count = 0
 	},
 	
