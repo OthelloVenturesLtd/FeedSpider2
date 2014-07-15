@@ -63,7 +63,6 @@ enyo.kind({
 	},
 
 	activate: function(changes) {
-		//TODO: figure out why the list disappears sometimes
 		if (Preferences.isManualFeedSort())
 		{
 			this.$.MainList.setReorderable(true)
@@ -81,7 +80,7 @@ enyo.kind({
 			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
 		}
 		
-		//this.filterAndRefresh()
+		this.filterAndRefresh()
 	},
 	
 	loginSuccess: function(inSender, inEvent) {

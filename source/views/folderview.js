@@ -31,7 +31,28 @@ enyo.kind({
 			{name: "refreshButton", kind: "onyx.IconButton"}
 		]},
 		
-		{name: "MainList", kind: "enyo.Scroller", fit: true, style: "padding-top: 5px"},
+		{name: "MainList", kind: "AroundList", fit: true, count: 0, style:"width: 100%;", reorderable: true, centerReorderContainer: false, enableSwipe: true, persistSwipeableItem: true, onSetupItem: "setupItem", onSetupReorderComponents: "setupReorderComponents", onSetupSwipeItem: "setupSwipeItem", onReorder: "sourcesReordered", aboveComponents: [
+			{name: "stickySources", kind: "enyo.FittableRows"},
+		], components: [
+			{name: "source", style: "width: 100%; border-bottom-width: 1px; border-bottom-style: groove", ontap: "listSourceTapped" , layoutKind: "enyo.FittableColumnsLayout", components: [
+				{name: "sourceIcon", style: "height: 50px; width: 30px;"},
+				{name: "sourceName", classes: "subscription-title", tag: "span", fit: true},
+				{name: "sourceUnreadCount", classes: "subscription-count", tag: "span"}
+			]}
+		],
+		reorderComponents: [
+			{name: "reorderContent", classes: "enyo-fit", layoutKind: "enyo.FittableColumnsLayout", style: "background:lightgrey;", components: [
+				{name: "reorderIcon", style: "height: 50px; width: 30px;"},
+				{name: "reorderName", classes: "subscription-title", style:"color: white;", tag: "span", fit: true},
+				{name: "reorderUnreadCount", classes: "subscription-count", tag: "span"}
+			]}
+		],
+		swipeableComponents: [
+			{style: "height: 100%; background-color: darkgrey; text-align:center", components: [
+				{kind: "onyx.Button", content: "Delete", style: "margin-top: 10px; margin-right: 10px;", classes:"onyx-negative", ontap: "deleteButtonTapped"},
+				{kind: "onyx.Button", content: "Cancel", style: "margin-left: 10px;", ontap: "cancelButtonTapped"}
+			]}
+		]},
 	],
 	
   	create: function() {
@@ -39,6 +60,15 @@ enyo.kind({
 	},
 
 	activate: function(changes) {
+		if (Preferences.isManualFeedSort())
+		{
+			this.$.MainList.setReorderable(true)
+		}
+		else
+		{
+			this.$.MainList.setReorderable(false)
+		}
+		
 		if (Preferences.hideReadFeeds()){
 			this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
 		}
@@ -51,15 +81,78 @@ enyo.kind({
 		this.filterAndRefresh()
 	},
 
+	setupItem: function(inSender, inEvent) {
+		var i = inEvent.index;
+		var item = this.subscriptions.items[i];
+		
+		this.$.sourceName.setContent(item.title);
+		
+		this.$.sourceIcon.addRemoveClass("subscription-folder", item.isFolder);
+		this.$.sourceIcon.addRemoveClass("subscription-rss", !item.isFolder);
+
+		if (item.unreadCount > 0)
+    	{
+    		this.$.sourceName.setStyle("font-weight: bold");
+    		this.$.sourceUnreadCount.setStyle("float: right; font-weight: bold");
+    		this.$.sourceUnreadCount.setContent(item.unreadCount); 		
+    	} 
+		else
+		{
+    		this.$.sourceName.setStyle("");
+    		this.$.sourceUnreadCount.setStyle("");
+			this.$.sourceUnreadCount.setContent("");
+			this.$.sourceUnreadCount.hide();
+		}
+		
+		return true;
+	},
+
+	setupReorderComponents: function(inSender, inEvent) {
+		var i = inEvent.index;
+		if(!this.subscriptions.items[i]) {
+			return;
+		}
+
+		var item = this.subscriptions.items[i];
+		this.$.reorderName.setContent(item.title);
+		
+		this.$.reorderIcon.addRemoveClass("subscription-folder", item.isFolder);
+		this.$.reorderIcon.addRemoveClass("subscription-rss", !item.isFolder);
+
+		if (item.unreadCount > 0)
+    	{
+    		this.$.reorderName.setStyle("font-weight: bold");
+    		this.$.reorderUnreadCount.setStyle("float: right; font-weight: bold");
+    		this.$.reorderUnreadCount.setContent(item.unreadCount); 		
+    	} 
+		else
+		{
+    		this.$.reorderName.setStyle("");
+    		this.$.reorderUnreadCount.setStyle("");
+			this.$.reorderUnreadCount.setContent("");
+			this.$.reorderUnreadCount.hide();
+		}
+		
+		return true;
+	},
+
+	setupSwipeItem: function(inSender, inEvent) {
+        // because setting it on the list itself fails:
+        this.$.MainList.setPersistSwipeableItem(true);
+        this.activeItem = inEvent.index;
+    },
+
 	filterAndRefresh: function() {
+		//TODO: Fix double render bug.
 		this.filter()
-		this.refreshList(this.$.MainList, this.folder.stickySubscriptions)
-		this.refreshList(this.$.MainList, this.subscriptions.items)
+		this.refreshList(this.$.stickySources, this.folder.stickySubscriptions)
+		this.$.MainList.setCount(this.subscriptions.items.length);
 		if(!this.subscriptions.items.length) {
 			//TODO: Trigger goback
 			//this.controller.stageController.popScene()
 		}
-		this.$.MainList.render()
+		this.$.stickySources.render();
+		this.$.MainList.refresh()
 	},
 
 	filter: function() {
@@ -74,27 +167,54 @@ enyo.kind({
 
 	sourceTapped: function(inSender, inEvent) {
 		this.doSwitchPanels({target: "feed", api: this.api, subscription: inEvent, previousPage: this})
+		return true;
 	},
 
+	listSourceTapped: function(inSender, inEvent) {
+		var i = inEvent.index;
+		var item = this.subscriptions.items[i];
+		this.doSwitchPanels({target: "feed", api: this.api, subscription: item, previousPage: this})
+		return true
+	},
+
+    deleteButtonTapped: function(inSender, inEvent) {
+        this.$.MainList.setPersistSwipeableItem(false);
+        this.sourceDeleted(this.activeItem); 
+        this.$.MainList.completeSwipe();
+   		this.$.MainList.setCount(this.subscriptions.items);
+   		this.$.stickySources.render();
+   		this.$.MainList.refresh();
+    },
+
+    cancelButtonTapped: function(inSender, inEvent) {
+        this.$.MainList.setPersistSwipeableItem(false);
+        this.$.MainList.completeSwipe()
+    },
+
 //PORT FROM HERE
-	sourcesReordered: function(event) {
+	sourcesReordered: function(inSender, inEvent) {
 		var beforeSubscription = null
 
-		if(event.toIndex < this.subscriptions.items.length - 1) {
-			var beforeIndex = event.toIndex
+		if(inEvent.reorderTo < this.subscriptions.items.length - 1) {
+			var beforeIndex = inEvent.reorderTo
 
-			if(event.fromIndex < event.toIndex) {
+			if(inEvent.reorderFrom < inEvent.reorderTo) {
 				beforeIndex += 1
 			}
 
 			beforeSubscription = this.subscriptions.items[beforeIndex]
 		}
 
-		this.folder.subscriptions.move(event.item, beforeSubscription)
+		this.folder.subscriptions.move(this.subscriptions.items[inEvent.reorderFrom], beforeSubscription)
+		this.subscriptions.items = enyo.clone(this.folder.subscriptions.items)
+		this.$.MainList.refresh()
 	},
 
 	sourceDeleted: function(event) {
-		this.folder.subscriptions.remove(event.item)
+		var unreadCount = (this.subscriptions.items[event].unreadCount)
+		this.folder.subscriptions.remove(this.subscriptions.items[event])
+		this.subscriptions.items = enyo.clone(this.folder.subscriptions.items)
+		this.folder.recalculateUnreadCounts()
 	},
 
 	refresh: function() {

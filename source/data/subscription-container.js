@@ -32,7 +32,7 @@ enyo.kind({
 					throw $break
 				}
 			})
-
+			
 			if(beforeSubscription) {
 				self.items.each(function(item, index) {
 					if(item.id == beforeSubscription.id) {
@@ -45,7 +45,6 @@ enyo.kind({
 			else {
 				self.items.push(subscription)
 			}
-
 			var sortOrder = self.items.map(function(subscription) {return subscription.sortId}).join("")
 			this.api.setSortOrder(sortOrder, this.subscriptionOrderingStream)
 		}
