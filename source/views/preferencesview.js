@@ -202,17 +202,6 @@ enyo.kind({
 		this.debug = Preferences.isDebugging() //TODO: Decide whether to eliminate debugging or not.
 		this.notificationInterval = Preferences.notificationInterval()
 		this.notificationFeeds = Preferences.anyOrSelectedFeedsForNotifications()
-
-		//Cache Existing Values
-		this.originalAllowLandscape = Preferences.allowLandscape()
-		this.originalSortOrder = Preferences.isOldestFirst()
-		this.originalHideReadFeeds = Preferences.hideReadFeeds()
-		this.originalHideReadArticles = Preferences.hideReadArticles()
-		this.originalFontSize = Preferences.fontSize()
-		this.originalFeedSortOrder = Preferences.isManualFeedSort()
-		this.originalTheme = Preferences.getTheme()
-		this.originalNotificationInterval = Preferences.notificationInterval()
-		this.originalFeedlySortEngagement = Preferences.isFeedlySortEngagement()
 		
 		//Cache current values (this prevents additional callbacks when setting up pickers)
 		this.currentTheme = Preferences.getTheme()
@@ -246,7 +235,21 @@ enyo.kind({
 		this.$.notificationIntervalPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
 		this.$.notificationFeedsPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
 	},
-	
+
+	activate: function()
+	{
+		//Cache Existing Values
+		this.originalAllowLandscape = Preferences.allowLandscape()
+		this.originalSortOrder = Preferences.isOldestFirst()
+		this.originalHideReadFeeds = Preferences.hideReadFeeds()
+		this.originalHideReadArticles = Preferences.hideReadArticles()
+		this.originalFontSize = Preferences.fontSize()
+		this.originalFeedSortOrder = Preferences.isManualFeedSort()
+		this.originalTheme = Preferences.getTheme()
+		this.originalNotificationInterval = Preferences.notificationInterval()
+		this.originalFeedlySortEngagement = Preferences.isFeedlySortEngagement()
+	},
+		
 	setPicker: function(picker, header, pref) {
 		for (var i = 0; i < picker.controls.length; i++) {
         	if (picker.controls[i].value === pref) {

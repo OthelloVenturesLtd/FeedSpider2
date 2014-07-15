@@ -51,6 +51,7 @@ enyo.kind({
 		this.inherited(arguments);
 		this.handleThemeChanged();
 		this.handleFontSizeChanged();
+		this.handleOrientationChanged();
 	},
 
 	rendered: function(){
@@ -84,6 +85,7 @@ enyo.kind({
 			case "preferences":
 				this.$.preferences.setSources(this.sources)
 				this.$.preferences.setPreviousPage(inEvent.previousPage)
+				this.$.preferences.activate()
 				this.setIndex(this.selectPanelByName("preferences"))
 				break;
 			case "help":
@@ -111,9 +113,20 @@ enyo.kind({
 			{
 				this.handleFontSizeChanged()
 			}
+			
+			if (inEvent.changes.allowLandscapeChanged)
+			{
+				this.handleOrientationChanged()
+			}		
 		}
 
 		inEvent.lastPage.activate()
+		
+		if(inSender.name === "add")
+		{
+			inEvent.lastPage.reload()
+		}
+		
 		this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
 	},
 	
@@ -130,6 +143,25 @@ enyo.kind({
 	
 	handleFontSizeChanged: function() {
 		this.$.article.setFontSize(Preferences.fontSize());
+	},
+	
+	handleOrientationChanged: function() {
+		//Handle orientation for webOS Devices
+		//TODO: Figure out how to handle orientation for other devices
+		if (window.PalmSystem) {
+			PalmSystem.setWindowOrientation(Preferences.allowLandscape() ? "free" : "up");
+		}
+
+		if (enyo.platform.firefoxOS) {
+			if(Preferences.allowLandscape())
+			{
+				result = screen.mozUnlockOrientation();
+			}
+			else
+			{
+				result = screen.mozLockOrientation("portrait")
+			}
+		}
 	}
 	
 });

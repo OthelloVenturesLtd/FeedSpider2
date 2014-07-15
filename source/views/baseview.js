@@ -26,19 +26,6 @@ enyo.kind({
 	
 	rendered: function() {
 		this.inherited(arguments);
-		
-		//Handle orientation for webOS Devices
-		//TODO: Figure out how to handle orientation for other devices
-		if (window.PalmSystem) {
-			PalmSystem.setWindowOrientation(Preferences.allowLandscape() ? "free" : "up");
-		}
-		//TODO: Figure out how to handle changing orientation on the fly. Currently requires a relaunch of the app.
-		if (enyo.platform.firefoxOS) {
-			if(Preferences.allowLandscape())
-			{
-				result = screen.mozUnlockOrientation();
-			}
-		}
 	},
 	
 	toggleFeeds: function() {
@@ -85,7 +72,6 @@ enyo.kind({
 		//TODO: Implement
 	},
 
-	//TODO: BEGIN PORTING FROM HERE
   	refreshList: function(list, items) {
   	    for (var i = 0; i < items.length; i++) { 
     		if(i == items.length - 1)
@@ -107,6 +93,8 @@ enyo.kind({
 			body.removeClassName("lefty")
 		}
 	},
+
+	//TODO: BEGIN PORTING FROM HERE
 
 	//TODO: Set up event handlers to trigger this when the top bar is tapped 
 	scrollToTop: function() {
