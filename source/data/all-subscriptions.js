@@ -73,7 +73,7 @@ enyo.kind({
 
 	sort: function(success, failure) {
 		if(Preferences.isManualFeedSort()) {
-			if (self.api.supportsManualSort())
+			if (this.api.supportsManualSort())
 			{
 				this.sortManually(success, failure)
 			}
