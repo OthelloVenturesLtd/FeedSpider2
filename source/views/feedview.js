@@ -33,7 +33,29 @@ enyo.kind({
 			{name: "markAllRead", kind: "onyx.IconButton", ontap: "switchPanels", src: "assets/mark-all-read.png"}
 		]},
 		
-		{name: "MainList", kind: "enyo.Scroller", fit: true, style: "padding-top: 5px"},
+		{name: "MainList", kind: "List", fit: true, count: 0, style:"width: 100%;", enableSwipe: true, onSetupItem: "setupItem", onSetupSwipeItem: "setupSwipeItem", components: [
+			{name: "source", layoutKind: enyo.FittableRowsLayout, noStretch: true, ontap: "articleTapped", components: [
+				{name: "articleDivider", tag: "table", classes: "divider", style: "width: 100%", components: [
+					{tag: "tr", components: [
+						{name: "left", tag: "td", classes: "labeled-left"},
+						{name: "dividerTitle", tag: "td", classes: "label", style:"white-space: nowrap; font-weight: bold; width: 1%; padding-left: 5px; padding-right: 5px"},
+						{tag: "td", classes: "labeled-right"},
+					]}
+				]},	
+				{name: "articleName", tag: "span", classes: "article-title"},
+				{layoutKind: "FittableColumnsLayout", components: [
+					{name: "starredIcon", tag: "div", showing: false, style:"background: url('assets/starred-grey.png') no-repeat left bottom; width: 16px; height: 24px; margin-left: 10px;"},
+					{name: "articleOrigin", classes: "article-origin", style: "display:none;"},
+				]},
+				{name: "borderContainer"}
+			]}
+		],
+		swipeableComponents: [
+			{style: "height: 100%; background-color: darkgrey; text-align:center", components: [
+				{kind: "onyx.Button", content: "Delete", style: "margin-top: 10px; margin-right: 10px;", classes:"onyx-negative", ontap: "deleteButtonTapped"},
+				{kind: "onyx.Button", content: "Cancel", style: "margin-left: 10px;", ontap: "cancelButtonTapped"}
+			]}
+		]},
 	],
 	
   	create: function() {
@@ -54,6 +76,7 @@ enyo.kind({
 
 		this.$.title.setContent(this.subscription.title)
 		this.subscription.reset()
+		this.previousDate = "";
 		this.findArticles()
 
 		/*if(changes_or_scroll && (changes_or_scroll.sortOrderChanged || changes_or_scroll.hideReadArticlesChanged)) {
@@ -96,11 +119,11 @@ enyo.kind({
 	},
 
 	foundArticles: function(scrollToTop) {
-		this.refreshList(this.$.MainList, this.subscription.items)
-
-		this.$.MainList.render()
+		//this.refreshList(this.$.MainList, this.subscription.items)
+		this.$.MainList.setCount(this.subscription.items.length)
+		this.$.MainList.refresh()
 		if(scrollToTop) {
-			//this.controller.getSceneScroller().mojo.revealTop()
+			this.$.MainList.scrollToStart()
 		}
 
 		this.$.smallSpinner.hide()
@@ -135,14 +158,90 @@ enyo.kind({
 	},
 
 	handleGoBack: function() {
+		this.$.MainList.setCount(0)
 		this.doGoBack({lastPage: this.previousPage})
 	},	
 
+	setupItem: function(inSender, inEvent) {
+		var i = inEvent.index;
+		var item = this.subscription.items[i];
+
+		this.$.articleName.setContent(item.title);
+		this.$.articleOrigin.setContent(item.origin);
+				
+		if (!item.isRead)
+    	{
+    		this.$.articleName.setStyle("font-weight: bold");	
+    	}
+    	else
+    	{
+    		this.$.articleName.setStyle("");
+    	}
+    	
+    	if (item.isStarred)
+    	{
+    		this.$.starredIcon.show()
+    	}
+    	else
+    	{
+    		this.$.starredIcon.hide()
+    	}
+		
+		if (item.subscription.showOrigin)
+    	{
+    		if (!item.isRead)
+    		{
+    			this.$.articleOrigin.setStyle("font-weight: bold");
+    		}
+    		else
+    		{
+    			this.$.articleOrigin.setStyle("");
+    		}
+    	}
+    	else
+    	{
+    		this.$.articleOrigin.setStyle("display:none;");
+    	}
+		
+		if (item.sortDate == this.previousDate)
+		{
+			this.$.articleDivider.hide()
+		}
+		else
+		{
+			this.$.dividerTitle.content = item.displayDate
+			this.$.articleDivider.show()
+		}
+		
+		this.previousDate = item.sortDate
+		
+		var nextItem = this.subscription.items[i+1];
+		if (nextItem != undefined)
+		{
+			if (item.sortDate == nextItem.sortDate)
+			{
+				this.$.borderContainer.setStyle("padding-top: 12px; width: 100%; border-bottom-width: 1px; border-bottom-style: groove");
+			}
+			else
+			{
+				this.$.borderContainer.setStyle("padding-top: 12px; width: 100%;")
+			}
+		}
+		else
+		{
+			this.$.borderContainer.setStyle("padding-top: 12px; width: 100%; border-bottom-width: 1px; border-bottom-style: groove");
+		}
+		
+		return true;
+	},
+
 //TODO: Port from here
 	articleTapped: function(inSender, inEvent) {
-		inEvent.index = this.subscription.items.indexOf(inEvent)
-		this.tappedIndex = inEvent.index
-		this.doSwitchPanels({target: "article", article: inEvent, scrollingIndex: 0, articleContainer: this.subscription, previousPage: this})
+		var i = inEvent.index;
+		var item = this.subscription.items[i];
+		
+		this.tappedIndex = i
+		this.doSwitchPanels({target: "article", article: item, scrollingIndex: 0, articleContainer: this.subscription, previousPage: this})
 		/*if(!event.item.load_more) {
 			event.item.index = event.index
 			this.tappedIndex = event.index

@@ -11,13 +11,12 @@ enyo.kind({
 		onArticleTap: "",
 	},
 
-	//TODO: Make sure that the entire object is a tappable item
 	components: [
-		{name: "source", layoutKind: enyo.FittableRowsLayout, noStretch: true, ontap: "itemTapped", style: "", components: [
-			{name: "articleName", tag: "span", classes: "article-title", style: "padding-left: 10px; padding-top: 10px;"},
+		{name: "source", layoutKind: enyo.FittableRowsLayout, noStretch: true, ontap: "itemTapped", components: [
+			{name: "articleName", tag: "span", classes: "article-title"},
 			{layoutKind: "FittableColumnsLayout", components: [
-				{name: "starredIcon", tag: "div", style:"background: url('assets/starred-grey.png') no-repeat left bottom; width: 16px; height: 24px; margin-left: 10px; display:none"},
-				{name: "articleOrigin", fit: true, classes: "article-origin", style: "padding-left: 10px; padding-top: 8px; display:none;"},
+				{name: "starredIcon", tag: "div", showing: false, style:"background: url('assets/starred-grey.png') no-repeat left bottom; width: 16px; height: 24px; margin-left: 10px;"},
+				{name: "articleOrigin", fit: true, classes: "article-origin", showing: false},
 			]},
 			{name: "borderContainer", style: "padding-top: 12px; width: 100%"}
 		]}
@@ -128,9 +127,9 @@ enyo.kind({
 		var month = this.leftPad(this.updatedAt.getMonth() + 1)
 		var day = this.leftPad(this.updatedAt.getDate())
 		var year = "" + this.updatedAt.getFullYear()
-
-		//TODO: fix display date
-		this.displayDate = ""//Mojo.Format.formatDate(this.updatedAt, {date: "medium"})
+		
+		var options = {year: "numeric", month: "short", day: "numeric"}
+		this.displayDate = this.updatedAt.toLocaleDateString("en-US", options)
 		this.sortDate = year + month + day
 	},
 
