@@ -73,7 +73,6 @@ enyo.kind({
 		}
 		
 		this.$.title.setContent(this.folder.title)
-		//this.$.stickySources = new enyo.FittableRows()
 		this.filterAndRefresh()
 	},
 

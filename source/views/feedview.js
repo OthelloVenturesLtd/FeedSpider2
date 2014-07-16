@@ -325,17 +325,6 @@ enyo.kind({
 		this.$.errorIcon.show()
 	},
 
-	doSearch: function(query) {
-		if(this.api.supportsSearch())
-		{
-			this.controller.stageController.pushScene("articles", this.api, new Search(this.subscription.api, query, this.subscription.id))
-		}
-		else
-		{
-			Feeder.notify($L("Search Not Available"))
-		}
-	},
-
 	refresh: function() {
 		if(!self.refreshing) {
 			this.subscription.reset()
