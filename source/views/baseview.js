@@ -73,6 +73,10 @@ enyo.kind({
 	},
 
   	refreshList: function(list, items) {
+  	  	for (var i = 0; i < list.controls.length; i++) { 
+    		list.controls[i].setContainer(null)
+    	}
+  	    
   	    for (var i = 0; i < items.length; i++) { 
     		if(i == items.length - 1)
     		{
