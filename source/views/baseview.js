@@ -73,8 +73,10 @@ enyo.kind({
 	},
 
   	refreshList: function(list, items) {
-  	  	for (var i = 0; i < list.controls.length; i++) { 
-    		list.controls[i].setContainer(null)
+  	  	var listLength = list.controls.length
+  	  	for (var i = 0; i < listLength; i++) { 
+    		list.controls[0].last = false;
+    		list.controls[0].setContainer(null);
     	}
   	    
   	    for (var i = 0; i < items.length; i++) { 
@@ -82,7 +84,8 @@ enyo.kind({
     		{
     			items[i].last = true;
     		}
-    		items[i].setContainer(list)
+
+    		items[i].setContainer(list);
     	}
   	},
 
