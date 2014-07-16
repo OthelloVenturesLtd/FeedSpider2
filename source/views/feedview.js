@@ -17,7 +17,6 @@ enyo.kind({
 			{kind: "onyx.MenuDecorator", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
 			    {kind: "onyx.Menu", floating: true, components: [
-        			{content: "Refresh", onSelect: "triggerRefresh"},
         			{name: "showHideArticlesMenuItem", onSelect: "toggleArticles"},
         			{classes: "onyx-menu-divider"},
         			{content: "Preferences", onSelect: "openPreferences"},
