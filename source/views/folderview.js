@@ -14,7 +14,6 @@ enyo.kind({
 			{kind: "onyx.MenuDecorator", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
 			    {kind: "onyx.Menu", floating: true, components: [
-        			{content: "Refresh", onSelect: "triggerRefresh"},
         			{name: "showHideFeedsMenuItem", onSelect: "toggleFeeds"},
         			{classes: "onyx-menu-divider"},
         			{content: "Preferences", onSelect: "openPreferences"},
@@ -54,10 +53,6 @@ enyo.kind({
 			]}
 		]},
 	],
-	
-  	create: function() {
-    	this.inherited(arguments);
-	},
 
 	activate: function(changes) {
 		if (Preferences.isManualFeedSort())
@@ -78,6 +73,7 @@ enyo.kind({
 		}
 		
 		this.$.title.setContent(this.folder.title)
+		//this.$.stickySources = new enyo.FittableRows()
 		this.filterAndRefresh()
 	},
 
@@ -169,13 +165,11 @@ enyo.kind({
     },
 
 	filterAndRefresh: function() {
-		//TODO: Fix double render bug.
 		this.filter()
 		this.refreshList(this.$.stickySources, this.folder.stickySubscriptions)
 		this.$.MainList.setCount(this.subscriptions.items.length);
 		if(!this.subscriptions.items.length) {
-			//TODO: Trigger goback
-			//this.controller.stageController.popScene()
+			this.handleGoBack()
 		}
 		this.$.stickySources.render();
 		this.$.MainList.refresh()
@@ -207,9 +201,7 @@ enyo.kind({
         this.$.MainList.setPersistSwipeableItem(false);
         this.sourceDeleted(this.activeItem); 
         this.$.MainList.completeSwipe();
-   		this.$.MainList.setCount(this.subscriptions.items);
-   		this.$.stickySources.render();
-   		this.$.MainList.refresh();
+   		this.filterAndRefresh();
     },
 
     cancelButtonTapped: function(inSender, inEvent) {
@@ -231,39 +223,13 @@ enyo.kind({
 		}
 
 		this.folder.subscriptions.move(this.subscriptions.items[inEvent.reorderFrom], beforeSubscription)
-		this.subscriptions.items = enyo.clone(this.folder.subscriptions.items)
-		this.$.MainList.refresh()
+   		this.filterAndRefresh();
 	},
 
 	sourceDeleted: function(event) {
 		var unreadCount = (this.subscriptions.items[event].unreadCount)
 		this.folder.subscriptions.remove(this.subscriptions.items[event])
-		this.subscriptions.items = enyo.clone(this.folder.subscriptions.items)
 		this.folder.recalculateUnreadCounts()
-	},
-
-//PORT FROM HERE
-	refresh: function() {
-		if(!self.refreshing) {
-			this.refreshing = true
-			this.smallSpinnerOn()
-			Mojo.Event.send(document, Feeder.Event.refreshWanted, {})
-		}
-	},
-
-	refreshComplete: function(event) {
-		var self = this
-		this.refreshing = false
-
-		event.sources.subscriptions.items.each(function(subscription) {
-			if(self.folder.id == subscription.id) {
-				self.folder = subscription
-				throw $break
-			}
-		})
-
-		this.filterAndRefresh()
-		this.smallSpinnerOff()
 	},
 	
 	handleGoBack: function() {

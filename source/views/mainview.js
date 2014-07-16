@@ -97,7 +97,6 @@ enyo.kind({
   	},
 
 	setupItem: function(inSender, inEvent) {
-		console.log(this.$.stickySources)
 		var i = inEvent.index;
 		var item = this.sources.subscriptionSources.items[i];
 		
@@ -265,9 +264,7 @@ enyo.kind({
         this.$.MainList.setPersistSwipeableItem(false);
         this.sourceDeleted(this.activeItem); 
         this.$.MainList.completeSwipe();
-   		this.$.MainList.setCount(this.sources.subscriptionSources.items.length);
-   		this.$.stickySources.render();
-   		this.$.MainList.refresh();
+   		this.filterAndRefresh();
     },
 
     cancelButtonTapped: function(inSender, inEvent) {
@@ -278,7 +275,6 @@ enyo.kind({
 	sourceDeleted: function(event) {
 		var unreadCount = (this.sources.subscriptionSources.items[event].unreadCount)
 		this.sources.subscriptions.remove(this.sources.subscriptionSources.items[event])
-		this.sources.subscriptionSources.items = enyo.clone(this.sources.subscriptions.items)
 		this.sources.all.decrementUnreadCountBy(unreadCount)
 	},
 
@@ -296,8 +292,7 @@ enyo.kind({
 		}
 
 		this.sources.subscriptions.move(this.sources.subscriptionSources.items[inEvent.reorderFrom], beforeSubscription)
-		this.sources.subscriptionSources.items = enyo.clone(this.sources.subscriptions.items)
-		this.$.MainList.refresh()
+   		this.filterAndRefresh();
 	},
 
 	//BEGIN CODE TO BE PORTED

@@ -64,39 +64,39 @@ enyo.kind({
 				this.$.folder.setApi(inEvent.api);
 				this.$.folder.setFolder(inEvent.folder);
 				this.$.folder.setPreviousPage(inEvent.previousPage);
-				this.$.folder.activate()
-				this.setIndex(this.selectPanelByName("folder"))
+				this.setIndex(this.selectPanelByName("folder"));
+				this.$.folder.activate();
 				break;
 			case "feed":
 				this.$.feed.setApi(inEvent.api);
 				this.$.feed.setSubscription(inEvent.subscription);
 				this.$.feed.setPreviousPage(inEvent.previousPage);
-				this.$.feed.activate()
-				this.setIndex(this.selectPanelByName("feed"))
+				this.$.feed.activate();
+				this.setIndex(this.selectPanelByName("feed"));
 				break;
 			case "article":
 				this.$.article.setArticle(inEvent.article);
 				this.$.article.setScrollingIndex(inEvent.scrollingIndex);
 				this.$.article.setArticleContainer(inEvent.articleContainer);
 				this.$.article.setPreviousPage(inEvent.previousPage);
-				this.$.article.activate()
-				this.setIndex(this.selectPanelByName("article"))
+				this.$.article.activate();
+				this.setIndex(this.selectPanelByName("article"));
 				break;
 			case "preferences":
-				this.$.preferences.setSources(this.sources)
-				this.$.preferences.setPreviousPage(inEvent.previousPage)
-				this.$.preferences.activate()
-				this.setIndex(this.selectPanelByName("preferences"))
+				this.$.preferences.setSources(this.sources);
+				this.$.preferences.setPreviousPage(inEvent.previousPage);
+				this.$.preferences.activate();
+				this.setIndex(this.selectPanelByName("preferences"));
 				break;
 			case "help":
-				this.$.help.setPreviousPage(inEvent.previousPage)
-				this.setIndex(this.selectPanelByName("help"))
+				this.$.help.setPreviousPage(inEvent.previousPage);
+				this.setIndex(this.selectPanelByName("help"));
 				break;
 			case "add":
 				this.$.add.setApi(inEvent.api);
-				this.$.add.setPreviousPage(inEvent.previousPage)
-				this.$.add.activate()
-				this.setIndex(this.selectPanelByName("add"))
+				this.$.add.setPreviousPage(inEvent.previousPage);
+				this.$.add.activate();
+				this.setIndex(this.selectPanelByName("add"));
 				break;
 		}
 	},
@@ -119,8 +119,6 @@ enyo.kind({
 				this.handleOrientationChanged()
 			}		
 		}
-
-		inEvent.lastPage.activate()
 		
 		if(inSender.name === "add")
 		{
@@ -128,6 +126,7 @@ enyo.kind({
 		}
 		
 		this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
+		inEvent.lastPage.activate()
 	},
 	
 	handleThemeChanged: function() {
