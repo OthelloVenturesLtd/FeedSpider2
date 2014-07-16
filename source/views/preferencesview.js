@@ -26,10 +26,11 @@ enyo.kind({
 						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Allow landscape"},
 						{name: "allowLandscape", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setAllowLandscape"}
 					]},
-					{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
+					//Nothing that we support right now supports a Palm-style gesture area
+					/*{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
 						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Landscape gesture scrolling"},
 						{name: "gestureScrolling", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setGestureScrolling"}
-					]},
+					]},*/
 					{kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
 						{kind: "onyx.PickerDecorator", style: "width:100%;", components: [
 							{layoutKind: "FittableColumnsLayout", noStretch: true, style: "padding-left: 10px; width:100%; background-color: #e6e3de; border-width: 0px; border-radius: 0px; background: none", components: [
@@ -103,10 +104,11 @@ enyo.kind({
 						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Hide Read Articles"},
 						{name: "hideReadArticles", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setHideReadArticles"}
 					]},
-					{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
+					//This is not currently supported by the enyo list kind
+					/*{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
 						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Mark read as you scroll"},
 						{name: "markReadScroll", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setMarkReadScroll"}
-					]}
+					]}*/
 				]}
 			]},
 			{tag: "div", classes: "feedspider-groupbox", components: [
@@ -185,12 +187,12 @@ enyo.kind({
 
 		//Setup checkboxes
 		this.$.allowLandscape.checked = Preferences.allowLandscape()
-		this.$.gestureScrolling.checked = Preferences.gestureScrolling()
+		//this.$.gestureScrolling.checked = Preferences.gestureScrolling()
 		this.$.hideReadFeeds.checked = Preferences.hideReadFeeds()
 		this.$.hideReadArticles.checked = Preferences.hideReadArticles()
 		this.$.backAfterMarkRead.checked = Preferences.goBackAfterMarkAsRead()
 		this.$.combineFolders.checked = Preferences.combineFolders()
-		this.$.markReadScroll.value = Preferences.markReadAsScroll()
+		//this.$.markReadScroll.value = Preferences.markReadAsScroll()
 		this.$.feedlySortEngagement.checked = Preferences.isFeedlySortEngagement()
 		this.$.shortenURLs.checked = Preferences.isShortenURLs()
 
