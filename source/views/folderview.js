@@ -92,8 +92,21 @@ enyo.kind({
 
 		if (item.unreadCount > 0)
     	{
-    		this.$.sourceName.setStyle("font-weight: bold");
-    		this.$.sourceUnreadCount.setStyle("float: right; font-weight: bold");
+    		//The reason for this ugly hack on FirefoxOS is because using float:right will cause the count to be displayed
+    		//on the next line of the list. We know that this will work because sticky sources is rendered first, and at 
+    		//this point, we can guarantee the presence of at least one source.
+    		if (enyo.platform.firefoxOS)
+    		{
+    			var width = this.$.stickySources.controls[0].controls[0].controls[1].domStyles.width;
+    			var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
+    			this.$.sourceName.setStyle("width:" + width + "; font-weight: bold");
+    			this.$.sourceUnreadCount.setStyle("width:" + remainder + "px; text-align: right; font-weight: bold");
+    		}
+    		else
+    		{
+    			this.$.sourceName.setStyle("font-weight: bold");
+    			this.$.sourceUnreadCount.setStyle("float: right; font-weight: bold");
+    		}
     		this.$.sourceUnreadCount.setContent(item.unreadCount); 		
     	} 
 		else
@@ -121,8 +134,21 @@ enyo.kind({
 
 		if (item.unreadCount > 0)
     	{
-    		this.$.reorderName.setStyle("font-weight: bold");
-    		this.$.reorderUnreadCount.setStyle("float: right; font-weight: bold");
+    		//The reason for this ugly hack on FirefoxOS is because using float:right will cause the count to be displayed
+    		//on the next line of the list. We know that this will work because sticky sources is rendered first, and at 
+    		//this point, we can guarantee the presence of at least one source.
+    		if (enyo.platform.firefoxOS)
+    		{
+    			var width = this.$.stickySources.controls[0].controls[0].controls[1].domStyles.width;
+    			var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
+    			this.$.reorderName.setStyle("width:" + width + "; font-weight: bold");
+    			this.$.reorderUnreadCount.setStyle("width:" + remainder + "px; text-align: right; font-weight: bold");
+    		}
+    		else
+    		{
+    			this.$.reorderName.setStyle("font-weight: bold");
+    			this.$.reorderUnreadCount.setStyle("float: right; font-weight: bold");
+    		}
     		this.$.reorderUnreadCount.setContent(item.unreadCount); 		
     	} 
 		else
@@ -191,7 +217,6 @@ enyo.kind({
         this.$.MainList.completeSwipe()
     },
 
-//PORT FROM HERE
 	sourcesReordered: function(inSender, inEvent) {
 		var beforeSubscription = null
 
@@ -217,6 +242,7 @@ enyo.kind({
 		this.folder.recalculateUnreadCounts()
 	},
 
+//PORT FROM HERE
 	refresh: function() {
 		if(!self.refreshing) {
 			this.refreshing = true
