@@ -1,4 +1,3 @@
-//TODO: handle activate/deactivate
 enyo.kind({
 	name: "FeedSpider2.MainView",
 	kind: "FeedSpider2.BaseView",
@@ -37,7 +36,7 @@ enyo.kind({
 		reorderComponents: [
 			{name: "reorderContent", classes: "enyo-fit", layoutKind: "enyo.FittableColumnsLayout", style: "background:lightgrey;", components: [
 				{name: "reorderIcon", style: "height: 50px; width: 30px;"},
-				{name: "reorderName", classes: "subscription-title", style:"color: white;", tag: "span", fit: true},
+				{name: "reorderName", classes: "subscription-title", tag: "span", fit: true},
 				{name: "reorderUnreadCount", classes: "subscription-count", tag: "span"}
 			]}
 		],
@@ -55,6 +54,7 @@ enyo.kind({
     	this.credentials = new Credentials();
     	this.loaded = false;
     	this.reloading = false;
+    	this.swiping = false;
 	},
 	
 	rendered: function() {
@@ -79,7 +79,7 @@ enyo.kind({
 		{
 			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
 		}
-		
+
 		this.filterAndRefresh()
 	},
 	
@@ -180,7 +180,22 @@ enyo.kind({
 	setupSwipeItem: function(inSender, inEvent) {
         // because setting it on the list itself fails:
         this.$.MainList.setPersistSwipeableItem(true);
+        this.$.MainList.setReorderable(false)
         this.activeItem = inEvent.index;
+        this.swiping = true;
+    },
+
+	completeSwipeItem: function() {
+        this.$.MainList.completeSwipe();
+        this.swiping = false;
+        if (Preferences.isManualFeedSort())
+		{
+			this.$.MainList.setReorderable(true)
+		}
+		else
+		{
+			this.$.MainList.setReorderable(false)
+		}
     },
 
 	reload: function() {
@@ -216,9 +231,9 @@ enyo.kind({
 					self.$.MainList.setCount(self.sources.subscriptionSources.items.length);
 					
 			   		self.$.stickySources.render();
-					self.$.MainList.render()
-					self.$.smallSpinner.hide()
-					self.$.refreshButton.show()
+					self.$.MainList.refresh();
+					self.$.smallSpinner.hide();
+					self.$.refreshButton.show();
 				},
 
 				this.showError.bind(this)
@@ -239,6 +254,11 @@ enyo.kind({
 	},
 	
 	sourceTapped: function(inSender, inEvent) {
+		if (this.swiping)
+		{
+			return true;
+		}
+		
 		if(inEvent.isFolder && !Preferences.combineFolders()) {
 			this.doSwitchPanels({target: "folder", api: this.api, folder: inEvent, previousPage: this})
 		}
@@ -249,6 +269,11 @@ enyo.kind({
 	},
 	
 	listSourceTapped: function(inSender, inEvent) {
+		if (this.swiping)
+		{
+			return true;
+		}
+		
 		var i = inEvent.index;
 		var item = this.sources.subscriptionSources.items[i];
 		if(item.isFolder && !Preferences.combineFolders()) {
@@ -263,13 +288,13 @@ enyo.kind({
     deleteButtonTapped: function(inSender, inEvent) {
         this.$.MainList.setPersistSwipeableItem(false);
         this.sourceDeleted(this.activeItem); 
-        this.$.MainList.completeSwipe();
+		this.completeSwipeItem();
    		this.filterAndRefresh();
     },
 
     cancelButtonTapped: function(inSender, inEvent) {
         this.$.MainList.setPersistSwipeableItem(false);
-        this.$.MainList.completeSwipe()
+		this.completeSwipeItem();
     },
 
 	sourceDeleted: function(event) {

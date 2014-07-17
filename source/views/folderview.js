@@ -42,7 +42,7 @@ enyo.kind({
 		reorderComponents: [
 			{name: "reorderContent", classes: "enyo-fit", layoutKind: "enyo.FittableColumnsLayout", style: "background:lightgrey;", components: [
 				{name: "reorderIcon", style: "height: 50px; width: 30px;"},
-				{name: "reorderName", classes: "subscription-title", style:"color: white;", tag: "span", fit: true},
+				{name: "reorderName", classes: "subscription-title", tag: "span", fit: true},
 				{name: "reorderUnreadCount", classes: "subscription-count", tag: "span"}
 			]}
 		],
@@ -53,6 +53,11 @@ enyo.kind({
 			]}
 		]},
 	],
+
+  	create: function() {
+    	this.inherited(arguments);
+    	this.swiping = false;
+	},
 
 	activate: function(changes) {
 		if (Preferences.isManualFeedSort())
@@ -160,7 +165,22 @@ enyo.kind({
 	setupSwipeItem: function(inSender, inEvent) {
         // because setting it on the list itself fails:
         this.$.MainList.setPersistSwipeableItem(true);
+        this.$.MainList.setReorderable(false)
         this.activeItem = inEvent.index;
+        this.swiping = true;
+    },
+
+	completeSwipeItem: function() {
+        this.$.MainList.completeSwipe();
+        this.swiping = false;
+        if (Preferences.isManualFeedSort())
+		{
+			this.$.MainList.setReorderable(true)
+		}
+		else
+		{
+			this.$.MainList.setReorderable(false)
+		}
     },
 
 	filterAndRefresh: function() {
@@ -185,11 +205,21 @@ enyo.kind({
 	},
 
 	sourceTapped: function(inSender, inEvent) {
+		if (this.swiping)
+		{
+			return true;
+		}
+		
 		this.doSwitchPanels({target: "feed", api: this.api, subscription: inEvent, previousPage: this})
 		return true;
 	},
 
 	listSourceTapped: function(inSender, inEvent) {
+		if (this.swiping)
+		{
+			return true;
+		}
+		
 		var i = inEvent.index;
 		var item = this.subscriptions.items[i];
 		this.doSwitchPanels({target: "feed", api: this.api, subscription: item, previousPage: this})
@@ -199,13 +229,13 @@ enyo.kind({
     deleteButtonTapped: function(inSender, inEvent) {
         this.$.MainList.setPersistSwipeableItem(false);
         this.sourceDeleted(this.activeItem); 
-        this.$.MainList.completeSwipe();
+		this.completeSwipeItem();
    		this.filterAndRefresh();
     },
 
     cancelButtonTapped: function(inSender, inEvent) {
         this.$.MainList.setPersistSwipeableItem(false);
-        this.$.MainList.completeSwipe()
+		this.completeSwipeItem();
     },
 
 	sourcesReordered: function(inSender, inEvent) {
