@@ -191,7 +191,8 @@ enyo.kind({
 			this.handleGoBack()
 		}
 		this.$.stickySources.render();
-		this.$.MainList.refresh()
+		this.$.MainList.refresh();
+		this.resized();
 	},
 
 	filter: function() {
