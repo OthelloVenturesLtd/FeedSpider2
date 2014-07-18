@@ -30,11 +30,14 @@ enyo.kind({
 			{kind: "onyx.Icon"}, //This is here to keep the header centered.
 			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", style: "display: none"},
 			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
-			{name: "markAllRead", kind: "onyx.IconButton", ontap: "switchPanels", src: "assets/mark-all-read.png"}
+			{name: "markAllRead", kind: "onyx.IconButton", ontap: "switchPanels", src: "assets/mark-all-read.png"},
+			{name: "placeholderIcon", kind: "onyx.Icon", showing: false}
 		]},
 		
-		{name: "MainList", kind: "List", fit: true, count: 0, style:"width: 100%;", enableSwipe: true, onSetupItem: "setupItem", onSetupSwipeItem: "setupSwipeItem", components: [
-			{name: "source", layoutKind: enyo.FittableRowsLayout, noStretch: true, ontap: "articleTapped", components: [
+		{name: "noArticles", content: "No articles were found", style: "padding-top: 10px; padding-left: 10px; font-size 14px; font-weight: bold", showing: false},
+		
+		{name: "MainList", kind: "enyo.List", fit: true, count: 0, style:"width: 100%;", enableSwipe: true, onSetupItem: "setupItem", onSetupSwipeItem: "setupSwipeItem", onSwipeComplete: "completeSwipeItem", components: [
+			{name: "source", layoutKind: enyo.FittableRowsLayout, ontap: "articleTapped", components: [
 				{name: "articleDivider", tag: "table", classes: "divider", style: "width: 100%", components: [
 					{tag: "tr", components: [
 						{name: "left", tag: "td", classes: "labeled-left"},
@@ -42,30 +45,33 @@ enyo.kind({
 						{tag: "td", classes: "labeled-right"},
 					]}
 				]},	
-				{name: "articleName", tag: "span", classes: "article-title"},
-				{layoutKind: "FittableColumnsLayout", components: [
-					{name: "starredIcon", tag: "div", showing: false, style:"background: url('assets/starred-grey.png') no-repeat left bottom; width: 16px; height: 24px; margin-left: 10px;"},
-					{name: "articleOrigin", classes: "article-origin", style: "display:none;"},
+				{style: "padding-top: 10px; padding-left: 10px", components: [
+					{name: "articleName", tag: "span", classes: "article-title"},
+					{layoutKind: "FittableColumnsLayout", components: [
+						{name: "starredIcon", tag: "div", showing: false, style:"background: url('assets/starred-grey.png') no-repeat left bottom; width: 16px; height: 24px; margin-right: 10px;"},
+						{name: "articleOrigin", classes: "article-origin", style: "display:none;"},
+					]},
 				]},
 				{name: "borderContainer"}
 			]}
 		],
 		swipeableComponents: [
-			{style: "height: 100%; background-color: darkgrey; text-align:center", components: [
-				{kind: "onyx.Button", content: "Delete", style: "margin-top: 10px; margin-right: 10px;", classes:"onyx-negative", ontap: "deleteButtonTapped"},
-				{kind: "onyx.Button", content: "Cancel", style: "margin-left: 10px;", ontap: "cancelButtonTapped"}
+			{name: "swipeContainer", layoutKind: "enyo.FittableColumnsLayout", style: "background-color: darkgrey; height: 100%", components: [
+				{name: "articleStarredIcon", style: "height: 100%; width: 30px; margin-left: 10px; background: url(assets/swipe-starred-on.png) center center no-repeat;"},
+				{name: "swipeSpacer"},
+				{name: "articleReadIcon", style: "height: 100%; width: 30px; margin-right: 10px; background: url(assets/swipe-read-on.png) center center no-repeat;"},
 			]}
-		]},
+		]}
 	],
 	
   	create: function() {
     	this.inherited(arguments);
     	this.loaded = false;
     	this.reloading = false;
+    	this.swiping = false;
 	},
 
 	activate: function(changes_or_scroll) {
-		//$super(changes_or_scroll)
 		if (Preferences.hideReadArticles()){
 			this.$.showHideArticlesMenuItem.setContent("Show Read Articles")
 		}
@@ -96,19 +102,7 @@ enyo.kind({
 				this.tappedIndex = this.tappedIndex + parseInt(changes_or_scroll, 10)
 				this.controller.get("articles").mojo.revealItem(this.tappedIndex, true)
 			}
-		}
-
-		if(Preferences.markReadAsScroll()) {
-			if(!this.markingReadAsScroll) {
-				this.scroller.observe(Mojo.Event.dragging, this.scrolling)
-				this.markingReadAsScroll = true
-			}
-		}
-		else {
-			//this.scroller.stopObserving(Mojo.Event.dragging, this.scrolling)
 		}*/
-
-		//if(!this.subscription.disableSearch) {this.listenForSearch()}
 	},
 
 	findArticles: function(scrollToTop) {
@@ -119,9 +113,9 @@ enyo.kind({
 	},
 
 	foundArticles: function(scrollToTop) {
-		//this.refreshList(this.$.MainList, this.subscription.items)
 		this.$.MainList.setCount(this.subscription.items.length)
 		this.$.MainList.refresh()
+		this.resized();
 		if(scrollToTop) {
 			this.$.MainList.scrollToStart()
 		}
@@ -129,31 +123,28 @@ enyo.kind({
 		this.$.smallSpinner.hide()
 		this.$.errorIcon.hide()
 		this.showMarkAllRead()
-		//this.showMessageIfEmpty()
+		this.showMessageIfEmpty()
 	},
 
-	//TODO: Implement in an enyo-y manner
 	showMessageIfEmpty: function() {
 		if(this.subscription.items.length) {
-			var noItems = this.controller.sceneElement.querySelector(".no-items")
-			if(noItems) {noItems.remove()}
+			this.$.noArticles.hide()
 		}
 		else {
-			if(this.controller.sceneElement.select(".no-items").length == 0) {
-				this.controller.sceneElement.insert("<div class=\"no-items\">" + $L("No articles were found") + "</div>")
-			}
+			this.$.noArticles.show()
 		}
 	},
 
 	showMarkAllRead: function() {
-		//TODO: see about changing icon source instead of show/hide to preserve spacing
 		if (this.subscription.canMarkAllRead) 
 		{
-			this.$.markAllRead.show()	
+			this.$.markAllRead.show();
+			this.$.placeholderIcon.hide();
 		}
 		else
 		{
-			this.$.markAllRead.hide()
+			this.$.markAllRead.hide();
+			this.$.placeholderIcon.show();
 		}
 	},
 
@@ -235,8 +226,64 @@ enyo.kind({
 		return true;
 	},
 
+	setupSwipeItem: function(inSender, inEvent) {
+        var i = inEvent.index;
+		var item = this.subscription.items[i];
+        
+        if (inEvent.xDirection == 1)
+        {
+        	var remainder = window.innerWidth - 50;
+        	this.$.swipeSpacer.setStyle("width: " + remainder + "px");
+        	
+        	if (item.isRead) 
+        	{
+        		this.$.articleReadIcon.setStyle("height: 100%; width: 30px; margin-right: 10px; background: url(assets/swipe-read.png) center center no-repeat;");
+        	}
+        	else 
+        	{
+        		this.$.articleReadIcon.setStyle("height: 100%; width: 30px; margin-right: 10px; background: url(assets/swipe-read-on.png) center center no-repeat;");
+        	}
+        	
+        	this.$.articleStarredIcon.hide();
+        	this.$.articleReadIcon.show();
+        }
+        if (inEvent.xDirection == -1)
+        {
+           	if (item.isStarred) 
+        	{
+        		this.$.articleStarredIcon.setStyle("height: 100%; width: 30px; margin-left: 10px; background: url(assets/swipe-starred.png) center center no-repeat;");
+        	}
+        	else 
+        	{
+        		this.$.articleStarredIcon.setStyle("height: 100%; width: 30px; margin-left: 10px; background: url(assets/swipe-starred-on.png) center center no-repeat;");
+        	}
+        	
+        	this.$.articleReadIcon.hide();
+        	this.$.articleStarredIcon.show();      
+        } 
+    },
+
+	completeSwipeItem: function(inSender, inEvent) {
+        var i = inEvent.index;
+		var item = this.subscription.items[i];
+		
+        if (inEvent.xDirection == 1)
+        {
+           	item.toggleRead();
+        }        
+        else if (inEvent.xDirection == -1)
+        {
+        	item.toggleStarred();
+        }
+        this.$.MainList.refresh();
+    },
+	
 //TODO: Port from here
 	articleTapped: function(inSender, inEvent) {
+		if (this.$.MainList.isSwiping)
+		{
+			return true;
+		}
 		var i = inEvent.index;
 		var item = this.subscription.items[i];
 		
@@ -247,68 +294,6 @@ enyo.kind({
 			this.tappedIndex = event.index
 			this.controller.stageController.pushScene("article", event.item, 0, this.subscription)
 		}*/
-	},
-
-	divide: function(article) {
-		return article.sortDate
-	},
-
-	itemRendered: function(listWidget, itemModel, itemNode) {
-		this.subscription.highlight(itemNode.down(".article-title"))
-		var origin
-		itemModel._itemNode = itemNode
-
-		if(itemModel.load_more) {
-			this.findArticles()
-		}
-		else {
-			if(!itemModel.isRead) {
-				itemNode.addClassName("unread")
-			}
-
-			if(itemModel.isStarred) {
-				itemNode.addClassName("starred")
-				origin = itemNode.down(".article-origin")
-				origin.update("&nbsp;")
-				origin.show()
-			}
-
-			if(this.subscription.showOrigin) {
-				origin = itemNode.down(".article-origin")
-				origin.update(itemModel.origin)
-				origin.show()
-			}
-		}
-	},
-
-	scrolling: function() {
-		var scrollPosition = this.scroller.mojo.getScrollPosition()
-		var theBottom = scrollPosition.top - this.scroller.offsetHeight
-		var markAllRead = true
-		var item, i
-
-		for(i = 0; i < this.subscription.items.length; i++) {
-			item = this.subscription.items[i]
-
-			if(!item._itemNode) {
-				markAllRead = false
-				break
-			}
-
-			if(this.scroller.offsetTop - item._itemNode.offsetTop - item._itemNode.offsetHeight < theBottom) {
-				markAllRead = false
-				break
-			}
-		}
-
-		for(i = 0; i < this.subscription.items.length; i++) {
-			item = this.subscription.items[i]
-
-			if(item._itemNode && (item._itemNode.offsetTop + scrollPosition.top < this.articlesTop || markAllRead) && !item.isRead && !item.keepUnread) {
-				item.turnReadOn(function() {}, function() {})
-				item._itemNode.removeClassName("unread")
-			}
-		}
 	},
 
 	markAllRead: function() {
@@ -330,92 +315,6 @@ enyo.kind({
 
 			this.showError.bind(this)
 		)
-	},
-
-	_getNodeFrom: function(event) {
-		return event.target.up(".palm-row")
-	},
-
-	dragStart: function(event) {
-		if(Math.abs(event.filteredDistance.x) > 2 * Math.abs(event.filteredDistance.y)) {
-			var node = this._getNodeFrom(event)
-
-			Mojo.Drag.setupDropContainer(node, this)
-
-			node._dragger = Mojo.Drag.startDragging(
-				this.controller,
-				node,
-				event.down,
-				{
-		  			preventVertical: true,
-		  			draggingClass: "palm-delete-element",
-		  			preventDropReset: false
-				}
-			)
-
-			event.stop()
-		}
-	},
-
-	dragEnter: function(item) {
-		this.dragHeight = item.getHeight()
-		this.dragAdjNode = undefined
-		this.insertSpacer(item)
-	},
-
-	dragHover: function(element) {
-		var spacer = element._spacer
-		spacer.setAttribute("class", "palm-swipe-container");
-
-		spacer.addClassName(element.offsetLeft > 0 ? "swipe-right" : "swipe-left")
-		spacer.addClassName(element._mojoListItemModel.isRead ? "swipe-read" : "swipe-not-read")
-		spacer.addClassName(element._mojoListItemModel.isStarred ? "swipe-starred" : "swipe-not-starred")
-
-		element._toggleRead = element.offsetLeft > 50
-		element._toggleStarred = element.offsetLeft < -50
-
-		if(element._toggleRead) {
-			spacer.toggleClassName("swipe-read")
-			spacer.toggleClassName("swipe-not-read")
-		}
-
-		if(element._toggleStarred) {
-			spacer.toggleClassName("swipe-starred")
-			spacer.toggleClassName("swipe-not-starred")
-		}
-	},
-
-	dragDrop: function(element) {
-		element._dragger.resetElement()
-		delete element._dragger
-
-		element._spacer.remove()
-		delete element._spacer
-
-		if(element._toggleRead) {
-			element._mojoListItemModel.toggleRead()
-			this.refreshList(this.controller.get("articles"), this.subscription.items)
-		}
-
-		if(element._toggleStarred) {
-			element._mojoListItemModel.toggleStarred()
-			this.refreshList(this.controller.get("articles"), this.subscription.items)
-		}
-	},
-
-	insertSpacer: function(itemNode) {
-		var spacer = this.spacerTemplate.cloneNode(true)
-		itemNode.insert({before: spacer})
-		itemNode._spacer = spacer
-
-		var height = Element.getHeight(itemNode) + 'px'
-		spacer.style.height = height
-
-		var heightNodes = spacer.querySelectorAll("div[x-mojo-set-height]")
-
-		for(var i = 0; i < heightNodes.length; i++) {
-			heightNodes[i].style.height = height
-		}
 	},
 
 	showError: function() {
