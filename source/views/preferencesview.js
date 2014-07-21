@@ -182,9 +182,32 @@ enyo.kind({
 		{name: "notificationFeedsDialog", kind: "FeedSpider2.NotificationFeedsDialog", onComplete: "feedSelectionComplete"}
 	],
 	
-	create: function() {
-    	this.inherited(arguments);
+	rendered: function()
+	{
+		this.inherited(arguments);
+		
+		//Fix pickers - there is a rendering error if the pickers have their width set if they are hidden 
+		this.$.themePickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
+		this.$.feedSortOrderPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
+		this.$.sortOrderPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
+		this.$.fontSizePickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
+		this.$.notificationIntervalPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
+		this.$.notificationFeedsPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
+	},
 
+	activate: function()
+	{
+		//Cache Existing Values
+		this.originalAllowLandscape = Preferences.allowLandscape()
+		this.originalSortOrder = Preferences.isOldestFirst()
+		this.originalHideReadFeeds = Preferences.hideReadFeeds()
+		this.originalHideReadArticles = Preferences.hideReadArticles()
+		this.originalFontSize = Preferences.fontSize()
+		this.originalFeedSortOrder = Preferences.isManualFeedSort()
+		this.originalTheme = Preferences.getTheme()
+		this.originalNotificationInterval = Preferences.notificationInterval()
+		this.originalFeedlySortEngagement = Preferences.isFeedlySortEngagement()
+		
 		//Setup checkboxes
 		this.$.allowLandscape.checked = Preferences.allowLandscape()
 		//this.$.gestureScrolling.checked = Preferences.gestureScrolling()
@@ -222,34 +245,9 @@ enyo.kind({
 		this.setPicker(this.$.notificationFeedsPicker, this.$.notificationFeedsPickerHeader, this.notificationFeeds)
 		
 		//Set up Notifications groupbox
-		this.showAndHideStuff()
-	},
-	
-	rendered: function()
-	{
-		this.inherited(arguments);
+		this.showAndHideStuff()	
 		
-		//Fix pickers - there is a rendering error if the pickers have their width set if they are hidden 
-		this.$.themePickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
-		this.$.feedSortOrderPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
-		this.$.sortOrderPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
-		this.$.fontSizePickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
-		this.$.notificationIntervalPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
-		this.$.notificationFeedsPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width})
-	},
-
-	activate: function()
-	{
-		//Cache Existing Values
-		this.originalAllowLandscape = Preferences.allowLandscape()
-		this.originalSortOrder = Preferences.isOldestFirst()
-		this.originalHideReadFeeds = Preferences.hideReadFeeds()
-		this.originalHideReadArticles = Preferences.hideReadArticles()
-		this.originalFontSize = Preferences.fontSize()
-		this.originalFeedSortOrder = Preferences.isManualFeedSort()
-		this.originalTheme = Preferences.getTheme()
-		this.originalNotificationInterval = Preferences.notificationInterval()
-		this.originalFeedlySortEngagement = Preferences.isFeedlySortEngagement()
+		this.render();
 	},
 		
 	setPicker: function(picker, header, pref) {
