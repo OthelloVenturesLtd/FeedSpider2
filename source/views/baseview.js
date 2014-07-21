@@ -45,19 +45,19 @@ enyo.kind({
 	},
 
 	toggleArticles: function() {
-		if (Preferences.hideReadFeeds()){
+		Preferences.setHideReadArticles(!Preferences.hideReadArticles());
+		this.activate({feedChanged: true})
+		/*if (Preferences.hideReadArticles()){
 			this.$.showHideArticlesMenuItem.setContent("Hide Read Articles")
 			Preferences.setHideReadArticles(false);
-          	//this.reload();
-          	this.filterAndRefresh();
+
 		}
 		else
 		{
 			this.$.showHideArticlesMenuItem.setContent("Show Read Articles")
 			Preferences.setHideReadArticles(true);
-          	//this.reload();
-          	this.filterAndRefresh();
-		}
+
+		}*/
 	},
 
 	addSubscription: function() {
