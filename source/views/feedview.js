@@ -11,6 +11,10 @@ enyo.kind({
 	handlers: {
 		onArticleTap: "articleTapped",
 	},
+
+	events: {
+		onMassMarkAsRead: ""
+	},
 	
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
@@ -30,13 +34,13 @@ enyo.kind({
 			{kind: "onyx.Icon"}, //This is here to keep the header centered.
 			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", style: "display: none"},
 			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
-			{name: "markAllRead", kind: "onyx.IconButton", ontap: "switchPanels", src: "assets/mark-all-read.png"},
+			{name: "markAllRead", kind: "onyx.IconButton", ontap: "markAllRead", src: "assets/mark-all-read.png"},
 			{name: "placeholderIcon", kind: "onyx.Icon", showing: false}
 		]},
 		
 		{name: "noArticles", content: "No articles were found", style: "padding-top: 10px; padding-left: 10px; font-size 14px; font-weight: bold", showing: false},
 		
-		{name: "MainList", kind: "enyo.List", fit: true, count: 0, style:"width: 100%;", enableSwipe: true, onSetupItem: "setupItem", onSetupSwipeItem: "setupSwipeItem", onSwipeComplete: "completeSwipeItem", components: [
+		{name: "MainList", kind: "FeedSpider2.EventList", fit: true, count: 0, style:"width: 100%;", enableSwipe: true, percentageDraggedThreshold: 1.50, onSetupItem: "setupItem", onSetupSwipeItem: "setupSwipeItem", onSwipeAnimationComplete: "listItemRendered", onScroll: "scrollEvent", components: [
 			{name: "source", layoutKind: enyo.FittableRowsLayout, ontap: "articleTapped", components: [
 				{name: "articleDivider", tag: "table", classes: "divider", style: "width: 100%", components: [
 					{tag: "tr", components: [
@@ -69,69 +73,88 @@ enyo.kind({
     	this.loaded = false;
     	this.reloading = false;
     	this.swiping = false;
+    	this.loadingArticles = false;
 	},
 
 	activate: function(changes_or_scroll) {
 		if (Preferences.hideReadArticles()){
-			this.$.showHideArticlesMenuItem.setContent("Show Read Articles")
+			this.$.showHideArticlesMenuItem.setContent("Show Read Articles");
 		}
 		else
 		{
-			this.$.showHideArticlesMenuItem.setContent("Hide Read Articles")
+			this.$.showHideArticlesMenuItem.setContent("Hide Read Articles");
 		}
 
-		this.$.title.setContent(this.subscription.title)
-		this.subscription.reset()
-		this.previousDate = "";
-		this.findArticles()
+		this.$.title.setContent(this.subscription.title);
 
-		/*if(changes_or_scroll && (changes_or_scroll.sortOrderChanged || changes_or_scroll.hideReadArticlesChanged)) {
-			this.subscription.reset()
-			this.findArticles(true)
+		if(changes_or_scroll && (changes_or_scroll.sortOrderChanged || changes_or_scroll.hideReadArticlesChanged || changes_or_scroll.feedChanged)) {
+			this.subscription.reset();
+			this.findArticles(true);
 		}
 		else {
-			this.refreshList(this.$.MainList, this.subscription.items)
+			this.$.MainList.refresh();
 
 			if("top" == changes_or_scroll) {
-				this.controller.getSceneScroller().mojo.revealTop()
+				this.$.MainList.scrollToTop();
 			}
 			else if("bottom" == changes_or_scroll) {
-				this.controller.getSceneScroller().mojo.revealBottom()
+				this.$.MainList.scrollToBottom();
 			}
-			else if(parseInt(changes_or_scroll, 10)) {
-				this.tappedIndex = this.tappedIndex + parseInt(changes_or_scroll, 10)
-				this.controller.get("articles").mojo.revealItem(this.tappedIndex, true)
-			}
-		}*/
+			/*else if(parseInt(changes_or_scroll, 10)) {
+				this.tappedIndex = this.tappedIndex + parseInt(changes_or_scroll, 10);
+				this.$.MainList.scrollToRow(this.tappedIndex);
+			}*/
+		}
+	},
+
+	listItemRendered: function() {
+		this.swiping = false;
+		this.$.MainList.refresh();
+	},
+	
+	scrollEvent: function(inSender, inEvent) {
+		if(this.subscription.continuation != undefined && (inEvent.scrollBounds.top >= inEvent.scrollBounds.maxTop - inEvent.scrollBounds.clientHeight) && this.loadingArticles == false)
+		{
+			this.findArticles();
+		}
 	},
 
 	findArticles: function(scrollToTop) {
-		this.$.markAllRead.hide()
-		this.$.errorIcon.hide()
-		this.$.smallSpinner.show()	
-		this.subscription.findArticles(this.foundArticles.bind(this, scrollToTop || false), this.showError.bind(this))	
+		this.$.markAllRead.hide();
+		this.$.errorIcon.hide();
+		this.$.smallSpinner.show();
+		this.loadingArticles = true;
+		this.subscription.findArticles(this.foundArticles.bind(this, scrollToTop || false), this.showError.bind(this));
 	},
 
 	foundArticles: function(scrollToTop) {
-		this.$.MainList.setCount(this.subscription.items.length)
-		this.$.MainList.refresh()
-		this.resized();
-		if(scrollToTop) {
-			this.$.MainList.scrollToStart()
+		if (this.subscription.continuation != undefined)
+		{
+			this.$.MainList.setCount(this.subscription.items.length + 1);
+		}
+		else
+		{
+			this.$.MainList.setCount(this.subscription.items.length);
 		}
 
-		this.$.smallSpinner.hide()
-		this.$.errorIcon.hide()
-		this.showMarkAllRead()
-		this.showMessageIfEmpty()
+		this.resized();
+		if(scrollToTop) {
+			this.$.MainList.scrollToStart();
+		}
+
+		this.loadingArticles = false;
+		this.$.smallSpinner.hide();
+		this.$.errorIcon.hide();
+		this.showMarkAllRead();
+		this.showMessageIfEmpty();
 	},
 
 	showMessageIfEmpty: function() {
 		if(this.subscription.items.length) {
-			this.$.noArticles.hide()
+			this.$.noArticles.hide();
 		}
 		else {
-			this.$.noArticles.show()
+			this.$.noArticles.show();
 		}
 	},
 
@@ -149,14 +172,23 @@ enyo.kind({
 	},
 
 	handleGoBack: function() {
-		this.$.MainList.setCount(0)
-		this.doGoBack({lastPage: this.previousPage})
+		this.$.MainList.setCount(0);
+		this.doGoBack({lastPage: this.previousPage});
 	},	
 
 	setupItem: function(inSender, inEvent) {
 		var i = inEvent.index;
 		var item = this.subscription.items[i];
 
+		if(i == this.subscription.items.length)
+		{
+			this.$.articleName.setContent("Loading More Articles...");
+			this.$.articleName.setStyle("");
+			this.$.articleOrigin.setStyle("display:none;");
+			this.$.articleDivider.hide();
+			return true;
+		}
+		
 		this.$.articleName.setContent(item.title);
 		this.$.articleOrigin.setContent(item.origin);
 				
@@ -171,11 +203,11 @@ enyo.kind({
     	
     	if (item.isStarred)
     	{
-    		this.$.starredIcon.show()
+    		this.$.starredIcon.show();
     	}
     	else
     	{
-    		this.$.starredIcon.hide()
+    		this.$.starredIcon.hide();
     	}
 		
 		if (item.subscription.showOrigin)
@@ -196,15 +228,15 @@ enyo.kind({
 		
 		if (item.sortDate == this.previousDate)
 		{
-			this.$.articleDivider.hide()
+			this.$.articleDivider.hide();
 		}
 		else
 		{
-			this.$.dividerTitle.content = item.displayDate
-			this.$.articleDivider.show()
+			this.$.dividerTitle.content = item.displayDate;
+			this.$.articleDivider.show();
 		}
 		
-		this.previousDate = item.sortDate
+		this.previousDate = item.sortDate;
 		
 		var nextItem = this.subscription.items[i+1];
 		if (nextItem != undefined)
@@ -215,7 +247,7 @@ enyo.kind({
 			}
 			else
 			{
-				this.$.borderContainer.setStyle("padding-top: 12px; width: 100%;")
+				this.$.borderContainer.setStyle("padding-top: 12px; width: 100%;");
 			}
 		}
 		else
@@ -229,6 +261,14 @@ enyo.kind({
 	setupSwipeItem: function(inSender, inEvent) {
         var i = inEvent.index;
 		var item = this.subscription.items[i];
+
+		if(i == this.subscription.items.length)
+		{
+			this.$.MainList.swipeDragFinish();
+			return true;
+		}
+
+		this.swiping = true
         
         if (inEvent.xDirection == 1)
         {
@@ -246,6 +286,7 @@ enyo.kind({
         	
         	this.$.articleStarredIcon.hide();
         	this.$.articleReadIcon.show();
+        	item.toggleRead();
         }
         if (inEvent.xDirection == -1)
         {
@@ -259,84 +300,53 @@ enyo.kind({
         	}
         	
         	this.$.articleReadIcon.hide();
-        	this.$.articleStarredIcon.show();      
+        	this.$.articleStarredIcon.show();
+        	item.toggleStarred();   
         } 
     },
-
-	completeSwipeItem: function(inSender, inEvent) {
-        var i = inEvent.index;
-		var item = this.subscription.items[i];
-		
-        if (inEvent.xDirection == 1)
-        {
-           	item.toggleRead();
-        }        
-        else if (inEvent.xDirection == -1)
-        {
-        	item.toggleStarred();
-        }
-        this.$.MainList.refresh();
-    },
 	
-//TODO: Port from here
 	articleTapped: function(inSender, inEvent) {
-		if (this.$.MainList.isSwiping)
+		if (this.swiping || inEvent.index == this.subscription.items.length)
 		{
 			return true;
 		}
 		var i = inEvent.index;
 		var item = this.subscription.items[i];
 		
-		this.tappedIndex = i
-		this.doSwitchPanels({target: "article", article: item, scrollingIndex: 0, articleContainer: this.subscription, previousPage: this})
-		/*if(!event.item.load_more) {
-			event.item.index = event.index
-			this.tappedIndex = event.index
-			this.controller.stageController.pushScene("article", event.item, 0, this.subscription)
-		}*/
+		this.tappedIndex = i;
+		this.doSwitchPanels({target: "article", article: item, scrollingIndex: 0, articleContainer: this.subscription, previousPage: this});
+	},
+
+	showError: function() {
+		this.$.markAllRead.hide();
+		this.$.smallSpinner.hide();
+		this.$.placeholderIcon.hide();
+		this.$.errorIcon.show();
 	},
 
 	markAllRead: function() {
-		this.controller.get("mark-all-read").hide()
-		this.smallSpinnerOn()
-		var count = this.subscription.getUnreadCount()
+		this.$.markAllRead.hide();
+		this.$.errorIcon.hide();
+		this.$.smallSpinner.show();
+		var count = this.subscription.getUnreadCount();
 
+		//TODO: Fix method name collision
 		this.subscription.markAllRead(
 			function() {
-				this.smallSpinnerOff()
-				this.showMarkAllRead()
-				this.refreshList(this.controller.get("articles"), this.subscription.items)
-				Mojo.Event.send(document, "MassMarkAsRead", {id: this.subscription.id, count: count})
+				console.log("Ping!")
+				this.$.errorIcon.hide();
+				this.$.smallSpinner.show();
+				this.showMarkAllRead();
+				this.$.MainList.refresh();
+
+				this.doMassMarkAsRead({id: this.subscription.id, count: count});
 
 				if(Preferences.goBackAfterMarkAsRead()) {
-	 				this.controller.stageController.popScene()
+	 				this.handleGoBack();
 				}
 			}.bind(this),
 
 			this.showError.bind(this)
 		)
 	},
-
-	showError: function() {
-		this.$.markAllRead.hide()
-		this.$.smallSpinner.hide()
-		this.$.errorIcon.show()
-	},
-
-	refresh: function() {
-		if(!self.refreshing) {
-			this.subscription.reset()
-			this.controller.modelChanged(this.subscription)
-			this.refreshing = true
-			this.controller.get("mark-all-read").hide()
-			this.controller.get("error-header").hide()
-			this.smallSpinnerOn()
-			Mojo.Event.send(document, Feeder.Event.refreshWanted, {})
-		}
-	},
-
-	refreshComplete: function() {
-		this.refreshing = false
-		this.reload()
-	}
 });

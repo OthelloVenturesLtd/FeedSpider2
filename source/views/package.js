@@ -1,6 +1,7 @@
 enyo.depends(
 	"views.js",
 	"divider.js",
+	"eventlist.js",
 	"baseview.js",
 	"mainview.js",
 	"folderview.js",

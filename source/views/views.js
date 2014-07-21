@@ -71,7 +71,7 @@ enyo.kind({
 				this.$.feed.setApi(inEvent.api);
 				this.$.feed.setSubscription(inEvent.subscription);
 				this.$.feed.setPreviousPage(inEvent.previousPage);
-				this.$.feed.activate();
+				this.$.feed.activate({feedChanged: true});
 				this.setIndex(this.selectPanelByName("feed"));
 				break;
 			case "article":
@@ -125,8 +125,21 @@ enyo.kind({
 			inEvent.lastPage.reload()
 		}
 		
-		this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
-		inEvent.lastPage.activate()
+		if(inSender.name === "preferences" && inEvent.lastPage.name === "feed")
+		{
+			this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
+			inEvent.lastPage.activate(inEvent.changes)
+		}
+		if(inSender.name === "article" && inEvent.lastPage.name === "feed")
+		{
+			this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
+			inEvent.lastPage.activate(inEvent.scrollingIndex)
+		}
+		else
+		{
+			this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
+			inEvent.lastPage.activate()
+		}
 	},
 	
 	handleThemeChanged: function() {
