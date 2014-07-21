@@ -23,7 +23,7 @@ enyo.kind({
 			{name: "refreshButton", kind: "onyx.IconButton", ontap: "switchPanels", src: "assets/refresh.png", ontap: "reload"}
 		]},
 		
-		{name: "MainList", kind: "AroundList", fit: true, count: 0, style:"width: 100%;", reorderable: true, centerReorderContainer: false, enableSwipe: true, persistSwipeableItem: true, onSetupItem: "setupItem", onSetupReorderComponents: "setupReorderComponents", onSetupSwipeItem: "setupSwipeItem", onReorder: "sourcesReordered", aboveComponents: [
+		{name: "MainList", kind: "AroundList", fit: true, count: 0, style:"width: 100%;", reorderable: true, centerReorderContainer: false, enableSwipe: true, percentageDraggedThreshold: 0.01, persistSwipeableItem: true, onSetupItem: "setupItem", onSetupReorderComponents: "setupReorderComponents", onSetupSwipeItem: "setupSwipeItem", onReorder: "sourcesReordered", aboveComponents: [
 			{name: "stickySources", kind: "enyo.FittableRows"},
 			{name: "subscriptionsDivider", kind: "FeedSpider2.Divider", title: "Subscriptions", showing: false}	
 		], components: [

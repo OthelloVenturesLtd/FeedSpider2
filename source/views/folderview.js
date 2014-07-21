@@ -30,7 +30,7 @@ enyo.kind({
 			{name: "refreshButton", kind: "onyx.IconButton"}
 		]},
 		
-		{name: "MainList", kind: "AroundList", fit: true, count: 0, style:"width: 100%;", reorderable: true, centerReorderContainer: false, enableSwipe: true, persistSwipeableItem: true, onSetupItem: "setupItem", onSetupReorderComponents: "setupReorderComponents", onSetupSwipeItem: "setupSwipeItem", onReorder: "sourcesReordered", aboveComponents: [
+		{name: "MainList", kind: "AroundList", fit: true, count: 0, style:"width: 100%;", reorderable: true, centerReorderContainer: false, enableSwipe: true, percentageDraggedThreshold: 0.01, persistSwipeableItem: true, onSetupItem: "setupItem", onSetupReorderComponents: "setupReorderComponents", onSetupSwipeItem: "setupSwipeItem", onReorder: "sourcesReordered", aboveComponents: [
 			{name: "stickySources", kind: "enyo.FittableRows"},
 		], components: [
 			{name: "source", style: "width: 100%; border-bottom-width: 1px; border-bottom-style: groove", ontap: "listSourceTapped" , layoutKind: "enyo.FittableColumnsLayout", components: [
