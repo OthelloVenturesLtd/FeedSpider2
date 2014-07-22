@@ -9,7 +9,8 @@ enyo.kind({
 
 	events: {
 		onSwitchPanels: "switchPanels",
-		onGoBack: "closePanel"
+		onGoBack: "closePanel",
+		onLogout: "logout"
 	},
 	
 	handlers: {
@@ -59,11 +60,7 @@ enyo.kind({
     	}
   	},
 
-	//TODO: BEGIN PORTING FROM HERE
-
-	//TODO: Set up event handlers to trigger this when the top bar is tapped 
 	scrollToTop: function() {
-		this.controller.getSceneScroller().mojo.scrollTo(0, 0, true)
-	},
-	//TODO PORT TO HERE
+		this.$.MainList.scrollToStart();
+	}
 })

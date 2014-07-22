@@ -17,7 +17,7 @@ enyo.kind({
         			{content: "Logout", onSelect: "handleLogout"},
     			]}
 			]},
-			{tag: "span", content: "FeedSpider 2", style:"font-weight: bold; text-align: center", fit: true},
+			{tag: "span", content: "FeedSpider 2", style:"font-weight: bold; text-align: center", fit: true, ontap: "scrollToTop"},
 			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", style: "display: none", ontap: "reload"},
 			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
 			{name: "refreshButton", kind: "onyx.IconButton", ontap: "switchPanels", src: "assets/refresh.png", ontap: "reload"}

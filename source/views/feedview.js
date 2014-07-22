@@ -30,7 +30,7 @@ enyo.kind({
     			]}
 			]},
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
-			{name: "title", tag: "span", style:"font-weight: bold; text-align: center", fit: true},
+			{name: "title", tag: "span", style:"font-weight: bold; text-align: center", fit: true, ontap: "scrollToTop"},
 			{kind: "onyx.Icon"}, //This is here to keep the header centered.
 			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", style: "display: none"},
 			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
