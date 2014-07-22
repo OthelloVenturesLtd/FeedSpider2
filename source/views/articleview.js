@@ -47,6 +47,7 @@ enyo.kind({
 			]},
 			{style: "width: 18%; text-align:center; margin-left: 0px; margin-right: 0px;", components: [
 				{name: "nextButton", kind: "onyx.IconButton", ontap: "nextArticle", src: "assets/next-article.png"},
+				{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
 			]},
 		]}
 	],
@@ -59,121 +60,120 @@ enyo.kind({
 		if(inEvent.horizontal) {
 			if (inEvent.xDirection == -1)
 			{
-				this.nextArticle()
+				this.nextArticle();
 			}
 			if (inEvent.xDirection == 1)
 			{
-				this.previousArticle()
+				this.previousArticle();
 			}
 		}
 	},
 
 	activate: function(changes) {
-		var self = this
+		var self = this;
 		
-		this.$.title.setContent(this.article.title)
-		this.$.subscription.setContent(this.articleContainer.api.titleFor(this.article.subscriptionId))
-		this.$.author.setContent(this.article.author ? "by " + this.article.author : "")
-		this.$.summary.setContent(this.article.summary)
-		//TODO: Do when implementing search
-		//this.articleContainer.highlight(this.controller.get("summary"))
+		this.$.title.setContent(this.article.title);
+		this.$.subscription.setContent(this.articleContainer.api.titleFor(this.article.subscriptionId));
+		this.$.author.setContent(this.article.author ? "by " + this.article.author : "");
+		this.$.summary.setContent(this.article.summary);
+
+		this.$.nextButton.show();
+		this.$.smallSpinner.hide();
 
 		this.setIcons();
 		
 		if(!this.article.isRead && !this.article.keepUnread) {
-			this.toggleState(this.$.readButton, "Read")
+			this.toggleState(this.$.readButton, "Read");
 		}
 		if (enyo.platform.webos || enyo.platform.firefoxOS)
 		{
-			sharingMenu = Sharing.getPopupFor(this.article)
+			sharingMenu = Sharing.getPopupFor(this.article);
 			sharingMenu.each(function(item){
-				item.setContainer(self.$.sharingMenu)
+				item.setContainer(self.$.sharingMenu);
 			})
 		}
 	},
 
 	setFontSize: function(fontSize) {
-		this.$.summary.removeClass("tiny")
-		this.$.summary.removeClass("small")
-		this.$.summary.removeClass("medium")
-		this.$.summary.removeClass("large")
-		this.$.summary.addClass(fontSize)
+		this.$.summary.removeClass("tiny");
+		this.$.summary.removeClass("small");
+		this.$.summary.removeClass("medium");
+		this.$.summary.removeClass("large");
+		this.$.summary.addClass(fontSize);
 	},
 	
 	setIcons: function(){
 		if (this.article.isRead)
 		{
-			this.$.readButton.setSrc("assets/read-footer-on.png")
-			this.$.readButton.addClass("on")
+			this.$.readButton.setSrc("assets/read-footer-on.png");
+			this.$.readButton.addClass("on");
 		}
 		
 		if (!this.article.isRead)
 		{
-			this.$.readButton.setSrc("assets/read-footer.png")
-			this.$.readButton.removeClass("on")
+			this.$.readButton.setSrc("assets/read-footer.png");
+			this.$.readButton.removeClass("on");
 		}
 		
 		if (this.article.isStarred)
 		{
-			this.$.starredButton.setSrc("assets/starred-footer-on.png")
-			this.$.starredButton.addClass("on")
+			this.$.starredButton.setSrc("assets/starred-footer-on.png");
+			this.$.starredButton.addClass("on");
 		}
 		
 		if (!this.article.isStarred)
 		{
-			this.$.starredButton.setSrc("assets/starred-footer.png")
-			this.$.starredButton.removeClass("on")
+			this.$.starredButton.setSrc("assets/starred-footer.png");
+			this.$.starredButton.removeClass("on");
 		}
 	},
 
 	setStarred: function(inSender, inEvent) {
-		this.toggleState(inSender, "Star")
+		this.toggleState(inSender, "Star");
 	},
 
 	setRead: function(inSender, inEvent) {
-		this.toggleState(inSender, "Read", true)
+		this.toggleState(inSender, "Read", true);
 	},
 
 	toggleState: function(target, state, sticky) {
-		var self = this
+		var self = this;
 		
 		if(!target.hasClass("working")) {
-			target.addClass("working")
+			target.addClass("working");
 
 			var onComplete = function(success) {
-				target.removeClass("working")
+				target.removeClass("working");
 				
 				if(success) {
-					self.setIcons()
+					self.setIcons();
 				}
 			}
 
-			this.article["turn" + state + (target.hasClass("on") ? "Off" : "On")](onComplete, function() {}, sticky)
+			this.article["turn" + state + (target.hasClass("on") ? "Off" : "On")](onComplete, function() {}, sticky);
 		}
 	},
 
 	handleGoBack: function() {
-		this.doGoBack({lastPage: this.previousPage, scrollingIndex: this.scrollingIndex})
+		this.doGoBack({lastPage: this.previousPage, scrollingIndex: this.scrollingIndex});
 	},
 
 	previousArticle: function() {
-		this.scrollingIndex = this.scrollingIndex - 1
-		this.article.getPrevious(this.gotAnotherArticle.bind(this))
+		this.scrollingIndex = this.scrollingIndex - 1;
+		this.article.getPrevious(this.gotAnotherArticle.bind(this));
 	},
 
 	nextArticle: function() {
-		this.scrollingIndex = this.scrollingIndex + 1
-		//TODO: Handle continuation, get more articles, etc. add spinner
-		this.article.getNext(this.gotAnotherArticle.bind(this))//, this.loadingMoreArticles.bind(this, "next-article"))
+		this.scrollingIndex = this.scrollingIndex + 1;
+		this.article.getNext(this.gotAnotherArticle.bind(this), this.loadingMoreArticles.bind(this));
 	},
 
 	gotAnotherArticle: function(article) {
 		if(article) {
-			this.doSwitchPanels({target: "article", article: article, scrollingIndex: this.scrollingIndex, articleContainer: this.articleContainer, previousPage: this.previousPage})
-			//this.controller.stageController.swapScene({name: "article", transition: Mojo.Transition.crossFade}, article, this.scrollingIndex, this.articleContainer)
+			this.doSwitchPanels({target: "article", article: article, scrollingIndex: this.scrollingIndex, articleContainer: this.articleContainer, previousPage: this.previousPage});
 		}
 		else {
-			this.doGoBack({lastPage: this.previousPage, scrollTarget: this.scrollingIndex < 0 ? "top" : "bottom"})
+			this.doGoBack({lastPage: this.previousPage, scrollTarget: this.scrollingIndex < 0 ? "top" : "bottom"});
 		}
 	},
 
@@ -209,7 +209,7 @@ enyo.kind({
 	},
 
 	sendTo: function(inSender, inEvent) {
-		var self = this
+		var self = this;
 				
 		if (inEvent.originator.command == "configure")
 		{
@@ -218,23 +218,20 @@ enyo.kind({
 		}
 		else
 		{
-			Sharing.handleSelection(this.article, inEvent.originator.command)
+			Sharing.handleSelection(this.article, inEvent.originator.command);
 		}
 		
 		//Refresh Sharing Menu
 		this.$.sharingMenu = new onyx.Menu();
-		sharingMenu = Sharing.getPopupFor(this.article)
+		sharingMenu = Sharing.getPopupFor(this.article);
 		sharingMenu.each(function(item){
-			item.setContainer(self.$.sharingMenu)
+			item.setContainer(self.$.sharingMenu);
 		})
-		this.$.sharingMenu.render()
+		this.$.sharingMenu.render();
 	},
 
-//TODO PORT FROM HERE
-
-	loadingMoreArticles: function(arrow) {
-		this.controller.get(arrow).addClassName("working")
-		this.workingSpinner.spinning = true
-		this.controller.modelChanged(this.workingSpinner)
+	loadingMoreArticles: function() {
+		this.$.nextButton.hide();
+		this.$.smallSpinner.show();
 	},
 });

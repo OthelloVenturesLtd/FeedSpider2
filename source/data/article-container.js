@@ -66,7 +66,7 @@ enyo.kind({
 
 	findArticles: function(success, failure) {
 		var onSuccess = function(articles, id, continuation) {
-			//Log.debug("continuation token is " + continuation); //TODO: Add Log class
+			Log.debug("continuation token is " + continuation);
 
 			this.continuation = continuation;
 			if(this.items.length && this.items[this.items.length - 1].load_more) {
@@ -76,9 +76,7 @@ enyo.kind({
 			$A(articles).each(function(articleData) {
 				this.items.push(new FeedSpider2.Article(articleData, this));
 			}.bind(this))
-			if(this.continuation) {
-				//this.items.push(new LoadMore()); //TODO: Define LoadMore
-			}
+
 			success();
 		}.bind(this)
 		this.makeApiCall(this.continuation, onSuccess, failure);

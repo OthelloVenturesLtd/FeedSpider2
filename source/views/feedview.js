@@ -102,11 +102,10 @@ enyo.kind({
 			else if("bottom" == changes_or_scroll) {
 				this.$.MainList.scrollToBottom();
 			}
-			//TODO: Figure out why this doesn't work right
-			/*else if(parseInt(changes_or_scroll, 10)) {
+			else if(parseInt(changes_or_scroll, 10)) {
 				this.tappedIndex = this.tappedIndex + parseInt(changes_or_scroll, 10);
 				this.$.MainList.scrollToRow(this.tappedIndex);
-			}*/
+			}
 		}
 	},
 
@@ -316,6 +315,7 @@ enyo.kind({
 		}
 		var i = inEvent.index;
 		var item = this.subscription.items[i];
+		item.index = inEvent.index;
 		
 		this.tappedIndex = i;
 		this.doSwitchPanels({target: "article", article: item, scrollingIndex: 0, articleContainer: this.subscription, previousPage: this});

@@ -94,7 +94,6 @@ enyo.kind({
 
 			if(idMatch) {
 				var id = idMatch[2]
-				//TODO: Find and implement youtube-thumbnail class.
 				content = content.replace(embed, '<div class="youtube"><img class="youtube-thumbnail" src="http://img.youtube.com/vi/' + id + '/0.jpg"><div class="youtube-play" data-url="http://youtube.com/watch?v=' + id + '">&nbsp;</div></div>')
 			}
 		}
@@ -259,7 +258,7 @@ enyo.kind({
 			next.index = nextIndex
 		}
 
-		if(next && next.load_more) {
+		if(nextIndex == this.subscription.items.length && this.subscription.continuation != undefined) {
 			loadingMore()
 
 			var foundMore = function() {
