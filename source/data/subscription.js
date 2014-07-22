@@ -34,7 +34,7 @@ enyo.kind({
 		if(this.id == subscriptionId) {this.incrementUnreadCountBy(1)}
 	},
 
-	markAllRead: function(success, error) {
+	markSourceRead: function(success, error) {
 		this.api.markAllRead(this.id,
 	  		function() {
 				this.clearUnreadCount()

@@ -31,7 +31,7 @@ enyo.kind({
 		this.incrementUnreadCountBy(1);
 	},
 
-	markAllRead: function(success) {
+	markSourceRead: function(success) {
 		this.api.markAllRead(this.id, function() {
 		  this.clearUnreadCount();
 		  this.items.each(function(item) {item.isRead = true});

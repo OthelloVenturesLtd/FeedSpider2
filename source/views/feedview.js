@@ -74,6 +74,7 @@ enyo.kind({
     	this.reloading = false;
     	this.swiping = false;
     	this.loadingArticles = false;
+    	this.previousDate = "";
 	},
 
 	activate: function(changes_or_scroll) {
@@ -86,7 +87,8 @@ enyo.kind({
 		}
 
 		this.$.title.setContent(this.subscription.title);
-
+		this.previousDate = "";
+		
 		if(changes_or_scroll && (changes_or_scroll.sortOrderChanged || changes_or_scroll.hideReadArticlesChanged || changes_or_scroll.feedChanged)) {
 			this.subscription.reset();
 			this.findArticles(true);
@@ -100,6 +102,7 @@ enyo.kind({
 			else if("bottom" == changes_or_scroll) {
 				this.$.MainList.scrollToBottom();
 			}
+			//TODO: Figure out why this doesn't work right
 			/*else if(parseInt(changes_or_scroll, 10)) {
 				this.tappedIndex = this.tappedIndex + parseInt(changes_or_scroll, 10);
 				this.$.MainList.scrollToRow(this.tappedIndex);
@@ -109,6 +112,7 @@ enyo.kind({
 
 	listItemRendered: function() {
 		this.swiping = false;
+		this.previousDate = "";
 		this.$.MainList.refresh();
 	},
 	
@@ -330,13 +334,12 @@ enyo.kind({
 		this.$.smallSpinner.show();
 		var count = this.subscription.getUnreadCount();
 
-		//TODO: Fix method name collision
-		this.subscription.markAllRead(
+		this.subscription.markSourceRead(
 			function() {
-				console.log("Ping!")
 				this.$.errorIcon.hide();
-				this.$.smallSpinner.show();
+				this.$.smallSpinner.hide();
 				this.showMarkAllRead();
+				this.previousDate = "";
 				this.$.MainList.refresh();
 
 				this.doMassMarkAsRead({id: this.subscription.id, count: count});
