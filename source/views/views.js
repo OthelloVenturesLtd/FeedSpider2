@@ -106,44 +106,64 @@ enyo.kind({
 		{
 			if (inEvent.changes.themeChanged)
 			{
-				this.handleThemeChanged()
+				this.handleThemeChanged();
 			}
 		
 			if (inEvent.changes.fontSizeChanged)
 			{
-				this.handleFontSizeChanged()
+				this.handleFontSizeChanged();
 			}
 			
 			if (inEvent.changes.allowLandscapeChanged)
 			{
-				this.handleOrientationChanged()
+				this.handleOrientationChanged();
 			}		
 		}
 		
 		if(inSender.name === "add")
 		{
-			inEvent.lastPage.reload()
+			inEvent.lastPage.reload();
 		}
 		
 		if(inSender.name === "preferences" && inEvent.lastPage.name === "feed")
 		{
-			this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
-			inEvent.lastPage.activate(inEvent.changes)
+			this.setIndex(this.selectPanelByName(inEvent.lastPage.name));
+			inEvent.lastPage.activate(inEvent.changes);
 		}
 		if(inSender.name === "article" && inEvent.lastPage.name === "feed")
 		{
-			this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
-			inEvent.lastPage.activate(inEvent.scrollingIndex)
+			this.setIndex(this.selectPanelByName(inEvent.lastPage.name));
+			inEvent.lastPage.activate(inEvent.scrollingIndex);
 		}
 		else
 		{
-			this.setIndex(this.selectPanelByName(inEvent.lastPage.name))
-			inEvent.lastPage.activate()
+			this.setIndex(this.selectPanelByName(inEvent.lastPage.name));
+			inEvent.lastPage.activate();
 		}
 	},
 	
+	logout: function() {
+		var creds = new Credentials();
+		creds.password = null;
+		creds.server = null;
+		creds.id = null;
+		creds.refreshToken = null;
+		creds.accessToken = null;
+		creds.tokenType = null;
+		creds.plan = null;
+		creds.clear();
+		
+		this.setIndex(this.selectPanelByName("main"));		
+		this.$.main.$.stickySources.hide();
+		this.$.main.$.subscriptionsDivider.hide();
+		this.$.main.$.MainList.setCount(0);
+		this.$.main.$.MainList.reset();
+		this.$.main.$.LoginDialog.show();
+		this.$.main.$.LoginDialog.activate();
+	},
+	
 	handleThemeChanged: function() {
-		var theme = Preferences.getTheme()
+		var theme = Preferences.getTheme();
 		this.removeClass("theme-dark");
 		this.removeClass("theme-grey");
 		this.removeClass("theme-light");
@@ -171,7 +191,7 @@ enyo.kind({
 			}
 			else
 			{
-				result = screen.mozLockOrientation("portrait")
+				result = screen.mozLockOrientation("portrait");
 			}
 		}
 	}

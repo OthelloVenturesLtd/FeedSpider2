@@ -63,15 +63,19 @@ enyo.kind({
   	create: function() {
     	this.inherited(arguments);
 		this.setService();
-		// Get credentials for login
-		this.credentials = new Credentials();
 	},
 	
 	rendered: function() {
 		this.inherited(arguments);
+		this.activate();
 		if(((this.credentials.service !== "ttrss" || this.credentials.service !== "oc") && this.credentials.email && this.credentials.password) || ((this.credentials.service === "ttrss" || this.credentials.service === "oc") && this.credentials.email && this.credentials.password && this.credentials.server) || this.credentials.service === "feedly" || this.credentials.service === "aol" ) {
 			this.tryLoginWithSavedCredentials();
 		}        
+	},
+
+	activate: function() {
+		// Get credentials for login
+		this.credentials = new Credentials();
 	},
 	
 	setService: function() {
@@ -120,11 +124,11 @@ enyo.kind({
 			}
 			else
 			{
-				this.credentials.server = this.$.serverURLInput.value
+				this.credentials.server = this.$.serverURLInput.value;
 			}
 			
-			this.credentials.email = this.$.usernameInput.value
-			this.credentials.password = this.$.passwordInput.value
+			this.credentials.email = this.$.usernameInput.value;
+			this.credentials.password = this.$.passwordInput.value;
 					
 			this.tryLogin();
 		}
@@ -198,11 +202,11 @@ enyo.kind({
 	{	
 		var self = this;
 		
-		canGoBack = this.$.oAuthBrowser.eventNode.getCanGoBack()
+		canGoBack = this.$.oAuthBrowser.eventNode.getCanGoBack();
 		
 		canGoBack.onsuccess = function(){
 			if (this.result) {
-				self.$.oAuthBrowser.eventNode.goBack()
+				self.$.oAuthBrowser.eventNode.goBack();
 			}
 			else {
 				self.$.oAuthBrowserWrapper.hide();
@@ -214,6 +218,12 @@ enyo.kind({
 	loginSuccess: function() {
 		//On success, bubble up a success event, and pass the primed API
 		this.credentials.save();
+
+		//Reset the window for next time
+		this.$.oAuthBrowserWrapper.hide();
+		this.$.loginSpinner.hide();
+		this.$.loginWindow.show();
+		
 		this.doLoginSuccess(this.api);
 	},
 	
@@ -227,11 +237,11 @@ enyo.kind({
 		
 		if (this.credentials.email)
 		{
-			this.$.usernameInput.setValue(this.credentials.email)
+			this.$.usernameInput.setValue(this.credentials.email);
 		}
 		if (this.credentials.server)
 		{
-			this.$.serverURLInput.setValue(this.credentials.server)
+			this.$.serverURLInput.setValue(this.credentials.server);
 		}
 		
 		//Next, hide the spinner and clear the window
@@ -242,10 +252,10 @@ enyo.kind({
 	},
 
 	checkFocus: function(source, event) {
-		source.addStyles("color: black")
+		source.addStyles("color: black");
 	},
 
 	checkBlur: function(source, event) {
-		source.addStyles("color: white")
+		source.addStyles("color: white");
 	},
 });

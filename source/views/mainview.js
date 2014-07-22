@@ -227,6 +227,7 @@ enyo.kind({
 			self.sources.sortAndFilter(
 				function() {
 					self.refreshList(self.$.stickySources, self.sources.stickySources.items)
+					self.$.stickySources.show()
 					self.$.subscriptionsDivider.show()
 					self.$.MainList.setCount(self.sources.subscriptionSources.items.length);
 					
