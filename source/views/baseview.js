@@ -24,10 +24,6 @@ enyo.kind({
 		this.doSwitchPanels({target: "help", previousPage: this})
 	},
 	
-	rendered: function() {
-		this.inherited(arguments);
-	},
-	
 	toggleFeeds: function() {
 		if (Preferences.hideReadFeeds()){
 			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
@@ -47,17 +43,6 @@ enyo.kind({
 	toggleArticles: function() {
 		Preferences.setHideReadArticles(!Preferences.hideReadArticles());
 		this.activate({feedChanged: true})
-		/*if (Preferences.hideReadArticles()){
-			this.$.showHideArticlesMenuItem.setContent("Hide Read Articles")
-			Preferences.setHideReadArticles(false);
-
-		}
-		else
-		{
-			this.$.showHideArticlesMenuItem.setContent("Show Read Articles")
-			Preferences.setHideReadArticles(true);
-
-		}*/
 	},
 
 	addSubscription: function() {
@@ -65,10 +50,6 @@ enyo.kind({
 	},
 	
 	handleLogout: function() {
-		//TODO: Implement
-	},
-		
-	triggerRefresh: function() {
 		//TODO: Implement
 	},
 
@@ -89,31 +70,11 @@ enyo.kind({
     	}
   	},
 
-	//TODO: Port
-	setLeftyClass: function() {
-		var body = this.controller.document.body
-
-		if(Preferences.isLeftyFriendly()) {
-			body.addClassName("lefty")
-		}
-		else {
-			body.removeClassName("lefty")
-		}
-	},
-
 	//TODO: BEGIN PORTING FROM HERE
 
 	//TODO: Set up event handlers to trigger this when the top bar is tapped 
 	scrollToTop: function() {
 		this.controller.getSceneScroller().mojo.scrollTo(0, 0, true)
-	},
-
-	orientationChanged: function(orientation) {
-		this.orientation = orientation
-	},
-
-	inLandscape: function() {
-		return this.orientation == "left" || this.orientation == "right"
 	},
 	//TODO PORT TO HERE
 })

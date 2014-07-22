@@ -391,12 +391,6 @@ enyo.kind({
 		this.$.notificationFeedsDialog.setSources(this.sources)
 		this.$.notificationFeedsDialog.show()
 	},
-
-	weLoveLefties: function() {
-		//NOTE: This feature was never fully implemented in the original.
-		Preferences.setLeftyFriendly(Preferences.isLeftyFriendly() ? false : true)
-		this.setLeftyClass()
-	},
 	
 	feedSelectionComplete: function() {
 		this.$.notificationFeedsDialog.hide()
