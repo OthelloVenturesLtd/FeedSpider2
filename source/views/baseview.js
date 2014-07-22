@@ -17,44 +17,33 @@ enyo.kind({
 	},
 	
 	openPreferences: function() {
-		this.doSwitchPanels({target: "preferences", previousPage: this})
+		this.doSwitchPanels({target: "preferences", previousPage: this});
 	},
 	
 	openHelp: function() {
-		this.doSwitchPanels({target: "help", previousPage: this})
+		this.doSwitchPanels({target: "help", previousPage: this});
 	},
 	
 	toggleFeeds: function() {
-		if (Preferences.hideReadFeeds()){
-			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
-			Preferences.setHideReadFeeds(false);
-          	//this.reload();
-          	this.filterAndRefresh();
-		}
-		else
-		{
-			this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
-			Preferences.setHideReadFeeds(true);
-          	//this.reload();
-          	this.filterAndRefresh();
-		}
+		Preferences.setHideReadFeeds(!Preferences.hideReadFeeds());
+		this.activate();
 	},
 
 	toggleArticles: function() {
 		Preferences.setHideReadArticles(!Preferences.hideReadArticles());
-		this.activate({feedChanged: true})
+		this.activate({feedChanged: true});
 	},
 
 	addSubscription: function() {
-		this.doSwitchPanels({target: "add", previousPage: this, api: this.api})
+		this.doSwitchPanels({target: "add", previousPage: this, api: this.api});
 	},
 	
 	handleLogout: function() {
-		//TODO: Implement
+		this.doLogout();
 	},
 
   	refreshList: function(list, items) {
-  	  	var listLength = list.controls.length
+  	  	var listLength = list.controls.length;
   	  	for (var i = 0; i < listLength; i++) { 
     		list.controls[0].last = false;
     		list.controls[0].setContainer(null);
