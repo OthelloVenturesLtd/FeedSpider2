@@ -28,7 +28,7 @@ enyo.kind({
 			duration: 1
 		})
 		return true
-	}
+	}	
 });
 
 enyo.kind({
@@ -36,6 +36,10 @@ enyo.kind({
 	kind: "Panels",
 	draggable: false,
 	arrangerKind: "CardSlideInArranger",
+
+	handlers: {
+		onApiStateChanged: "handleApiStateChanged"
+	},
 
 	components: [		
 		{name: "main", kind: "FeedSpider2.MainView"},
@@ -194,6 +198,21 @@ enyo.kind({
 				result = screen.mozLockOrientation("portrait");
 			}
 		}
-	}
+	},
 	
+	handleApiStateChanged: function(inSender, inEvent)
+	{
+		switch(inEvent.state) {
+			case "Read":
+				this.$.main.articleRead(inEvent);
+				break;
+			case "NotRead":
+				this.$.main.articleNotRead(inEvent);
+				break;
+			case "FolderDeleted":
+				this.$.main.folderDeleted();
+				break;
+		}
+		return true;
+	}
 });

@@ -114,7 +114,7 @@ var AolApi = Class.create({
 		new Ajax.Request(AolApi.BASE_URL + "subscription/edit", {
 		  method: "post",
 		  parameters: parameters,
-		  onSuccess: function() {Mojo.Event.send(document, "SubscriptionDeleted", {id: feed.id, count: feed.unreadCount})}
+		  onSuccess: function() {feedspider.handleApiStateChanged({state: "SubscriptionDeleted", id: feed.id, count: feed.unreadCount})}
 		})
     }
   },
@@ -129,7 +129,7 @@ var AolApi = Class.create({
 	  new Ajax.Request(AolApi.BASE_URL + "disable-tag", {
 		method: "post",
 		parameters: parameters,
-		onSuccess: function() {Mojo.Event.send(document, "FolderDeleted", {id: folder.id})}
+		onSuccess: function() {feedspider.handleApiStateChanged({state: "FolderDeleted", id: folder.id})}
 	  })
   },
 

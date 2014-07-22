@@ -322,21 +322,6 @@ enyo.kind({
    		this.filterAndRefresh();
 	},
 
-	//BEGIN CODE TO BE PORTED
-	articleRead: function(event) {
-		Log.debug("1 item marked read in " + event.subscriptionId)
-		this.sources.articleRead(event.subscriptionId)
-		//TODO: Check Active Panel
-		if(this.active) this.filterAndRefresh()
-	},
-
-	articleNotRead: function(event) {
-		Log.debug("1 item marked not read in " + event.subscriptionId)
-		this.sources.articleNotRead(event.subscriptionId)
-		//TODO: Check Active Panel
-		if(this.active) this.filterAndRefresh()
-	},
-
 	markedAllRead: function(event) {
 		Log.debug(event.count + " items marked read in " + event.id)
 
@@ -350,9 +335,19 @@ enyo.kind({
 		this.filterAndRefresh()
 	},
 
-	folderDeleted: function() {
-		this.reload()
+	articleRead: function(event) {
+		Log.debug("1 item marked read in " + event.subscriptionId)
+		this.sources.articleRead(event.subscriptionId)
+		this.filterAndRefresh()
 	},
 
-	//END CODE TO BE PORTED
+	articleNotRead: function(event) {
+		Log.debug("1 item marked not read in " + event.subscriptionId)
+		this.sources.articleNotRead(event.subscriptionId)
+		this.filterAndRefresh()
+	},
+
+	folderDeleted: function() {
+		this.reload()
+	}
 });

@@ -85,7 +85,7 @@ var InoApi = Class.create({
           method: "post",
           parameters: parameters,
           requestHeaders: this._requestHeaders(),
-          onSuccess: function() {Mojo.Event.send(document, "SubscriptionDeleted", {id: feed.id, count: feed.unreadCount})}
+          onSuccess: function() {feedspider.handleApiStateChanged({state: "SubscriptionDeleted", id: feed.id, count: feed.unreadCount})}
         })
       }.bind(this))
     }
@@ -103,7 +103,7 @@ var InoApi = Class.create({
         method: "post",
         parameters: parameters,
         requestHeaders: this._requestHeaders(),
-        onSuccess: function() {Mojo.Event.send(document, "FolderDeleted", {id: folder.id})}
+        onSuccess: function() {feedspider.handleApiStateChanged({state: "FolderDeleted", id: folder.id})}
       })
     }.bind(this))
   },

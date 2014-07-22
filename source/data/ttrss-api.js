@@ -121,7 +121,7 @@ var TTRSSApi = Class.create({
   unsubscribe: function(feed) {
     if(feed.isFolder) {
       Feeder.notify($L("Folder Delete Not Supported"))
-      Mojo.Event.send(document, "FolderDeleted", {id: feed.id})
+      feedspider.handleApiStateChanged({state: "FolderDeleted", id: folder.id})
       //this.removeLabel(feed)
     }
     else {
@@ -134,7 +134,7 @@ var TTRSSApi = Class.create({
         new Ajax.Request(TTRSSApi.BASE_URL, {
           method: "post",
           postBody: JSON.stringify(parameters),
-          onSuccess: function() {Mojo.Event.send(document, "SubscriptionDeleted", {id: feed.id, count: feed.unreadCount})}
+          onSuccess: function() {feedspider.handleApiStateChanged({state: "SubscriptionDeleted", id: feed.id, count: feed.unreadCount})}
         })
     }
   },
@@ -152,7 +152,7 @@ var TTRSSApi = Class.create({
         method: "post",
         parameters: parameters,
         requestHeaders: this._requestHeaders(),
-        onSuccess: function() {Mojo.Event.send(document, "FolderDeleted", {id: folder.id})}
+        onSuccess: function() {feedspider.handleApiStateChanged({state: "FolderDeleted", id: folder.id})}
       })
     }.bind(this))
   },

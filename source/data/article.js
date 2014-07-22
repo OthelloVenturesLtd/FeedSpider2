@@ -8,7 +8,7 @@ enyo.kind({
 	},
 	
 	events: {
-		onArticleTap: "",
+		onArticleTap: ""
 	},
 
 	components: [
@@ -228,8 +228,7 @@ enyo.kind({
 			this[localProperty] = localValue
 
 			var onComplete = function() {
-				//TODO: Event Handling - this needs to be bubbled up and handled by the main window
-				//Mojo.Event.send(document, "Article" + apiState, {subscriptionId: this.subscriptionId})
+				feedspider.handleApiStateChanged({state: apiState, subscriptionId: this.subscriptionId});
 				success(true)
 			}.bind(this)
 

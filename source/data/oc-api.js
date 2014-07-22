@@ -89,17 +89,17 @@ var OCApi = Class.create({
   //UPDATED 1.2.1
   unsubscribe: function(feed) {
     if(feed.isFolder) {
-      Mojo.Event.send(document, "FolderDeleted", {id: feed.id})
+      feedspider.handleApiStateChanged({state: "FolderDeleted", id: folder.id})
       this.removeLabel(feed)
     }
     else {
-    	this._ajaxDelete(OCApi.BASE_URL + "feeds/" + feed.id,function() {Mojo.Event.send(document, "SubscriptionDeleted", {id: feed.id, count: feed.unreadCount})},function() {})
+    	this._ajaxDelete(OCApi.BASE_URL + "feeds/" + feed.id,function() {feedspider.handleApiStateChanged({state: "SubscriptionDeleted", id: feed.id, count: feed.unreadCount})},function() {})
     }
   },
 
   //UPDATED 1.2.1
   removeLabel: function(folder) {
-    this._ajaxDelete(OCApi.BASE_URL + "folders/" + folder.id.substr(7),function() {Mojo.Event.send(document, "FolderDeleted", {id: folder.id})},function() {})
+    this._ajaxDelete(OCApi.BASE_URL + "folders/" + folder.id.substr(7),function() {feedspider.handleApiStateChanged({state: "FolderDeleted", id: folder.id})},function() {})
   },
   
   //NOT SUPPORTED BY API

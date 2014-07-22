@@ -104,13 +104,13 @@ var FeedlyApi = Class.create({
       this.removeLabel(feed)
     }
     else {
-      this._ajaxDelete(FeedlyApi.BASE_URL + "subscriptions/" + encodeURIComponent(feed.id), function() {Mojo.Event.send(document, "SubscriptionDeleted", {id: feed.id, count: feed.unreadCount})}, function() {})
+      this._ajaxDelete(FeedlyApi.BASE_URL + "subscriptions/" + encodeURIComponent(feed.id), function() {feedspider.handleApiStateChanged({state: "SubscriptionDeleted", id: feed.id, count: feed.unreadCount})}, function() {})
     }
   },
 
   //UPDATED 0.9.5
   removeLabel: function(folder) {
-    this._ajaxDelete(FeedlyApi.BASE_URL + "categories/" + encodeURIComponent(folder.id), function() {Mojo.Event.send(document, "FolderDeleted", {id: folder.id})}, function() {})
+    this._ajaxDelete(FeedlyApi.BASE_URL + "categories/" + encodeURIComponent(folder.id), function() {feedspider.handleApiStateChanged({state: "FolderDeleted", id: folder.id})}, function() {})
   },
 
   //UPDATED 1.1.2

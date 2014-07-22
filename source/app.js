@@ -11,7 +11,12 @@ enyo.kind({
 	
 	handlePopupMessage: function(message) {
 		this.waterfallDown("onPopupMessage", message, this);
+	},
+	
+	handleApiStateChanged: function(change) {
+		this.waterfallDown("onApiStateChanged", change, this);
 	}
+	
 });
 
 enyo.ready(function () {
