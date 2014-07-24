@@ -174,7 +174,6 @@ enyo.kind({
 	codegot: function(inSender, inEvent) {
 		this.$.oAuthBrowserWrapper.hide();
 		this.$.loginSpinner.show();
-		this.render();
 	},
 	
 	oasuccess: function(inSender, inEvent) {
