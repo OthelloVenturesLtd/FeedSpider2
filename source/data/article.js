@@ -257,7 +257,7 @@ enyo.kind({
 			next.index = nextIndex
 		}
 
-		if(nextIndex == this.subscription.items.length && this.subscription.continuation != undefined) {
+		if(nextIndex == this.subscription.items.length && this.subscription.continuation != undefined && this.subscription.continuation != false) {
 			loadingMore()
 
 			var foundMore = function() {

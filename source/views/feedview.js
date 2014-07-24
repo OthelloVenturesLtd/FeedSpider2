@@ -116,7 +116,7 @@ enyo.kind({
 	},
 	
 	scrollEvent: function(inSender, inEvent) {
-		if(this.subscription.continuation != undefined && (inEvent.scrollBounds.top >= inEvent.scrollBounds.maxTop - inEvent.scrollBounds.clientHeight) && this.loadingArticles == false)
+		if(this.subscription.continuation != undefined && this.subscription.continuation != false && (inEvent.scrollBounds.top >= inEvent.scrollBounds.maxTop - inEvent.scrollBounds.clientHeight) && this.loadingArticles == false)
 		{
 			this.findArticles();
 		}
@@ -131,7 +131,7 @@ enyo.kind({
 	},
 
 	foundArticles: function(scrollToTop) {
-		if (this.subscription.continuation != undefined)
+		if (this.subscription.continuation != undefined && this.subscription.continuation != false)
 		{
 			this.$.MainList.setCount(this.subscription.items.length + 1);
 		}
