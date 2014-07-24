@@ -20,232 +20,227 @@ Preferences = {
   LEFTY_FRIENDLY: "s-lefty-friendly",
   FEEDLY_SORT_ENGAGEMENT: "feedly-sort-engagement",
   SHORTEN_URLS: "shorten-urls",
+  EXPECTED_NOTIFICATION_EVENT: "expected-notification-event", 
 
   isShortenURLs: function() {
-    return this.getCookie(this.SHORTEN_URLS, false)
+    return this.getCookie(this.SHORTEN_URLS, false);
   },
 
   setShortenURLs: function(isShortenURLs) {
-    this.setCookie(this.SHORTEN_URLS, isShortenURLs)
+    this.setCookie(this.SHORTEN_URLS, isShortenURLs);
   },
   
   isFeedlySortEngagement: function() {
-    return this.getCookie(this.FEEDLY_SORT_ENGAGEMENT, false)
+    return this.getCookie(this.FEEDLY_SORT_ENGAGEMENT, false);
   },
 
   setFeedlySortEngagement: function(isFeedlySortEngagement) {
-    this.setCookie(this.FEEDLY_SORT_ENGAGEMENT, isFeedlySortEngagement)
+    this.setCookie(this.FEEDLY_SORT_ENGAGEMENT, isFeedlySortEngagement);
   },
 
   isLeftyFriendly: function() {
-    return this.getCookie(this.LEFTY_FRIENDLY, false)
+    return this.getCookie(this.LEFTY_FRIENDLY, false);
   },
 
   setLeftyFriendly: function(isLeftyFriendly) {
-    this.setCookie(this.LEFTY_FRIENDLY, isLeftyFriendly)
+    this.setCookie(this.LEFTY_FRIENDLY, isLeftyFriendly);
   },
 
   getInstapaperUsername: function() {
-    return this.getCookie(this.INSTAPAPER_USERNAME, null)
+    return this.getCookie(this.INSTAPAPER_USERNAME, null);
   },
 
   setInstapaperUsername: function(username) {
-    this.setCookie(this.INSTAPAPER_USERNAME, username)
+    this.setCookie(this.INSTAPAPER_USERNAME, username);
   },
 
   getInstapaperPassword: function() {
-    return this.getCookie(this.INSTAPAPER_PASSWORD, null)
+    return this.getCookie(this.INSTAPAPER_PASSWORD, null);
   },
 
   setInstapaperPassword: function(password) {
-    this.setCookie(this.INSTAPAPER_PASSWORD, password)
+    this.setCookie(this.INSTAPAPER_PASSWORD, password);
   },
 
   getSharingOptionsSortOrder: function() {
-    return this.getCookie(this.SHARING_SORT_ORDER, [])
+    return this.getCookie(this.SHARING_SORT_ORDER, []);
   },
 
   setSharingOptionsSortOrder: function(sortOrder) {
-    this.setCookie(this.SHARING_SORT_ORDER, sortOrder)
+    this.setCookie(this.SHARING_SORT_ORDER, sortOrder);
   },
 
   isSharingOptionEnabled: function(option, defaultValue) {
-    return this.getCookie(option, defaultValue)
+    return this.getCookie(option, defaultValue);
   },
 
   setSharingOptionEnabled: function(option, value) {
-    this.setCookie(option, value)
+    this.setCookie(option, value);
   },
 
   isOldestFirst: function() {
-    return this.getCookie(this.OLDEST_FIRST, false)
+    return this.getCookie(this.OLDEST_FIRST, false);
   },
 
   setOldestFirst: function(oldestFirst) {
-    this.setCookie(this.OLDEST_FIRST, oldestFirst)
+    this.setCookie(this.OLDEST_FIRST, oldestFirst);
   },
 
   hideReadFeeds: function() {
-    return this.getCookie(this.HIDE_READ_FEEDS, true)
+    return this.getCookie(this.HIDE_READ_FEEDS, true);
   },
 
   setHideReadFeeds: function(hideReadFeeds) {
-    this.setCookie(this.HIDE_READ_FEEDS, hideReadFeeds)
+    this.setCookie(this.HIDE_READ_FEEDS, hideReadFeeds);
   },
 
   hideReadArticles: function() {
-    return this.getCookie(this.HIDE_READ_ARTICLES, true)
+    return this.getCookie(this.HIDE_READ_ARTICLES, true);
   },
 
   setHideReadArticles: function(hideReadArticles) {
-    this.setCookie(this.HIDE_READ_ARTICLES, hideReadArticles)
+    this.setCookie(this.HIDE_READ_ARTICLES, hideReadArticles);
   },
 
   goBackAfterMarkAsRead: function() {
-    return this.getCookie(this.BACK_AFTER_MARK_AS_READ, false)
+    return this.getCookie(this.BACK_AFTER_MARK_AS_READ, false);
   },
 
   setBackAfterMarkAsRead: function(backAfterMarkAsRead) {
-    this.setCookie(this.BACK_AFTER_MARK_AS_READ, backAfterMarkAsRead)
+    this.setCookie(this.BACK_AFTER_MARK_AS_READ, backAfterMarkAsRead);
   },
 
   allowLandscape: function() {
-    return this.getCookie(this.ALLOW_LANDSCAPE, false)
+    return this.getCookie(this.ALLOW_LANDSCAPE, false);
   },
 
   setAllowLandscape: function(allowLandscape) {
-    this.setCookie(this.ALLOW_LANDSCAPE, allowLandscape)
+    this.setCookie(this.ALLOW_LANDSCAPE, allowLandscape);
   },
 
   gestureScrolling: function() {
-    return this.getCookie(this.GESTURE_SCROLLING, true)
+    return this.getCookie(this.GESTURE_SCROLLING, true);
   },
 
   setGestureScrolling: function(gestureScrolling) {
-    this.setCookie(this.GESTURE_SCROLLING, gestureScrolling)
+    this.setCookie(this.GESTURE_SCROLLING, gestureScrolling);
   },
 
   fontSize: function() {
-    return this.getCookie(this.FONT_SIZE, "medium")
+    return this.getCookie(this.FONT_SIZE, "medium");
   },
 
   setFontSize: function(fontSize) {
-    this.setCookie(this.FONT_SIZE, fontSize)
+    this.setCookie(this.FONT_SIZE, fontSize);
   },
 
   combineFolders: function() {
-    return this.getCookie(this.COMBINE_FOLDERS, false)
+    return this.getCookie(this.COMBINE_FOLDERS, false);
   },
 
   setCombineFolders: function(combineFolders) {
-    this.setCookie(this.COMBINE_FOLDERS, combineFolders)
+    this.setCookie(this.COMBINE_FOLDERS, combineFolders);
   },
 
   isManualFeedSort: function() {
-    return this.getCookie(this.MANUAL_FEED_SORT, false)
+    return this.getCookie(this.MANUAL_FEED_SORT, false);
   },
 
   setManualFeedSort: function(isManual) {
-    this.setCookie(this.MANUAL_FEED_SORT, isManual)
+    this.setCookie(this.MANUAL_FEED_SORT, isManual);
   },
 
   getTheme: function() {
-    return this.getCookie(this.THEME, "grey")
+    return this.getCookie(this.THEME, "grey");
   },
 
   setTheme: function(theme) {
-    this.setCookie(this.THEME, theme)
+    this.setCookie(this.THEME, theme);
   },
 
   isDebugging: function() {
-    return this.getCookie(this.DEBUG, false)
+    return this.getCookie(this.DEBUG, false);
   },
 
   setDebugging: function(debugging) {
-    this.setCookie(this.DEBUG, debugging)
+    this.setCookie(this.DEBUG, debugging);
   },
 
   markReadAsScroll: function() {
-    return this.getCookie(this.MARK_READ_SCROLL, false)
+    return this.getCookie(this.MARK_READ_SCROLL, false);
   },
 
   setMarkReadAsScroll: function(markRead) {
-    this.setCookie(this.MARK_READ_SCROLL, markRead)
+    this.setCookie(this.MARK_READ_SCROLL, markRead);
   },
 
   notificationInterval: function() {
-    return this.getCookie(this.NOTIFICATIONS_INTERVAL, "00:00:00")
+    return this.getCookie(this.NOTIFICATIONS_INTERVAL, 0);
   },
 
   setNotificationInterval: function(interval) {
-    this.setCookie(this.NOTIFICATIONS_INTERVAL, interval)
+    this.setCookie(this.NOTIFICATIONS_INTERVAL, interval);
+  },
+
+  getExpectedNotificationEvent: function() {
+    return this.getCookie(this.EXPECTED_NOTIFICATION_EVENT, 0);
+  },
+
+  setExpectedNotificationEvent: function(event) {
+    this.setCookie(this.EXPECTED_NOTIFICATION_EVENT, event);
   },
 
   getWatchedFeeds: function() {
-    return this.getCookie(this.NOTIFICATIONS_FEEDS, [])
+    return this.getCookie(this.NOTIFICATIONS_FEEDS, []);
   },
 
   setWatchedFeeds: function(feeds) {
-    this.setCookie(this.NOTIFICATIONS_FEEDS, feeds)
+    this.setCookie(this.NOTIFICATIONS_FEEDS, feeds);
   },
 
   anyOrSelectedFeedsForNotifications: function() {
-    return this.getCookie(this.ANY_OR_SELECTED_FEEDS, "any")
+    return this.getCookie(this.ANY_OR_SELECTED_FEEDS, "any");
   },
 
   setAnyOrSelectedFeedsForNotification: function(value) {
-    this.setCookie(this.ANY_OR_SELECTED_FEEDS, value)
+    this.setCookie(this.ANY_OR_SELECTED_FEEDS, value);
   },
 
   wantsNotificationFor: function(id) {
     if(this.anyOrSelectedFeedsForNotifications() == "any") {
-      return id.startsWith("feed/")
+      return id.startsWith("feed/");
     }
     else {
-      return this.getWatchedFeeds().any(function(n) {return n == id})
+      return this.getWatchedFeeds().any(function(n) {return n == id});
     }
   },
 
   addNotificationFeed: function(feed) {
-    var feeds = this.getWatchedFeeds()
-    feeds.push(feed)
-    this.setWatchedFeeds(feeds)
+    var feeds = this.getWatchedFeeds();
+    feeds.push(feed);
+    this.setWatchedFeeds(feeds);
   },
 
   removeNotificationFeed: function(feed) {
-    var feeds = this.getWatchedFeeds()
-    feeds = feeds.reject(function(n) {return n == feed})
-    this.setWatchedFeeds(feeds)
+    var feeds = this.getWatchedFeeds();
+    feeds = feeds.reject(function(n) {return n == feed});
+    this.setWatchedFeeds(feeds);
   },
 
   getCookie: function(name, defaultValue) {
     if (localStorage.getItem(name) != null)
     {
-    	return JSON.parse(localStorage.getItem(name))
+    	return JSON.parse(localStorage.getItem(name));
     }
     else
     {
-    	return defaultValue
+    	return defaultValue;
     }
-
-    //var cookie = this.cookieFor(name)
-
-    /*if (cookie.get() != undefined) {
-      return cookie.get()
-    }
-    else {
-      return defaultValue
-    }*/
   },
 
   setCookie: function(name, value) {
-    console.log("setting " + name + " to " + value)
-    localStorage.setItem(name, JSON.stringify(value))
-    //this.cookieFor(name).put(value)
+    Log.debug("setting " + name + " to " + value);
+    localStorage.setItem(name, JSON.stringify(value));
   },
-
-  /*cookieFor: function(name) {
-    return new Mojo.Model.Cookie(name)
-  }*/
 }
 

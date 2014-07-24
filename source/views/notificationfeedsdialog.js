@@ -7,7 +7,7 @@ enyo.kind({
 	centered: true,
 	scrim: true,
 	
-	style: "padding-top: 20px; padding-left: 20px; padding-right: 20px;  padding-bottom: 20px; height: 60%; width: 60%; text-align: center;",
+	style: "padding-top: 20px; padding-left: 20px; padding-right: 20px;  padding-bottom: 20px; height: 60%; width: 80%; text-align: center;",
 	
 	published: {
 		sources: "",
