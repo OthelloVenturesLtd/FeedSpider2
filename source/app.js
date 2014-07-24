@@ -90,7 +90,11 @@ enyo.kind({
 	}
 });
 
-navigator.mozSetMessageHandler("alarm", this.handleAlarm);
+// Register notifications event handler for Firefox OS
+if (enyo.platform.firefoxOS)
+{
+	navigator.mozSetMessageHandler("alarm", this.handleAlarm);
+}
 
 enyo.ready(function () {
 	new FeedSpider2.Application({name: "feedspider"});
