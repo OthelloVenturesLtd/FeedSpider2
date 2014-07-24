@@ -126,7 +126,7 @@ enyo.kind({
 		
 		//Begin OAuth process
 		this.setAttribute("src", url)
-		this.node.purgeHistory()
+		//this.node.purgeHistory()
 	},
 	
 	locationChanged: function(inSender, inEvent) {
