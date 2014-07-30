@@ -3,7 +3,7 @@
     "installs_allowed_from": [
         "*"
     ],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "name": "FeedSpider",
     "pkgName": "com.othelloventures.feedspider2",
     "description": "An RSS Reader client that is lets you access your feeds from Feedly, The Old Reader, InoReader, BazQux Reader, Tiny Tiny RSS, AOL Reader, and OwnCloud News.",
