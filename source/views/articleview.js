@@ -13,7 +13,7 @@ enyo.kind({
     },
 	
 	components:[
-		{kind: "enyo.Scroller", fit: true, ondragfinish: "dragSwitchArticle", components: [
+		{name: "mainScroller", kind: "enyo.Scroller", fit: true, ondragfinish: "dragSwitchArticle", components: [
 			{name: "articleHeader", kind: "FittableColumns", classes: "article-header", components: [
 				{fit: true, components: [
 					{name: "title", classes: "article-title", style: "font-weight: bold;"},
@@ -72,6 +72,7 @@ enyo.kind({
 	activate: function(changes) {
 		var self = this;
 		
+		this.$.mainScroller.scrollToTop();
 		this.$.title.setContent(this.article.title);
 		this.$.subscription.setContent(this.articleContainer.api.titleFor(this.article.subscriptionId));
 		this.$.author.setContent(this.article.author ? "by " + this.article.author : "");
