@@ -184,6 +184,7 @@ enyo.kind({
     },
 
 	filterAndRefresh: function() {
+		this.$.MainList.setCount(0);
 		this.filter()
 		this.refreshList(this.$.stickySources, this.folder.stickySubscriptions)
 		this.$.MainList.setCount(this.subscriptions.items.length);

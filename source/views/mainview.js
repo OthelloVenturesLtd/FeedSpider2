@@ -226,6 +226,7 @@ enyo.kind({
 		if(self.loaded) {
 			self.sources.sortAndFilter(
 				function() {
+					self.$.MainList.setCount(0);
 					self.refreshList(self.$.stickySources, self.sources.stickySources.items)
 					self.$.stickySources.show()
 					self.$.subscriptionsDivider.show()
