@@ -22,7 +22,7 @@ enyo.kind({
 				]},
 				{tag: "div", style:"background: url('assets/rightarrow.png') no-repeat center; width: 20px; height: 56px"},
 			], ontap: "openInBrowser"},
-			{name: "summary", allowHtml: true, classes: "article-summary"},
+			{name: "summary", allowHtml: true, classes: "article-summary", ontap: "catchLinkTap"},
 		]},
 		{kind: "onyx.Toolbar", style: "padding-left: 0px; padding-right: 0px", components: [
 			{style: "width: 18%; text-align:center; margin-left: 0px; margin-right: 0px;", components: [
@@ -54,6 +54,14 @@ enyo.kind({
 	
 	rendered: function() {
 		this.inherited(arguments);
+	},
+
+	catchLinkTap: function(inSender, inEvent)
+	{
+		//TODO: deal with for other OSes
+		if (inEvent.target.href != undefined) {
+			inEvent.target.target = "_blank"
+		}
 	},
 	
 	dragSwitchArticle: function(inSender, inEvent) {
