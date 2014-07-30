@@ -107,10 +107,10 @@ enyo.kind({
 
 		if (item.unreadCount > 0)
     	{
-    		//The reason for this ugly hack on FirefoxOS is because using float:right will cause the count to be displayed
+    		//The reason for this ugly hack on gecko-based browsers is because using float:right will cause the count to be displayed
     		//on the next line of the list. We know that this will work because sticky sources is rendered first, and at 
     		//this point, we can guarantee the presence of at least one source.
-    		if (enyo.platform.firefoxOS)
+    		if (enyo.platform.firefoxOS || enyo.platform.firefox)
     		{
     			var width = this.$.stickySources.controls[0].controls[0].controls[1].domStyles.width;
     			var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
@@ -149,10 +149,10 @@ enyo.kind({
 
 		if (item.unreadCount > 0)
     	{
-    		//The reason for this ugly hack on FirefoxOS is because using float:right will cause the count to be displayed
+    		//The reason for this ugly hack on gecko-based browsers is because using float:right will cause the count to be displayed
     		//on the next line of the list. We know that this will work because sticky sources is rendered first, and at 
     		//this point, we can guarantee the presence of at least one source.
-    		if (enyo.platform.firefoxOS)
+    		if (enyo.platform.firefoxOS || enyo.platform.firefox)
     		{
     			var width = this.$.stickySources.controls[0].controls[0].controls[1].domStyles.width;
     			var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
