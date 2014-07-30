@@ -88,6 +88,7 @@ enyo.kind({
 
 		this.$.title.setContent(this.subscription.title);
 		this.previousDate = "";
+		this.$.placeholderIcon.hide();
 		
 		if(changes_or_scroll && (changes_or_scroll.sortOrderChanged || changes_or_scroll.hideReadArticlesChanged || changes_or_scroll.feedChanged)) {
 			this.subscription.reset();
