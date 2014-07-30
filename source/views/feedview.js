@@ -91,6 +91,7 @@ enyo.kind({
 		
 		if(changes_or_scroll && (changes_or_scroll.sortOrderChanged || changes_or_scroll.hideReadArticlesChanged || changes_or_scroll.feedChanged)) {
 			this.subscription.reset();
+			this.$.MainList.setCount(0);
 			this.findArticles(true);
 		}
 		else {
