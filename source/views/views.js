@@ -83,8 +83,8 @@ enyo.kind({
 				this.$.article.setScrollingIndex(inEvent.scrollingIndex);
 				this.$.article.setArticleContainer(inEvent.articleContainer);
 				this.$.article.setPreviousPage(inEvent.previousPage);
-				this.$.article.activate();
 				this.setIndex(this.selectPanelByName("article"));
+				this.$.article.activate();
 				break;
 			case "preferences":
 				this.$.preferences.setSources(this.sources);

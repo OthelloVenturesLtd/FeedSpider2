@@ -80,7 +80,13 @@ enyo.kind({
 	activate: function(changes) {
 		var self = this;
 		
+		//Reset the window to flush any old content.
+		this.$.title.setContent("");
+		this.$.subscription.setContent("");
+		this.$.author.setContent("");
+		this.$.summary.setContent("");
 		this.$.mainScroller.scrollToTop();
+		
 		this.$.title.setContent(this.article.title);
 		this.$.subscription.setContent(this.articleContainer.api.titleFor(this.article.subscriptionId));
 		this.$.author.setContent(this.article.author ? "by " + this.article.author : "");
