@@ -41,7 +41,7 @@ enyo.kind({
 			{tag: "div", components: [
 				{tag: "div", content: "1.0.1", style: "font-weight: bold" },
 				{tag: "ul", components: [
-					{tag: "li", content: "Fixes for several rendering bugs that would cause content to display incorrectly."},
+					{tag: "li", content: "Fixed several rendering bugs that would cause content to display incorrectly."},
 					{tag: "li", content: "Fixed handling of links so that they properly open in new browser window."},
 				]}
 			]},
