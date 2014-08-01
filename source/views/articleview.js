@@ -62,6 +62,12 @@ enyo.kind({
 		if (inEvent.target.href != undefined) {
 			inEvent.target.target = "_blank"
 		}
+		
+		//Catch images. These will be wrapped in an <a> tag.
+		if (inEvent.target.parentElement.href != undefined)
+		{
+			inEvent.target.parentElement.target = "_blank"
+		}
 	},
 	
 	dragSwitchArticle: function(inSender, inEvent) {
