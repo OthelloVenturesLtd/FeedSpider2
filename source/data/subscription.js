@@ -7,7 +7,7 @@ enyo.kind({
 		this.id = data.id
 		this.title = data.title
 		this.icon = "assets/rss-grey.png"
-		this.divideBy = "Subscriptions" //$L("Subscriptions")
+		this.divideBy = $L("Subscriptions")
 		this.canMarkAllRead = true
 		this.sortId = data.sortid
 		this.categories = data.categories

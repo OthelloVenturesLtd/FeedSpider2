@@ -7,7 +7,7 @@ enyo.kind({
     	this.id = id
     	this.title = title
     	this.icon = "assets/folder-grey.png"
-    	this.divideBy = "Subscriptions" //$L("Subscriptions")
+    	this.divideBy = $L("Subscriptions")
     	this.stickySubscriptions = [this]
     	this.subscriptions = new FeedSpider2.FolderSubscriptions(api, this.id)
     	this.setUnreadCount(0)

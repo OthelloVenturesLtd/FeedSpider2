@@ -221,7 +221,7 @@ enyo.kind({
 		Log.debug("setting article state - " + apiState)
 
 		if(apiState.match(/Read/) && this.readLocked) {
-			Feeder.notify("Read state has been locked by the service")
+			Feeder.notify($L("Read state has been locked by the service"))
 			success(false)
 		}
 		else {

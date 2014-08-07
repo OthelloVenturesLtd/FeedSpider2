@@ -5,7 +5,7 @@ enyo.kind({
 	constructor: function(api) {
 		this.inherited(arguments);	
 		this.id = "user/-/state/com.google/reading-list";
-		this.title = "All Items"; //TODO: Internationalization $L("All Items")
+		this.title = $L("All Items");
 		this.icon = "assets/list.png";
 		this.sticky = true;
 		this.divideBy = "Home";

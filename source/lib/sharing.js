@@ -2,36 +2,36 @@ var Sharing = {
   
   //variables in use up to ax
   webOSItems: [
-    {id: "sharing-aa", label: "Reader", defaultEnabled: true},
-    {id: "sharing-ab", label: "Share", command: "share-with-google", defaultEnabled: false},
-    {id: "sharing-at", label: "Clipboard", defaultEnabled: true},
-    {id: "sharing-au", label: "Copy URL", command: "send-to-clipboard", defaultEnabled: true},
-    {id: "sharing-ac", label: "Twitter", defaultEnabled: true},
-    {id: "sharing-ad", label: "Project Macaw", command: "send-to-project-macaw", defaultEnabled: true},
-    {id: "sharing-aw", label: "Spaz HD", command: "send-to-spaz-hd", defaultEnabled: false},
-    {id: "sharing-ax", label: "Spaz Beta", command: "send-to-spaz-beta", defaultEnabled: false},
-    {id: "sharing-ae", label: "Glimpse", command: "send-to-glimpse", defaultEnabled: true},
-    {id: "sharing-av", label: "Browser", command: "send-to-browser", defaultEnabled: true},
-    {id: "sharing-aq", label: "Quick Post", defaultEnabled: true},
-    {id: "sharing-ar", label: "Default Accounts", command: "send-to-qp-default", defaultEnabled: true},
-    {id: "sharing-as", label: "All Accounts", command: "send-to-qp-all", defaultEnabled: true},
-    {id: "sharing-af", label: "Share", defaultEnabled: true},
-    {id: "sharing-ag", label: "Facebook", command: "send-to-facebook", defaultEnabled: true},
-    {id: "sharing-ah", label: "Email", command: "send-to-email", defaultEnabled: true},
-    {id: "sharing-ai", label: "SMS", command: "send-to-sms", defaultEnabled: true},
-    {id: "sharing-ap", label: "neato!", command: "send-to-neato", defaultEnabled: false},
-    {id: "sharing-aj", label: "Read Later", defaultEnabled: true},
-    {id: "sharing-ak", label: "Relego", command: "send-to-relego", defaultEnabled: true},
-    {id: "sharing-al", label: "Spare Time", command: "send-to-spare-time", defaultEnabled: false},
-    {id: "sharing-am", label: "Instapaper", command: "send-to-instapaper", defaultEnabled: true},
-    {id: "sharing-an", label: "ReadOnTouch PHONE", command: "send-to-readontouch-phone", defaultEnabled: false},
-    {id: "sharing-ao", label: "ReadOnTouch PRO", command: "send-to-readontouch-pro", defaultEnabled: false}
+    {id: "sharing-aa", label: $L("Reader"), defaultEnabled: true},
+    {id: "sharing-ab", label: $L("Share"), command: "share-with-google", defaultEnabled: false},
+    {id: "sharing-at", label: $L("Clipboard"), defaultEnabled: true},
+    {id: "sharing-au", label: $L("Copy URL"), command: "send-to-clipboard", defaultEnabled: true},
+    {id: "sharing-ac", label: $L("Twitter"), defaultEnabled: true},
+    {id: "sharing-ad", label: $L("Project Macaw"), command: "send-to-project-macaw", defaultEnabled: true},
+    {id: "sharing-aw", label: $L("Spaz HD"), command: "send-to-spaz-hd", defaultEnabled: false},
+    {id: "sharing-ax", label: $L("Spaz Beta"), command: "send-to-spaz-beta", defaultEnabled: false},
+    {id: "sharing-ae", label: $L("Glimpse"), command: "send-to-glimpse", defaultEnabled: true},
+    {id: "sharing-av", label: $L("Browser"), command: "send-to-browser", defaultEnabled: true},
+    {id: "sharing-aq", label: $L("Quick Post"), defaultEnabled: true},
+    {id: "sharing-ar", label: $L("Default Accounts"), command: "send-to-qp-default", defaultEnabled: true},
+    {id: "sharing-as", label: $L("All Accounts"), command: "send-to-qp-all", defaultEnabled: true},
+    {id: "sharing-af", label: $L("Share"), defaultEnabled: true},
+    {id: "sharing-ag", label: $L("Facebook"), command: "send-to-facebook", defaultEnabled: true},
+    {id: "sharing-ah", label: $L("Email"), command: "send-to-email", defaultEnabled: true},
+    {id: "sharing-ai", label: $L("SMS"), command: "send-to-sms", defaultEnabled: true},
+    {id: "sharing-ap", label: $L("neato!"), command: "send-to-neato", defaultEnabled: false},
+    {id: "sharing-aj", label: $L("Read Later"), defaultEnabled: true},
+    {id: "sharing-ak", label: $L("Relego"), command: "send-to-relego", defaultEnabled: true},
+    {id: "sharing-al", label: $L("Spare Time"), command: "send-to-spare-time", defaultEnabled: false},
+    {id: "sharing-am", label: $L("Instapaper"), command: "send-to-instapaper", defaultEnabled: true},
+    {id: "sharing-an", label: $L("ReadOnTouch PHONE"), command: "send-to-readontouch-phone", defaultEnabled: false},
+    {id: "sharing-ao", label: $L("ReadOnTouch PRO"), command: "send-to-readontouch-pro", defaultEnabled: false}
   ],
   
   firefoxOSItems: [
-  	{id: "sharing-ab", label: "Share", command: "share-with-google", defaultEnabled: true},
-  	{id: "sharing-ah", label: "Email", command: "send-to-email", defaultEnabled: true},
-	{id: "sharing-av", label: "Twitter", command: "send-to-browser", defaultEnabled: true},
+  	{id: "sharing-ab", label: $L("Share"), command: "share-with-google", defaultEnabled: true},
+  	{id: "sharing-ah", label: $L("Email"), command: "send-to-email", defaultEnabled: true},
+	{id: "sharing-av", label: $L("Twitter"), command: "send-to-browser", defaultEnabled: true},
   ],
   
   getPopupFor: function(article) {
@@ -349,8 +349,8 @@ var Sharing = {
   offerToInstallApp: function(name, id) {
     //TODO: Implement
     controller.showAlertDialog({
-      title:$L("#{app} is not installed").interpolate({app: name}),
-      message: $L("#{app} is not installed. Would you like to install it?").interpolate({app: name}),
+      title:$L("{app} is not installed", {app: name}),
+      message: $L("{app} is not installed. Would you like to install it?", {app: name}),
 
       choices:[
         {label:$L("Yes"), value:"yes", type:"affirmative"},

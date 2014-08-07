@@ -86,7 +86,7 @@ enyo.kind({
 	},
 	
 	sendNotification: function(unreadCount) {
-		var notification = new Notification("You have " + unreadCount + " articles to read", {icon:"http://www.feedspider.net/assets/dashboard-icon-feedspider.png"});
+		var notification = new Notification($L("You have {unread} articles to read", {unread: unreadCount}), {icon:"http://www.feedspider.net/assets/dashboard-icon-feedspider.png"});
 	}
 });
 
