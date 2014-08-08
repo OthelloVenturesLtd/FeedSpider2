@@ -220,6 +220,7 @@ enyo.kind({
 
 		//Reset the window for next time
 		this.$.oAuthBrowserWrapper.hide();
+		this.$.errorMessage.hide();
 		this.$.loginSpinner.hide();
 		this.$.loginWindow.show();
 		
