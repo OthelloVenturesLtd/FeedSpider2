@@ -8,16 +8,16 @@ enyo.kind({
 			{kind: "onyx.MenuDecorator", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
 			    {kind: "onyx.Menu", floating: true, components: [
-        			{content: "Add Subscription", onSelect: "addSubscription"},
+        			{name: "addSubscriptionMenuItem", onSelect: "addSubscription"},
         			{name: "showHideFeedsMenuItem", onSelect: "toggleFeeds"},
         			{classes: "onyx-menu-divider"},
-        			{content: "Preferences", onSelect: "openPreferences"},
-        			{content: "Help", onSelect: "openHelp"},
+        			{name: "preferencesMenuItem", onSelect: "openPreferences"},
+        			{name: "helpMenuItem", onSelect: "openHelp"},
         			{classes: "onyx-menu-divider"},
-        			{content: "Logout", onSelect: "handleLogout"},
+        			{name: "logoutMenuItem", onSelect: "handleLogout"},
     			]}
 			]},
-			{tag: "span", content: "FeedSpider", style:"font-weight: bold; text-align: center", fit: true, ontap: "scrollToTop"},
+			{name: "viewTitle", tag: "span", style:"font-weight: bold; text-align: center", fit: true, ontap: "scrollToTop"},
 			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", style: "display: none", ontap: "reload"},
 			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
 			{name: "refreshButton", kind: "onyx.IconButton", ontap: "switchPanels", src: "assets/refresh.png", ontap: "reload"}
@@ -42,8 +42,8 @@ enyo.kind({
 		],
 		swipeableComponents: [
 			{style: "height: 100%; background-color: darkgrey; text-align:center", components: [
-				{kind: "onyx.Button", content: "Delete", style: "margin-top: 10px; margin-right: 10px;", classes:"onyx-negative", ontap: "deleteButtonTapped"},
-				{kind: "onyx.Button", content: "Cancel", style: "margin-left: 10px;", ontap: "cancelButtonTapped"}
+				{name: "swipeableDeleteButton", kind: "onyx.Button", style: "margin-top: 10px; margin-right: 10px;", classes:"onyx-negative", ontap: "deleteButtonTapped"},
+				{name: "swipeableCancelButton", kind: "onyx.Button", style: "margin-left: 10px;", ontap: "cancelButtonTapped"}
 			]}
 		]},
 		{name: "LoginDialog", kind: "FeedSpider2.LoginDialog", onLoginSuccess: "loginSuccess"},
@@ -55,6 +55,13 @@ enyo.kind({
     	this.loaded = false;
     	this.reloading = false;
     	this.swiping = false;
+    	this.$.addSubscriptionMenuItem.setContent($L("Add Subscription"));
+    	this.$.preferencesMenuItem.setContent($L("Preferences"));
+    	this.$.helpMenuItem.setContent($L("Help"));
+    	this.$.logoutMenuItem.setContent($L("Logout"));
+    	this.$.swipeableDeleteButton.setContent($L("Delete"));
+    	this.$.swipeableCancelButton.setContent($L("Cancel"));
+    	this.$.viewTitle.setContent($L("FeedSpider"));
 	},
 	
 	rendered: function() {
@@ -73,11 +80,11 @@ enyo.kind({
 		}
 		
 		if (Preferences.hideReadFeeds()){
-			this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
+			this.$.showHideFeedsMenuItem.setContent($L("Show Read Feeds"))
 		}
 		else
 		{
-			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
+			this.$.showHideFeedsMenuItem.setContent($L("Hide Read Feeds"))
 		}
 
 		this.filterAndRefresh()

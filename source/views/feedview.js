@@ -23,10 +23,10 @@ enyo.kind({
 			    {kind: "onyx.Menu", floating: true, components: [
         			{name: "showHideArticlesMenuItem", onSelect: "toggleArticles"},
         			{classes: "onyx-menu-divider"},
-        			{content: "Preferences", onSelect: "openPreferences"},
-        			{content: "Help", onSelect: "openHelp"},
+        			{name: "preferencesMenuItem", onSelect: "openPreferences"},
+        			{name: "helpMenuItem", onSelect: "openHelp"},
         			{classes: "onyx-menu-divider"},
-        			{content: "Logout", onSelect: "handleLogout"},
+        			{name: "logoutMenuItem", onSelect: "handleLogout"},
     			]}
 			]},
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
@@ -38,7 +38,7 @@ enyo.kind({
 			{name: "placeholderIcon", kind: "onyx.Icon", showing: false}
 		]},
 		
-		{name: "noArticles", content: "No articles were found", style: "padding-top: 10px; padding-left: 10px; font-size 14px; font-weight: bold", showing: false},
+		{name: "noArticles", style: "padding-top: 10px; padding-left: 10px; font-size 14px; font-weight: bold", showing: false},
 		
 		{name: "MainList", kind: "FeedSpider2.EventList", fit: true, count: 0, style:"width: 100%;", enableSwipe: true, percentageDraggedThreshold: 1.50, onSetupItem: "setupItem", onSetupSwipeItem: "setupSwipeItem", onSwipeAnimationComplete: "listItemRendered", onScroll: "scrollEvent", components: [
 			{name: "source", layoutKind: enyo.FittableRowsLayout, ontap: "articleTapped", components: [
@@ -75,15 +75,19 @@ enyo.kind({
     	this.swiping = false;
     	this.loadingArticles = false;
     	this.previousDate = "";
+    	this.$.preferencesMenuItem.setContent($L("Preferences"));
+    	this.$.helpMenuItem.setContent($L("Help"));
+    	this.$.logoutMenuItem.setContent($L("Logout"));
+    	this.$.noArticles.setContent($L("No articles were found"));
 	},
 
 	activate: function(changes_or_scroll) {
 		if (Preferences.hideReadArticles()){
-			this.$.showHideArticlesMenuItem.setContent("Show Read Articles");
+			this.$.showHideArticlesMenuItem.setContent($L("Show Read Articles"));
 		}
 		else
 		{
-			this.$.showHideArticlesMenuItem.setContent("Hide Read Articles");
+			this.$.showHideArticlesMenuItem.setContent($L("Hide Read Articles"));
 		}
 
 		this.$.title.setContent(this.subscription.title);
@@ -187,7 +191,7 @@ enyo.kind({
 
 		if(i == this.subscription.items.length)
 		{
-			this.$.articleName.setContent("Loading More Articles...");
+			this.$.articleName.setContent($L("Loading More Articles..."));
 			this.$.articleName.setStyle("");
 			this.$.articleOrigin.setStyle("display:none;");
 			this.$.articleDivider.hide();

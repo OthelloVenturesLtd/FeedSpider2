@@ -277,7 +277,7 @@ var Sharing = {
   sendToClipboard: function(article) {
     //TODO: Figure out how to make this work in enyo2
     controller.stageController.setClipboard(article.url)
-    Feeder.notify("URL Copied")
+    Feeder.notify($L("URL Copied"))
   },
   
   sendToBrowser: function(article, shorturl) {

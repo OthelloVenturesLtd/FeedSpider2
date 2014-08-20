@@ -20,12 +20,13 @@ enyo.kind({
 	components: [
 		{layoutKind: "FittableRowsLayout", style: "height: 100%", components: [
 			{name: "FeedsList", classes: "feeds-list", kind: "enyo.Scroller", style: "border-radius: 5px;", fit: true},
-			{name: "FeedsListButton", kind: "onyx.Button", content: "Done", classes: "onyx-affirmative", style: "width:50%; margin-top: 5px;", ontap: "closeDialog"},
+			{name: "FeedsListButton", kind: "onyx.Button", classes: "onyx-affirmative", style: "width:50%; margin-top: 5px;", ontap: "closeDialog"},
 		]}
 	],
 	
   	create: function() {
     	this.inherited(arguments);
+    	this.$.feedsListButton.setContent($L("Done"));
 	},
 	
 	closeDialog: function(){

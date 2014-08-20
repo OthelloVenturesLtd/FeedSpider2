@@ -15,44 +15,44 @@ enyo.kind({
 	
 	components: [
 		{name: "loginWindow", style: "text-align: center", components: [
-			{tag: "p", content: "Login", style: "text-align:center; font-weight: bold; font-size: 18px"},	
+			{name: "dialogTitle", tag: "p", style: "text-align:center; font-weight: bold; font-size: 18px"},	
 			{kind: "onyx.PickerDecorator", style: "width: 100%;", components: [
 				{classes: "onyx-dark", style: "width: 90%"},
 				{name: "servicePicker", onChange: "setService", kind: "onyx.Picker", components: [
-					{content: "AOL Reader", value: "aol"},
-					{content: "BazQux Reader", value: "bq"},
-					{content: "Feedly", value: "feedly"},
-					{content: "InoReader", value: "ino"},
-					{content: "OwnCloud News", value: "oc"},
-					{content: "The Old Reader", value: "tor", active: true},
-					{content: "Tiny Tiny RSS", value: "ttrss"}
+					{name: "aolPickerItem", value: "aol"},
+					{name: "bqPickerItem", value: "bq"},
+					{name: "feedlyPickerItem", value: "feedly"},
+					{name: "inoPickerItem", value: "ino"},
+					{name: "ocPickerItem", value: "oc"},
+					{name: "torPickerItem", value: "tor", active: true},
+					{name: "ttrssPickerItem", value: "ttrss"}
 				]}
 			]},
 			{tag: "div", style: "margin: 10px"},
 			{name: "usernameGroup", components: [
 				{kind: "onyx.InputDecorator", style: "width: 80%", components: [
-					{name: "usernameInput", style: "width: 100%; color: white", kind: "onyx.Input", placeholder: "Username", onfocus: "checkFocus", onblur: "checkBlur"}
+					{name: "usernameInput", style: "width: 100%; color: white", kind: "onyx.Input", onfocus: "checkFocus", onblur: "checkBlur"}
 				]},
 				{tag: "div", style: "margin: 10px"},
 			]},
 			{name: "passwordGroup", components: [
 				{kind: "onyx.InputDecorator", style: "width: 80%", components: [
-					{name: "passwordInput",  style: "width: 100%; color: white", kind: "onyx.Input", placeholder: "Password", type: "password", onfocus: "checkFocus", onblur: "checkBlur"}
+					{name: "passwordInput",  style: "width: 100%; color: white", kind: "onyx.Input", type: "password", onfocus: "checkFocus", onblur: "checkBlur"}
 				]},
 				{tag: "div", style: "margin: 10px"},
 			]},
 			{name: "serverURLGroup", components: [
 				{kind: "onyx.InputDecorator", style: "width: 80%", components: [
-					{name: "serverURLInput",  style: "width: 100%; color: white", kind: "onyx.Input", placeholder: "Server URL", type: "url", oninput: "checkKeys", onfocus: "checkFocus", onblur: "checkBlur"}
+					{name: "serverURLInput",  style: "width: 100%; color: white", kind: "onyx.Input", type: "url", oninput: "checkKeys", onfocus: "checkFocus", onblur: "checkBlur"}
 				]},
 				{tag: "div", style: "margin: 10px"},
 			]},
-			{name: "errorMessage", tag: "div", style: "color: red; font-size 14px; font-weight: bold; margin-bottom: 10px; display:none", content: "Login Failed!"},
-			{kind: "onyx.Button", classes: "onyx-affirmative", style: "width: 60%", content: "Login", ontap: "checkCredentials"}
+			{name: "errorMessage", tag: "div", style: "color: red; font-size 14px; font-weight: bold; margin-bottom: 10px; display:none"},
+			{name: "loginButton", kind: "onyx.Button", classes: "onyx-affirmative", style: "width: 60%", ontap: "checkCredentials"}
 		]},
 		{name: "loginSpinner", style: "text-align: center; display: none", components: [
 			{kind: "onyx.Spinner", style: "background: url('assets/login-spinner.gif') no-repeat 0 0;width: 132px; height: 132px"},
-			{tag: "p", content: "Logging In...", style: "text-align:center; font-weight: bold; font-size: 20px"},
+			{name: "loginSpinnerLabel", tag: "p", style: "text-align:center; font-weight: bold; font-size: 20px"},
 		]},
 		{name: "oAuthBrowserWrapper", kind: "enyo.FittableRows", style: "width: 100%; text-align: left; display: none", components: [
 			{name: "backButton", kind: "onyx.IconButton", style: "margin-bottom: 5px;", ontap: "browserGoBack", src: "assets/go-back.png"},
@@ -62,6 +62,21 @@ enyo.kind({
 	
   	create: function() {
     	this.inherited(arguments);
+		this.$.dialogTitle.setContent($L("Login"));
+		this.$.aolPickerItem.setContent($L("AOL Reader"));
+		this.$.bqPickerItem.setContent($L("BazQuz Reader"));
+		this.$.feedlyPickerItem.setContent($L("Feedly"));
+		this.$.inoPickerItem.setContent($L("InoReader"));
+		this.$.ocPickerItem.setContent($L("OwnCloud News"));
+		this.$.torPickerItem.setContent($L("The Old Reader"));
+		this.$.ttrssPickerItem.setContent($L("Tiny Tiny RSS"));
+		this.$.errorMessage.setContent($L("Login Failed!"));
+		this.$.loginButton.setContent($L("Login"));
+		this.$.loginSpinnerLabel.setContent($L("Logging In..."));
+		this.$.usernameInput.setPlaceholder($L("Username"));
+		this.$.passwordInput.setPlaceholder($L("Password"));
+		this.$.serverURLInput.setPlaceholder($L("Server URL"));
+		
 		this.setService();
 	},
 	

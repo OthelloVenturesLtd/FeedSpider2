@@ -16,10 +16,10 @@ enyo.kind({
 			    {kind: "onyx.Menu", floating: true, components: [
         			{name: "showHideFeedsMenuItem", onSelect: "toggleFeeds"},
         			{classes: "onyx-menu-divider"},
-        			{content: "Preferences", onSelect: "openPreferences"},
-        			{content: "Help", onSelect: "openHelp"},
+        			{name: "preferencesMenuItem", onSelect: "openPreferences"},
+        			{name: "helpMenuItem", onSelect: "openHelp"},
         			{classes: "onyx-menu-divider"},
-        			{content: "Logout", onSelect: "handleLogout"},
+        			{name: "logoutMenuItem", onSelect: "handleLogout"},
     			]}
 			]},
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
@@ -48,8 +48,8 @@ enyo.kind({
 		],
 		swipeableComponents: [
 			{style: "height: 100%; background-color: darkgrey; text-align:center", components: [
-				{kind: "onyx.Button", content: "Delete", style: "margin-top: 10px; margin-right: 10px;", classes:"onyx-negative", ontap: "deleteButtonTapped"},
-				{kind: "onyx.Button", content: "Cancel", style: "margin-left: 10px;", ontap: "cancelButtonTapped"}
+				{name: "swipeableDeleteButton", kind: "onyx.Button", style: "margin-top: 10px; margin-right: 10px;", classes:"onyx-negative", ontap: "deleteButtonTapped"},
+				{name: "swipeableCancelButton", kind: "onyx.Button", style: "margin-left: 10px;", ontap: "cancelButtonTapped"}
 			]}
 		]},
 	],
@@ -57,6 +57,11 @@ enyo.kind({
   	create: function() {
     	this.inherited(arguments);
     	this.swiping = false;
+    	this.$.preferencesMenuItem.setContent($L("Preferences"));
+    	this.$.helpMenuItem.setContent($L("Help"));
+    	this.$.logoutMenuItem.setContent($L("Logout"));
+    	this.$.swipeableDeleteButton.setContent($L("Delete"));
+    	this.$.swipeableCancelButton.setContent($L("Cancel"));
 	},
 
 	activate: function(changes) {
@@ -70,11 +75,11 @@ enyo.kind({
 		}
 		
 		if (Preferences.hideReadFeeds()){
-			this.$.showHideFeedsMenuItem.setContent("Show Read Feeds")
+			this.$.showHideFeedsMenuItem.setContent($L("Show Read Feeds"))
 		}
 		else
 		{
-			this.$.showHideFeedsMenuItem.setContent("Hide Read Feeds")
+			this.$.showHideFeedsMenuItem.setContent($L("Hide Read Feeds"))
 		}
 		
 		this.$.title.setContent(this.folder.title)

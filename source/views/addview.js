@@ -10,16 +10,16 @@ enyo.kind({
 	components: [
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
-			{tag: "span", content: "Add Subscription", style:"font-weight: bold; text-align: center", fit: true},
+			{name: "viewTitle", tag: "span", style:"font-weight: bold; text-align: center", fit: true},
 			{name: "blankIcon", kind: "onyx.Icon"}, //This is here to keep the header centered.
 			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", style: "display: none"},
 			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
 		]},
 		{kind: "enyo.FittableRows", style: "width: 100%; padding-bottom: 1px; border-bottom: black 1px solid", components: [
 			{kind: "onyx.InputDecorator", style: "background-color: white; width: 100%", components: [
-    			{name: "query", kind: "onyx.Input", style: "width: 100%", placeholder: "Enter URL or Search Query"}
+    			{name: "query", kind: "onyx.Input", style: "width: 100%"}
 			]},
-			{kind: "onyx.Button", style: "width: 100%;", content: "Search", classes: "onyx-affirmative", ontap: "search"},
+			{name: "searchButton", kind: "onyx.Button", style: "width: 100%;", classes: "onyx-affirmative", ontap: "search"},
 			{name: "list", kind: "List", style:"width: 100%;", count: 0, multiSelect: false, onSetupItem: "setupItem", ontap: "itemTapped", components: [
 				{name: "item", style: "	border: 1px solid silver; padding: 14px; font-size: 14px;", components: [
 					{kind: "enyo.FittableColumns", components: [
@@ -27,12 +27,20 @@ enyo.kind({
 							{name: "title"},
 							{name: "feedUrl"},
 						]},	
-						{name: "addButton", kind: "onyx.Button", style: "width: 40px; margin:auto;", showing:false, content: "Add", classes: "onyx-affirmative", ontap: "add"}
+						{name: "addButton", kind: "onyx.Button", style: "width: 40px; margin:auto;", showing:false, classes: "onyx-affirmative", ontap: "add"}
 					]}
 				]}
 			]},
 		]},
-],
+	],
+	
+	create: function() {
+    	this.inherited(arguments);
+    	this.$.viewTitle.setContent($L("Add Subscription"));
+    	this.$.query.setPlaceHolder($L("Enter URL or Search Query"));
+    	this.$.searchButton.setContent($L("Search"));
+    	this.$.addButton.setContent($L("Add"));
+    },
 	
 	activate: function() {
 		this.$.smallSpinner.hide()

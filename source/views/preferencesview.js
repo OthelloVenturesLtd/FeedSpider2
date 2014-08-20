@@ -15,15 +15,15 @@ enyo.kind({
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
-			{tag: "span", content: "Preferences", style:"font-weight: bold; text-align: center", fit: true},
+			{name: "viewTitle", tag: "span", style:"font-weight: bold; text-align: center", fit: true},
 			{kind: "onyx.Icon"}, //This is here to keep the header centered.
 		]},
 		{kind: "enyo.Scroller", fit: true, style: "padding: 10px", components: [
 			{tag: "div", classes: "feedspider-groupbox", components: [
-				{tag: "div", classes: "feedspider-groupbox-header", content: "General"},
+				{name: "generalHeader", tag: "div", classes: "feedspider-groupbox-header"},
 				{name: "generalGroupbox", tag: "div", classes: "feedspider-groupbox-body", style: "width: 100%", components:[
 					{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
-						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Allow landscape"},
+						{name: "allowLandscapeTitle", tag: "span", fit: true, classes: "feedspider-preference-title"},
 						{name: "allowLandscape", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setAllowLandscape"}
 					]},
 					//Nothing that we support right now supports a Palm-style gesture area
@@ -38,23 +38,23 @@ enyo.kind({
 								{kind: "onyx.Icon", src: "assets/downarrow.png"},
 							]},
 							{name: "themePicker", kind: "onyx.Picker", onChange: "setTheme",components: [
-		  						{content: "Grey Theme", value: "grey"},
-		  						{content: "Light Theme", value: "light"},
-		  						{content: "Dark Theme", value: "dark"}
+		  						{name: "greyThemePickerItem", value: "grey"},
+		  						{name: "lightThemePickerItem", value: "light"},
+		  						{name: "darkThemePickerItem", value: "dark"}
     						]}
 						]},
 					]}
 				]}
 			]},
 			{tag: "div", classes: "feedspider-groupbox", components: [
-				{tag: "div", classes: "feedspider-groupbox-header", content: "Feeds"},
+				{name: "feedsHeader", tag: "div", classes: "feedspider-groupbox-header"},
 				{tag: "div", classes: "feedspider-groupbox-body", components:[
 					{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
-						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Hide read feeds"},
+						{name: "hideReadFeedsTitle", tag: "span", fit: true, classes: "feedspider-preference-title"},
 						{name: "hideReadFeeds", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setHideReadFeeds"}
 					]},
 					{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
-						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Go back after mark all read"},
+						{name: "backAfterMarkReadTitle", tag: "span", fit: true, classes: "feedspider-preference-title"},
 						{name: "backAfterMarkRead", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setBackAfterMarkRead"}
 					]},
 					{kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
@@ -64,15 +64,15 @@ enyo.kind({
 								{kind: "onyx.Icon", src: "assets/downarrow.png"},
 							]},
 							{name: "feedSortOrderPicker", kind: "onyx.Picker", onChange: "setFeedSortOrder",components: [
-		  						{content: "Sort alphabetically", value: "alphabetical"},
-		  						{content: "Sort manually", value: "manual"}
+		  						{name: "sortAlphabeticallyPickerItem", value: "alphabetical"},
+		  						{name: "sortManuallyPickerItem", value: "manual"}
     						]}
 						]},
 					]}
 				]}
 			]},
 			{tag: "div", classes: "feedspider-groupbox", components: [
-				{tag: "div", classes: "feedspider-groupbox-header", content: "Articles"},
+				{name: "articlesHeader", tag: "div", classes: "feedspider-groupbox-header"},
 				{tag: "div", classes: "feedspider-groupbox-body", components:[
 					{kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
 						{kind: "onyx.PickerDecorator", style: "width:100%;", components: [
@@ -81,8 +81,8 @@ enyo.kind({
 								{kind: "onyx.Icon", src: "assets/downarrow.png"},
 							]},
 							{name: "sortOrderPicker", kind: "onyx.Picker", onChange: "setSortOrder",components: [
-		  						{content: "Sort newest first", value: "newest"},
-		  						{content: "Sort oldest first", value: "oldest"}
+		  						{name: "newestFirstPickerItem", value: "newest"},
+		  						{name: "oldestFirstPickerItem", value: "oldest"}
     						]}
 						]},
 					]},
@@ -93,15 +93,15 @@ enyo.kind({
 								{kind: "onyx.Icon", src: "assets/downarrow.png"},
 							]},
 							{name: "fontSizePicker", kind: "onyx.Picker", onChange: "setFontSize",components: [
-		  						{content: "Tiny Font", value: "tiny"},
-		  						{content: "Small Font", value: "small"},
-		  						{content: "Medium Font", value: "medium"},
-		  						{content: "Large Font", value: "large"}
+		  						{name: "tinyFontPickerItem", value: "tiny"},
+		  						{name: "smallFontPickerItem", value: "small"},
+		  						{name: "mediumFontPickerItem", value: "medium"},
+		  						{name: "largeFontPickerItem", value: "large"}
     						]}
 						]},
 					]},
 					{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
-						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Hide Read Articles"},
+						{name: "hideReadArticlesTitle", tag: "span", fit: true, classes: "feedspider-preference-title"},
 						{name: "hideReadArticles", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setHideReadArticles"}
 					]},
 					//This is not currently supported by the enyo list kind
@@ -112,25 +112,25 @@ enyo.kind({
 				]}
 			]},
 			{tag: "div", classes: "feedspider-groupbox", components: [
-				{tag: "div", classes: "feedspider-groupbox-header", content: "Folders"},
+				{name: "foldersHeader", tag: "div", classes: "feedspider-groupbox-header"},
 				{tag: "div", classes: "feedspider-groupbox-body-single", components:[
 					{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
-						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Combine Articles"},
+						{name: "combineFoldersTitle", tag: "span", fit: true, classes: "feedspider-preference-title"},
 						{name: "combineFolders", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setCombineFolders"}
 					]},
 				]}
 			]},
 			{tag: "div", classes: "feedspider-groupbox", components: [
-				{tag: "div", classes: "feedspider-groupbox-header", content: "Sharing"},
+				{name: "sharingHeader", tag: "div", classes: "feedspider-groupbox-header"},
 				{tag: "div", classes: "feedspider-groupbox-body-single", components:[
 					{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
-						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Shorten URLs"},
+						{name: "shortenURLsTitle", tag: "span", fit: true, classes: "feedspider-preference-title"},
 						{name: "shortenURLs", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setShortenURLs"}
 					]},
 				]}
 			]},
 			{tag: "div", classes: "feedspider-groupbox", components: [
-				{tag: "div", classes: "feedspider-groupbox-header", content: "Notifications"},
+				{name: "notificationsHeader", tag: "div", classes: "feedspider-groupbox-header"},
 				{name: "notificationsBody", tag: "div", components:[
 					{kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
 						{kind: "onyx.PickerDecorator", style: "width:100%;", components: [
@@ -139,15 +139,15 @@ enyo.kind({
 								{kind: "onyx.Icon", src: "assets/downarrow.png"},
 							]},
 							{name: "notificationIntervalPicker", kind: "onyx.Picker", onChange: "setNotificationInterval",components: [
-								{content: "Off", value: 0},
+								{name: "offPickerItem", value: 0},
 								//{content: "10 Seconds", value: 10},
 								//{content: "30 Seconds", value: 30},
-								{content: "5 Minutes", value: 300},
-								{content: "15 Minutes", value: 900},
-								{content: "30 Minutes", value: 1800},
-								{content: "1 Hour", value: 3600},
-								{content: "4 Hours", value: 14400},
-								{content: "8 Hours", value: 18800}
+								{name: "fiveMinutesPickerItem", value: 300},
+								{name: "fifteenMinutesPickerItem", value: 900},
+								{name: "thirtyMinutesPickerItem", value: 1800},
+								{name: "oneHourPickerItem", value: 3600},
+								{name: "fourHoursPickerItem", value: 14400},
+								{name: "eightHoursPickerItem", value: 18800}
     						]}
 						]},
 					]},
@@ -158,23 +158,23 @@ enyo.kind({
 								{kind: "onyx.Icon", src: "assets/downarrow.png"},
 							]},
 							{name: "notificationFeedsPicker", kind: "onyx.Picker", onChange: "setNotificationFeeds",components: [
-								{content: "Any feed", value: "any"},
-								{content: "Selected feeds", value: "selected"}
+								{name: "anyFeedPickerItem", value: "any"},
+								{name: "selectedFeedsPickerItem", value: "selected"}
     						]}
 						]},
 					]},
 					{name: "notificationFeedsSelectionRow", kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
 						{kind: "enyo.FittableColumns", noStretch: true, style: "width: 100%; padding: 5px", components: [
-							{kind: "onyx.Button", classes: "onyx-blue", content: "Select Feeds", style: "width: 100%", ontap: "selectFeeds"}
+							{name: "selectFeedsButton", kind: "onyx.Button", classes: "onyx-blue", style: "width: 100%", ontap: "selectFeeds"}
 						]}
 					]}
 				]}
 			]},
 			{tag: "div", classes: "feedspider-groupbox", components: [
-				{tag: "div", classes: "feedspider-groupbox-header", content: "Feedly Options"},
+				{name: "feedlyOptionsHeader", tag: "div", classes: "feedspider-groupbox-header"},
 				{tag: "div", classes: "feedspider-groupbox-body-single", components:[
 					{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
-						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Show most engaging articles only"},
+						{name: "feedlySortEngagementTitle", tag: "span", fit: true, classes: "feedspider-preference-title"},
 						{name: "feedlySortEngagement", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setFeedlySortEngagement"}
 					]},
 				]}
@@ -182,6 +182,48 @@ enyo.kind({
 		]},
 		{name: "notificationFeedsDialog", kind: "FeedSpider2.NotificationFeedsDialog", onComplete: "feedSelectionComplete"}
 	],
+	
+	create: function() {
+    	this.inherited(arguments);
+    	
+    	this.$.viewTitle.setContent($L("Preferences"));
+    	this.$.generalHeader.setContent($L("General"));
+    	this.$.allowLandscapeTitle.setContent($L("Allow landscape"));
+    	this.$.greyThemePickerItem.setContent($L("Grey Theme"));
+    	this.$.lightThemePickerItem.setContent($L("Light Theme"));
+    	this.$.darkThemePickerItem.setContent($L("Dark Theme"));
+    	this.$.feedsHeader.setContent($L("Feeds"));
+		this.$.hideReadFeedsTitle.setContent($L("Hide read feeds"));
+		this.$.backAfterMarkReadTitle.setContent($L("Go back after mark all read"));
+    	this.$.sortAlphabeticallyPickerItem.setContent($L("Sort alphabetically"));
+    	this.$.sortManuallyPickerItem.setContent($L("Sort manually"));
+    	this.$.articlesHeader.setContent($L("Articles"));
+    	this.$.newestFirstPickerItem.setContent($L("Sort newest first"));
+    	this.$.oldestFirstPickerItem.setContent($L("Sort oldest first"));
+    	this.$.tinyFontPickerItem.setContent($L("Tiny Font"));
+    	this.$.smallFontPickerItem.setContent($L("Small Font"));
+    	this.$.mediumFontPickerItem.setContent($L("Medium Font"));
+    	this.$.largeFontPickerItem.setContent($L("Large Font"));
+		this.$.hideReadArticlesTitle.setContent($L("Hide Read Articles"));
+    	this.$.foldersHeader.setContent($L("Folders"));
+    	this.$.combineFoldersTitle.setContent($L("Combine Folders"));
+    	this.$.sharingHeader.setContent($L("Sharing"));
+    	this.$.shortenURLsTitle.setContent($L("Shorten URLs"));
+        this.$.notificationsHeader.setContent($L("Notifications"));
+        this.$.offPickerItem.setContent($L("Off"));
+        this.$.fiveMinutesPickerItem.setContent($L("5 Minutes"));
+        this.$.fifteenMinutesPickerItem.setContent($L("15 Minutes"));
+        this.$.thirtyMinutesPickerItem.setContent($L("30 Minutes"));
+        this.$.oneHourPickerItem.setContent($L("1 Hour"));
+        this.$.fourHoursPickerItem.setContent($L("4 Hours"));
+        this.$.eightHoursPickerItem.setContent($L("8 Hours"));
+        this.$.anyFeedPickerItem.setContent($L("Any feed"));
+        this.$.selectedFeedsPickerItem.setContent($L("Selected feeds"));
+        this.$.selectFeedsButton.setContent($L("Select Feeds"));
+        this.$.feedlyOptionsHeader.setContent($L("Feedly Options"));
+        this.$.feedlySortEngagementTitle.setContent($L("Show most engaging articles only"));
+        
+    },
 	
 	rendered: function()
 	{

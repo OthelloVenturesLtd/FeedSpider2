@@ -6,7 +6,7 @@ enyo.kind({
 	components:[
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
-			{tag: "span", content: "Help", style:"font-weight: bold; text-align: center", fit: true},
+			{name: "viewTitle", tag: "span", style:"font-weight: bold; text-align: center", fit: true},
 			{kind: "onyx.Icon"}, //This is here to keep the header centered.
 		]},
 		{kind: "enyo.Scroller", fit: true, style: "padding: 10px", components: [
@@ -60,7 +60,12 @@ enyo.kind({
 			{tag: "br"},
 		]}
 	],
-	
+
+  	create: function() {
+    	this.inherited(arguments);
+    	this.$.viewTitle.setContent($L("Help"));
+    },
+    	
 	handleGoBack: function() {
 		this.doGoBack({lastPage: this.previousPage})
 	},
