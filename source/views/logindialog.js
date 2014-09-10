@@ -64,7 +64,7 @@ enyo.kind({
     	this.inherited(arguments);
 		this.$.dialogTitle.setContent($L("Login"));
 		this.$.aolPickerItem.setContent($L("AOL Reader"));
-		this.$.bqPickerItem.setContent($L("BazQuz Reader"));
+		this.$.bqPickerItem.setContent($L("BazQux Reader"));
 		this.$.feedlyPickerItem.setContent($L("Feedly"));
 		this.$.inoPickerItem.setContent($L("InoReader"));
 		this.$.ocPickerItem.setContent($L("OwnCloud News"));
