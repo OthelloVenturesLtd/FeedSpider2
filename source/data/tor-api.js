@@ -263,7 +263,7 @@ var TorApi = Class.create({
     )
   },
 
-  //UPDATED 1.1.3
+  //UPDATED 2.0.0
   _getArticles: function(id, exclude, continuation, success, failure) {
     var parameters = {output: "json", n: 40}
 	

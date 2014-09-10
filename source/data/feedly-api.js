@@ -294,7 +294,7 @@ var FeedlyApi = Class.create({
     )
   },
 
-  //UPDATED 1.2.0
+  //UPDATED 2.0.0
   _getArticles: function(id, exclude, continuation, success, failure) {
     var parameters = {output: "json", count: 40}
 

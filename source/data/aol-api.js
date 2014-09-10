@@ -291,7 +291,7 @@ var AolApi = Class.create({
     )
   },
 
-  //UPDATED 1.2.0
+  //UPDATED 2.0.0
   _getArticles: function(id, exclude, continuation, success, failure) {
     var parameters = {output: "json", n: 40, access_token: this._getAuthToken()}
 
