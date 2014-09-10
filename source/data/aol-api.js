@@ -318,7 +318,14 @@ var AolApi = Class.create({
         	var	articles = response.responseJSON
         }
         else {
-        	var articles = JSON2.parse(response.responseText)
+        	if (enyo.platform.firefoxOS)
+			{
+				var articles = JSON.parse(response.responseText)
+			}
+			else
+			{
+        		var articles = JSON2.parse(response.responseText)
+        	}
         }
         
         //Post Processing
