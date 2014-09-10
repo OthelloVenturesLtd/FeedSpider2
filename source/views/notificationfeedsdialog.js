@@ -26,7 +26,7 @@ enyo.kind({
 	
   	create: function() {
     	this.inherited(arguments);
-    	this.$.feedsListButton.setContent($L("Done"));
+    	this.$.FeedsListButton.setContent($L("Done"));
 	},
 	
 	closeDialog: function(){

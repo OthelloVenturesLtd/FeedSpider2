@@ -37,7 +37,7 @@ enyo.kind({
 	create: function() {
     	this.inherited(arguments);
     	this.$.viewTitle.setContent($L("Add Subscription"));
-    	this.$.query.setPlaceHolder($L("Enter URL or Search Query"));
+    	this.$.query.setPlaceholder($L("Enter URL or Search Query"));
     	this.$.searchButton.setContent($L("Search"));
     	this.$.addButton.setContent($L("Add"));
     },

@@ -70,7 +70,7 @@ enyo.kind({
 		this.$.ocPickerItem.setContent($L("OwnCloud News"));
 		this.$.torPickerItem.setContent($L("The Old Reader"));
 		this.$.ttrssPickerItem.setContent($L("Tiny Tiny RSS"));
-		this.$.errorMessage.setContent($L("Login Failed!"));
+		this.$.errorMessage.setContent($L("Login Failed"));
 		this.$.loginButton.setContent($L("Login"));
 		this.$.loginSpinnerLabel.setContent($L("Logging In..."));
 		this.$.usernameInput.setPlaceholder($L("Username"));

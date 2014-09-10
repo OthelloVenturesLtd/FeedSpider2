@@ -188,12 +188,12 @@ enyo.kind({
     	
     	this.$.viewTitle.setContent($L("Preferences"));
     	this.$.generalHeader.setContent($L("General"));
-    	this.$.allowLandscapeTitle.setContent($L("Allow landscape"));
+    	this.$.allowLandscapeTitle.setContent($L("Allow Landscape"));
     	this.$.greyThemePickerItem.setContent($L("Grey Theme"));
     	this.$.lightThemePickerItem.setContent($L("Light Theme"));
     	this.$.darkThemePickerItem.setContent($L("Dark Theme"));
     	this.$.feedsHeader.setContent($L("Feeds"));
-		this.$.hideReadFeedsTitle.setContent($L("Hide read feeds"));
+		this.$.hideReadFeedsTitle.setContent($L("Hide Read Feeds"));
 		this.$.backAfterMarkReadTitle.setContent($L("Go back after mark all read"));
     	this.$.sortAlphabeticallyPickerItem.setContent($L("Sort alphabetically"));
     	this.$.sortManuallyPickerItem.setContent($L("Sort manually"));
