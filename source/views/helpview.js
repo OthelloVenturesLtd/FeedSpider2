@@ -11,7 +11,7 @@ enyo.kind({
 		]},
 		{kind: "enyo.Scroller", fit: true, style: "padding: 10px", components: [
 			{tag: "div", content: "FeedSpider 2", style: "font-size: 24px; font-weight: bold"},
-			{tag: "div", content: "Version 1.0.1 by Othello Ventures Ltd."},
+			{tag: "div", content: "Version 2.0.0 by Othello Ventures Ltd."},
 			{tag: "br"},
 			{tag: "div", components: [
 				{tag: "div", content: "FeedSpider 2 is a cross-platform port of the original FeedSpider RSS Reader for webOS, designed to work with Google Reader compatible applications."},
@@ -39,13 +39,21 @@ enyo.kind({
 			{tag: "br"},
 			{tag: "div", content: "History", style: "font-size: 20px; font-weight: bold"},
 			{tag: "div", components: [
+				{tag: "div", content: "2.0.0", style: "font-weight: bold" },
+				{tag: "ul", components: [
+					{tag: "li", content: "Fixed issue that would cause the app to fail to load on FirefoxOS 2.x."},
+					{tag: "li", content: "Fixed issue that would cause JSON parsing to fail on FirefoxOS if ResponseJSON is not present."},
+					{tag: "li", content: "Added localization engine with initial support for English."},
+				]}
+			]},
+			{tag: "br"},
+			{tag: "div", components: [
 				{tag: "div", content: "1.0.1", style: "font-weight: bold" },
 				{tag: "ul", components: [
 					{tag: "li", content: "Fixed several rendering bugs that would cause content to display incorrectly."},
 					{tag: "li", content: "Fixed handling of links so that they properly open in new browser window."},
 				]}
 			]},
-			{tag: "br"},
 			{tag: "br"},
 			{tag: "div", components: [
 				{tag: "div", content: "1.0.0", style: "font-weight: bold" },
@@ -57,6 +65,11 @@ enyo.kind({
 			{tag: "div", content: "Special Thanks", style: "font-size: 20px; font-weight: bold"},
 			{tag: "br"},			
 			{tag: "div", content: "Refresh Icon made by Yannick from www.flaticon.com"},
+			{tag: "br"},
+			{tag: "div", components: [
+				{tag: "span", content: "Localization by SimpleLang: "},
+				{tag: "a", attributes: {"href": "https://github.com/minego/macaw-enyo/tree/master/lib/simplelang", "target": "_blank"}, content: "GitHub" }
+			]},
 			{tag: "br"},
 		]}
 	],
