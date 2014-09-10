@@ -1703,11 +1703,28 @@ Ajax.Base = Class.create({
       this.options.parameters = this.options.parameters.toObject();
   }
 });
-Ajax.Request = Class.create(Ajax.Base, {
+
+//Ajax.Request = Class.create(Ajax.Base, {
+Ajax.Request = Class.create({
   _complete: false,
 
-  initialize: function($super, url, options) {
-    $super(options);
+  initialize: function(url, options) {
+    this.options = {
+      method:       'post',
+      asynchronous: true,
+      contentType:  'application/x-www-form-urlencoded',
+      encoding:     'UTF-8',
+      parameters:   '',
+      evalJSON:     true,
+      evalJS:       true
+    };
+    Object.extend(this.options, options || { });
+
+    this.options.method = this.options.method.toLowerCase();
+
+    if (Object.isHash(this.options.parameters))
+      this.options.parameters = this.options.parameters.toObject();
+  	
     this.transport = Ajax.getTransport();
     this.request(url);
   },
