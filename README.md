@@ -1,15 +1,26 @@
-## About
+FeedSpider2
+===========
 
-bootplate is a template for a minimal Enyo and Onyx web application.
-You would normally use this to setup your local environment then go and modify the
-files to build your own application.  By itself, it does almost nothing.
+This is a port of the Mojo-based FeedSpider RSS client to the Enyo 2 Javascript Framework. Well, technically it's a port. It's really a significant re-write, especially of the UI layer.
 
-## Downloading
+Using the Enyo 2 Framework, FeedSpider has been ported to FireFox OS, and is currently in the process of being re-ported to webOS, and later to LuneOS, with further versions to follow.
 
-To download a version of bootplate with all of the submodules populated
-for quick use, visit http://enyojs.com/get-enyo/.  The download link in GitHub will
-give you just the bootplate repo without any of the supporting libraries.
+Feedspider Supports:
 
-As an alternative, you can use a Git client to clone this repo and then initialize
-submodules. This is good if you want to work with the latest version of the code from
-GitHub that we may not have packaged into an official release.
+* AOL Reader
+* BazQux Reader
+* Feedly
+* InoReader
+* OwnCloud News
+* Tiny Tiny RSS
+* The Old Reader
+
+Now, webOS and Firefox OS users can again sync their RSS feeds across all of their webOS and Firefox OS devices!
+
+Contact
+=======
+
+Author: Brent Hunter  
+Twitter: @FeedSpiderApp  
+Email: feedspider@feedspider.net  
+Web: http://www.feedspider.net  
