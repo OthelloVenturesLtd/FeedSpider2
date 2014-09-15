@@ -65,7 +65,8 @@ enyo.kind({
 				{name: "swipeSpacer"},
 				{name: "articleReadIcon", style: "height: 100%; width: 30px; margin-right: 10px; background: url(assets/swipe-read-on.png) center center no-repeat;"},
 			]}
-		]}
+		]},
+		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
 	],
 	
   	create: function() {
@@ -179,6 +180,13 @@ enyo.kind({
 			this.$.placeholderIcon.show();
 		}
 	},
+
+	handleKeyUp: function(inSender, inEvent) {
+        if (this.showing && inEvent.keyCode === 27)
+        {
+        	this.handleGoBack();
+        }
+    },
 
 	handleGoBack: function() {
 		this.$.MainList.setCount(0);

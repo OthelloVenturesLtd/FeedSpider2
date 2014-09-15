@@ -52,6 +52,8 @@ enyo.kind({
 				{name: "swipeableCancelButton", kind: "onyx.Button", style: "margin-left: 10px;", ontap: "cancelButtonTapped"}
 			]}
 		]},
+		
+		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
 	],
 
   	create: function() {
@@ -267,6 +269,13 @@ enyo.kind({
 		this.folder.subscriptions.remove(this.subscriptions.items[event])
 		this.folder.recalculateUnreadCounts()
 	},
+	
+	handleKeyUp: function(inSender, inEvent) {
+        if (this.showing && inEvent.keyCode === 27)
+        {
+        	this.handleGoBack();
+        }
+    },
 	
 	handleGoBack: function() {
 		this.doGoBack({lastPage: this.previousPage})

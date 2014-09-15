@@ -10,7 +10,7 @@ enyo.kind({
 	events: {
 		onSwitchPanels: "switchPanels",
 		onGoBack: "closePanel",
-		onLogout: "logout"
+		onLogout: "logout",
 	},
 	
 	handlers: {
@@ -41,6 +41,11 @@ enyo.kind({
 	
 	handleLogout: function() {
 		this.doLogout();
+	},
+
+	keyPressed: function(inSender, inEvent) {
+		console.log(inSender);
+		console.log(inEvent);
 	},
 
   	refreshList: function(list, items) {

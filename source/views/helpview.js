@@ -71,12 +71,20 @@ enyo.kind({
 				{tag: "a", attributes: {"href": "https://github.com/minego/macaw-enyo/tree/master/lib/simplelang", "target": "_blank"}, content: "GitHub" }
 			]},
 			{tag: "br"},
-		]}
+		]},
+		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
 	],
 
   	create: function() {
     	this.inherited(arguments);
     	this.$.viewTitle.setContent($L("Help"));
+    },
+
+	handleKeyUp: function(inSender, inEvent) {
+        if (this.showing && inEvent.keyCode === 27)
+        {
+        	this.handleGoBack();
+        }
     },
     	
 	handleGoBack: function() {

@@ -180,7 +180,8 @@ enyo.kind({
 				]}
 			]},
 		]},
-		{name: "notificationFeedsDialog", kind: "FeedSpider2.NotificationFeedsDialog", onComplete: "feedSelectionComplete"}
+		{name: "notificationFeedsDialog", kind: "FeedSpider2.NotificationFeedsDialog", onComplete: "feedSelectionComplete"},
+		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
 	],
 	
 	create: function() {
@@ -438,6 +439,13 @@ enyo.kind({
 	feedSelectionComplete: function() {
 		this.$.notificationFeedsDialog.hide();
 	},
+	
+	handleKeyUp: function(inSender, inEvent) {
+        if (this.showing && inEvent.keyCode === 27)
+        {
+        	this.handleGoBack();
+        }
+    },
 
 	handleGoBack: function() {
 		if (this.originalNotificationInterval != Preferences.notificationInterval()) {

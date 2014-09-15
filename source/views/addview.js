@@ -32,6 +32,7 @@ enyo.kind({
 				]}
 			]},
 		]},
+		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
 	],
 	
 	create: function() {
@@ -49,6 +50,13 @@ enyo.kind({
 		this.$.query.setValue("")
 		this.$.list.count = 0
 	},
+
+	handleKeyUp: function(inSender, inEvent) {
+        if (this.showing && inEvent.keyCode === 27)
+        {
+        	this.handleGoBack();
+        }
+    },
 	
 	handleGoBack: function() {
 		this.doGoBack({lastPage: this.previousPage})

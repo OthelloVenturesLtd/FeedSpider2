@@ -49,7 +49,8 @@ enyo.kind({
 				{name: "nextButton", kind: "onyx.IconButton", ontap: "nextArticle", src: "assets/next-article.png"},
 				{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
 			]},
-		]}
+		]},
+		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
 	],
 	
 	rendered: function() {
@@ -174,6 +175,13 @@ enyo.kind({
 			this.article["turn" + state + (target.hasClass("on") ? "Off" : "On")](onComplete, function() {}, sticky);
 		}
 	},
+
+	handleKeyUp: function(inSender, inEvent) {
+        if (this.showing && inEvent.keyCode === 27)
+        {
+        	this.handleGoBack();
+        }
+    },
 
 	handleGoBack: function() {
 		this.doGoBack({lastPage: this.previousPage, scrollingIndex: this.scrollingIndex});
