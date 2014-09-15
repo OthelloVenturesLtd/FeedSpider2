@@ -7,7 +7,7 @@ enyo.kind({
 	centered: true,
 	scrim: true,
 	
-	style: "padding-top: 10px; padding-left: 20px; padding-right: 20px;  padding-bottom: 20px; width: 80%;",
+	style: "padding-top: 10px; padding-left: 20px; padding-right: 20px;  padding-bottom: 20px; width: 80%; max-width: 300px",
 	
 	events: {
 		onLoginSuccess: "",	
