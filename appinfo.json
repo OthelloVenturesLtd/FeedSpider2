@@ -1,10 +1,12 @@
 {
 	"id": "com.othelloventures.feedspider2",
-	"version": "0.1.0",
-	"vendor": "Othello Ventures Ltd.",
+	"version": "2.0.0",
+	"vendor": "Othello Ventures",
 	"type": "web",
 	"main": "index.html",
-	"title": "FeedSpider 2",
-	"icon": "icon.png",
+	"title": "FeedSpider",
+	"icon": "icon-64.png",
+	"miniicon": "icon-48.png",
+	"splashicon": "icon-256.png",
 	"uiRevision": 2
 }
