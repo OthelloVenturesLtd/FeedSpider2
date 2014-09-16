@@ -274,6 +274,12 @@ enyo.kind({
         if (this.showing && inEvent.keyCode === 27)
         {
         	this.handleGoBack();
+        	if (enyo.platform.webos)
+        	{
+        		inEvent.stopPropagation();
+        		inEvent.preventDefault();
+       			return -1;
+       		}
         }
     },
 	
