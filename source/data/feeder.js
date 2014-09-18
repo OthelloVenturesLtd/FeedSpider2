@@ -3,6 +3,13 @@ var Feeder = new enyo.Component({
 
 	notify: function(message)
 	{
-		feedspider.handlePopupMessage({title: message});
+		if (enyo.platform.webos)
+		{
+			enyo.webos.addBannerMessage(message, "{}");
+		}
+		else
+		{
+			feedspider.handlePopupMessage({title: message});
+		}
 	}
 });
