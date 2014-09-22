@@ -7,7 +7,7 @@ enyo.kind({
 	centered: true,
 	scrim: true,
 	
-	style: "padding-top: 10px; padding-left: 20px; padding-right: 20px;  padding-bottom: 20px; width: 80%; max-width: 300px",
+	style: "padding-top: 10px; padding-left: 20px; padding-right: 20px;  padding-bottom: 20px; width: 80%; max-width: 300px; ",
 	
 	events: {
 		onLoginSuccess: "",	
@@ -54,9 +54,16 @@ enyo.kind({
 			{kind: "onyx.Spinner", style: "background: url('assets/login-spinner.gif') no-repeat 0 0;width: 132px; height: 132px"},
 			{name: "loginSpinnerLabel", tag: "p", style: "text-align:center; font-weight: bold; font-size: 20px"},
 		]},
-		{name: "oAuthBrowserWrapper", kind: "enyo.FittableRows", style: "width: 100%; text-align: left; display: none", components: [
-			{name: "backButton", kind: "onyx.IconButton", style: "margin-bottom: 5px;", ontap: "browserGoBack", src: "assets/go-back.png"},
-			{name: "oAuthBrowser", kind: "FeedSpider2.OAuthIFrame", style: "height: 300px; width: 100%;", onOAuthSuccess: "oasuccess", onCodeGot: "codegot", onOAuthFailure: "oafailure"}
+		{name: "oAuthBrowserWrapperFFOS", kind: "enyo.FittableRows", style: "width: 100%; text-align: left; display: none", components: [
+			{name: "backButtonFFOS", kind: "onyx.IconButton", style: "margin-bottom: 5px;", ontap: "browserGoBack", src: "assets/go-back.png"},
+			{name: "oAuthBrowserFFOS", kind: "FeedSpider2.OAuthIFrame", style: "height: 300px; width: 100%;", onOAuthSuccess: "oasuccess", onCodeGot: "codegot", onOAuthFailure: "oafailure"}
+		]},
+		{name: "oAuthBrowserWrapperWebOS", kind: "enyo.FittableRows", style: "width: 100%; text-align: left; display: none", components: [
+			{components:[
+				{name: "backButtonWebOS", kind: "onyx.IconButton", style: "margin-bottom: 5px;", ontap: "browserGoBack", src: "assets/go-back.png"},
+				{name: "smallSpinnerWebOS", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "float: right; display: none"},
+			]},
+			{name: "oAuthBrowserWebOS", kind: "FeedSpider2.OAuthWebView", style: "width: 100%;", onOAuthSuccess: "oasuccess", onCodeGot: "codegot", onOAuthFailure: "oafailure", onLoadStarted: "showOauthSpinner", onLoadStopped: "hideOauthSpinner", onLoadComplete: "hideOauthSpinner",}
 		]}
 	],
 	
@@ -159,7 +166,15 @@ enyo.kind({
 		this.$.loginWindow.hide();
 		if (this.credentials.service == "feedly" || this.credentials.service == "aol")
 		{
-			this.$.oAuthBrowserWrapper.show();
+			if(enyo.platform.firefoxOS)
+			{
+				this.$.oAuthBrowserWrapperFFOS.show();
+			}
+			
+			if(enyo.platform.webos)
+			{
+				this.$.oAuthBrowserWrapperWebOS.show();
+			}
 		}
 		else
 		{
@@ -187,7 +202,8 @@ enyo.kind({
 	},
 	
 	codegot: function(inSender, inEvent) {
-		this.$.oAuthBrowserWrapper.hide();
+		this.$.oAuthBrowserWrapperFFOS.hide();
+		this.$.oAuthBrowserWrapperWebOS.hide();
 		this.$.loginSpinner.show();
 	},
 	
@@ -216,17 +232,39 @@ enyo.kind({
 	{	
 		var self = this;
 		
-		canGoBack = this.$.oAuthBrowser.eventNode.getCanGoBack();
+		if(enyo.platform.firefoxOS)
+		{
+			canGoBack = this.$.oAuthBrowserFFOS.eventNode.getCanGoBack();
 		
-		canGoBack.onsuccess = function(){
-			if (this.result) {
-				self.$.oAuthBrowser.eventNode.goBack();
-			}
-			else {
-				self.$.oAuthBrowserWrapper.hide();
-				self.$.loginWindow.show();
+			canGoBack.onsuccess = function(){
+				if (this.result) {
+					self.$.oAuthBrowserFFOS.eventNode.goBack();
+				}
+				else {
+					self.$.oAuthBrowserWrapperFFOS.hide();
+					self.$.loginWindow.show();
+				}
 			}
 		}
+		
+		if(enyo.platform.webos)
+		{
+			if (!this.$.oAuthBrowserWebOS.canGoBack) {
+				this.$.oAuthBrowserWrapperWebOS.hide();
+				this.$.loginWindow.show();
+			}
+			else {
+				this.$.oAuthBrowserWebOS.goBack();
+			}
+		}
+	},
+	
+	showOauthSpinner: function() {
+		this.$.smallSpinnerWebOS.show();
+	},
+	
+	hideOauthSpinner: function() {
+		this.$.smallSpinnerWebOS.hide();
 	},
 	
 	loginSuccess: function() {
@@ -234,7 +272,8 @@ enyo.kind({
 		this.credentials.save();
 
 		//Reset the window for next time
-		this.$.oAuthBrowserWrapper.hide();
+		this.$.oAuthBrowserWrapperFFOS.hide();
+		this.$.oAuthBrowserWrapperWebOS.hide();
 		this.$.errorMessage.hide();
 		this.$.loginSpinner.hide();
 		this.$.loginWindow.show();
@@ -260,7 +299,8 @@ enyo.kind({
 		}
 		
 		//Next, hide the spinner and clear the window
-		this.$.oAuthBrowserWrapper.hide();
+		this.$.oAuthBrowserWrapperFFOS.hide();
+		this.$.oAuthBrowserWrapperWebOS.hide();
 		this.$.loginSpinner.hide();
 		this.$.errorMessage.show();
 		this.$.loginWindow.show();
