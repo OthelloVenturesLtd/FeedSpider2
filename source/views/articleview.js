@@ -40,9 +40,7 @@ enyo.kind({
 			{style: "width: 16%; text-align:center; margin-left: 0px; margin-right: 0px;", components: [
 				{kind: "onyx.MenuDecorator", components: [
 					{name: "sendToButton", kind: "onyx.IconButton", src: "assets/sendto-footer.png"},
-					{name: "sharingMenu", kind: "onyx.Menu", floating: true, components: [
-        				//{name: "configureItem", content: "Configure...", onTap: "configureSharing"},
-    				]}
+					{name: "sharingMenu", kind: "onyx.Menu", floating: true}
 				]},
 			]},
 			{style: "width: 18%; text-align:center; margin-left: 0px; margin-right: 0px;", components: [
@@ -51,7 +49,7 @@ enyo.kind({
 			]},
 		]},
 		{name: "installAppDialog", kind: FeedSpider2.ChoiceDialog, onAction: "openAppStore", onDismiss: "closeDialog"},
-		{name: "configureDialog", kind: FeedSpider2.ConfigureSharingDialog, onDismiss: "closeDialog"},
+		{name: "configureDialog", kind: FeedSpider2.ConfigureSharingDialog, onDismiss: "refreshSharingMenu"},
 		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
 	],
 	
@@ -109,12 +107,16 @@ enyo.kind({
 		if(!this.article.isRead && !this.article.keepUnread) {
 			this.toggleState(this.$.readButton, "Read");
 		}
-		if (enyo.platform.webos || enyo.platform.firefoxOS)
+		if (enyo.platform.firefoxOS)
 		{
 			sharingMenu = Sharing.getPopupFor(this.article);
 			sharingMenu.each(function(item){
 				item.setContainer(self.$.sharingMenu);
 			})
+		}
+		else if (enyo.platform.webos)
+		{
+			this.refreshSharingMenu();
 		}
 	},
 
@@ -264,13 +266,16 @@ enyo.kind({
 			Sharing.handleSelection(this.article, inEvent.originator.command, this);
 		}
 		
-		//Refresh Sharing Menu
-		this.$.sharingMenu = new onyx.Menu();
-		sharingMenu = Sharing.getPopupFor(this.article);
-		sharingMenu.each(function(item){
-			item.setContainer(self.$.sharingMenu);
-		})
-		this.$.sharingMenu.render();
+		//Refresh Sharing Menu (Unless running webOS)
+		if(!enyo.platform.webos)
+	 	{
+			this.$.sharingMenu = new onyx.Menu();
+			sharingMenu = Sharing.getPopupFor(this.article);
+			sharingMenu.each(function(item){
+				item.setContainer(self.$.sharingMenu);
+			})
+			this.$.sharingMenu.render();
+		}
 	},
 	
 	openAppStore: function(inSender, inEvent)
@@ -288,6 +293,20 @@ enyo.kind({
 	{
 		this.$.installAppDialog.hide();
 		this.$.configureDialog.hide();
+	},
+
+	refreshSharingMenu: function(inSender, inEvent)
+	{
+		var self = this;
+		this.closeDialog();
+		
+		this.$.sharingMenu.destroyClientControls()
+		
+		sharingMenu = Sharing.getPopupFor(this.article);
+		sharingMenu.each(function(item){
+			item.setContainer(self.$.sharingMenu);
+		})
+		this.$.sharingMenu.render();
 	},
 
 	setDialogTheme: function(theme) {
