@@ -175,6 +175,7 @@ enyo.kind({
 		this.addClass("theme-" + theme);
 		
 		this.$.preferences.setDialogTheme(theme);
+		this.$.article.setDialogTheme(theme);
 	},
 	
 	handleFontSizeChanged: function() {
@@ -183,11 +184,11 @@ enyo.kind({
 	
 	handleOrientationChanged: function() {
 		//Handle orientation for webOS Devices
-		//TODO: Figure out how to handle orientation for other devices
 		if (window.PalmSystem) {
 			PalmSystem.setWindowOrientation(Preferences.allowLandscape() ? "free" : "up");
 		}
 
+		//Handle orientation for FirefoxOS Devices
 		if (enyo.platform.firefoxOS) {
 			if(Preferences.allowLandscape())
 			{

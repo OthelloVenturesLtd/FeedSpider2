@@ -50,6 +50,8 @@ enyo.kind({
 				{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
 			]},
 		]},
+		{name: "installAppDialog", kind: FeedSpider2.ChoiceDialog, onAction: "openAppStore", onDismiss: "closeDialog"},
+		{name: "configureDialog", kind: FeedSpider2.ConfigureSharingDialog, onDismiss: "closeDialog"},
 		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
 	],
 	
@@ -190,7 +192,14 @@ enyo.kind({
     },
 
 	handleGoBack: function() {
-		this.doGoBack({lastPage: this.previousPage, scrollingIndex: this.scrollingIndex});
+		if (this.$.installAppDialog.showing || this.$.configureDialog.showing)
+		{
+			this.closeDialog();
+		}
+		else
+		{
+			this.doGoBack({lastPage: this.previousPage, scrollingIndex: this.scrollingIndex});
+		}
 	},
 
 	previousArticle: function() {
@@ -248,12 +257,11 @@ enyo.kind({
 				
 		if (inEvent.originator.command == "configure")
 		{
-			//TODO: Port Configuration dialog
-			//case "configure":           controller.stageController.pushScene("configure-sharing", Sharing.items)
+			this.$.configureDialog.show(Sharing.webOSItems);
 		}
 		else
 		{
-			Sharing.handleSelection(this.article, inEvent.originator.command);
+			Sharing.handleSelection(this.article, inEvent.originator.command, this);
 		}
 		
 		//Refresh Sharing Menu
@@ -263,6 +271,31 @@ enyo.kind({
 			item.setContainer(self.$.sharingMenu);
 		})
 		this.$.sharingMenu.render();
+	},
+	
+	openAppStore: function(inSender, inEvent)
+	{
+		var request = new enyo.ServiceRequest({
+			service: "palm://com.palm.applicationManager",
+			method: "open"
+		})
+	
+		request.go({target: "http://developer.palm.com/appredirect/?packageid=" + inEvent.data});
+		this.closeDialog();
+	},
+	
+	closeDialog: function(inSender, inEvent)
+	{
+		this.$.installAppDialog.hide();
+		this.$.configureDialog.hide();
+	},
+
+	setDialogTheme: function(theme) {
+		this.$.configureDialog.removeClass("theme-dark-dialog");
+		this.$.configureDialog.removeClass("theme-grey-dialog");
+		this.$.configureDialog.removeClass("theme-light-dialog");
+		
+		this.$.configureDialog.addClass("theme-" + theme + "-dialog");		
 	},
 
 	loadingMoreArticles: function() {

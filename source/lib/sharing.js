@@ -4,8 +4,8 @@ var Sharing = {
   webOSItems: [
     {id: "sharing-aa", label: $L("Reader"), defaultEnabled: true},
     {id: "sharing-ab", label: $L("Share"), command: "share-with-google", defaultEnabled: false},
-    {id: "sharing-at", label: $L("Clipboard"), defaultEnabled: true},
-    {id: "sharing-au", label: $L("Copy URL"), command: "send-to-clipboard", defaultEnabled: true},
+    //{id: "sharing-at", label: $L("Clipboard"), defaultEnabled: true},
+    //{id: "sharing-au", label: $L("Copy URL"), command: "send-to-clipboard", defaultEnabled: true},
     {id: "sharing-ac", label: $L("Twitter"), defaultEnabled: true},
     {id: "sharing-ad", label: $L("Project Macaw"), command: "send-to-project-macaw", defaultEnabled: true},
     {id: "sharing-aw", label: $L("Spaz HD"), command: "send-to-spaz-hd", defaultEnabled: false},
@@ -33,6 +33,23 @@ var Sharing = {
   	{id: "sharing-ah", label: $L("Email"), command: "send-to-email", defaultEnabled: true},
 	{id: "sharing-av", label: $L("Twitter"), command: "send-to-browser", defaultEnabled: true},
   ],
+  
+  idToNameMapping: {
+  	"com.funkatron.app.spaz-beta": "Spaz Beta",
+  	"com.funkatron.app.spaz-hd": "Spaz HD",
+  	"com.hedami.quickpost": "Quick Post",
+  	"com.ingloriousapps.glimpse": "Glimpse",
+  	"com.palm.app.browser": "Browser",
+  	"com.palm.app.email": "Email",
+  	"com.palm.app.facebook": "Facebook",
+  	"com.palm.app.messaging": "Messaging",
+  	"com.semicolonapps.sparetime": "Spare Time",
+  	"com.sven-ziegler.readontouch": "ReadOnTouch PRO",
+  	"com.sven-ziegler.readontouch-phone": "ReadOnTouch PHONE",
+  	"com.webosroundup.relego": "Relego",
+  	"com.zhephree.neato": "neato!",
+  	"net.minego.phnx": "Project Macaw",
+  },
   
   getPopupFor: function(article) {
     if (enyo.platform.firefoxOS)
@@ -118,7 +135,8 @@ var Sharing = {
     return popupItems
   },
 
-  handleSelection: function(article, command) {
+  handleSelection: function(article, command, view) {
+    this.articleView = view;
     switch(command) {
       case "share-with-google":   Sharing.shareWithGoogle(article); break;
       case "unshare-with-google": Sharing.unshareWithGoogle(article); break;
@@ -346,26 +364,14 @@ var Sharing = {
 	}
   },
 
-  offerToInstallApp: function(name, id) {
-    //TODO: Implement
-    controller.showAlertDialog({
-      title:$L("{app} is not installed", {app: name}),
-      message: $L("{app} is not installed. Would you like to install it?", {app: name}),
-
-      choices:[
-        {label:$L("Yes"), value:"yes", type:"affirmative"},
-        {label:$L("No"), value:"no", type:"dismissal"}
-      ],
-
-      onChoose: function(value){
-        if("yes" == value){
-          controller.serviceRequest("palm://com.palm.applicationManager", {
-            method:"open",
-            parameters:{target: "http://developer.palm.com/appredirect/?packageid=" + id}
-          })
-        }
-      }
-    })
+  offerToInstallApp: function(inSender, inResponse) {
+	//NOTE: errorText gives us the ID of the missing package - we just need to parse it out.
+	var appID = inResponse.errorText.match(/"([^"]+)"/)[1];
+	if (appID != null || appID != undefined)
+	{
+		var name = Sharing.idToNameMapping[appID];
+		this.articleView.$.installAppDialog.show($L("{app} is not installed", {app: name}), $L("{app} is not installed. Would you like to install it?", {app: name}), appID)
+	}
   }
 }
 
