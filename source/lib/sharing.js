@@ -228,13 +228,14 @@ var Sharing = {
   },
 
   sendToInstapaper: function(article) {
+    var self = this;
+    
     var success = function() {
       Feeder.notify($L("Article saved to Instapaper"))
     }
 
     var credentials = function() {
-      //TODO: Implement
-      controller.stageController.pushScene("instapaper-credentials", Sharing.sendToInstapaper.curry(article, controller))
+      self.articleView.$.instapaperDialog.show();
     }
 
     var failure = function() {

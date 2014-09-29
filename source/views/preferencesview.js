@@ -179,6 +179,14 @@ enyo.kind({
 					]},
 				]}
 			]},
+			{name: "instapaperOptionsGroupbox", tag: "div", classes: "feedspider-groupbox", style: "margin-bottom: 20px", components: [
+				{name: "instapaperOptionsHeader", tag: "div", classes: "feedspider-groupbox-header"},
+				{tag: "div", classes: "feedspider-groupbox-body-single", components:[
+					{kind: "enyo.FittableColumns", noStretch: true, style: "width: 100%; padding: 5px", components: [
+						{name: "clearInstapaperCredentialsButton", kind: "onyx.Button", classes: "onyx-negative", ontap: "clearInstapaperCredentials"}
+					]}
+				]}
+			]},
 		]},
 		{name: "notificationFeedsDialog", kind: "FeedSpider2.NotificationFeedsDialog", onComplete: "feedSelectionComplete"},
 		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
@@ -223,7 +231,8 @@ enyo.kind({
         this.$.selectFeedsButton.setContent($L("Select Feeds"));
         this.$.feedlyOptionsHeader.setContent($L("Feedly Options"));
         this.$.feedlySortEngagementTitle.setContent($L("Show most engaging articles only"));
-        
+        this.$.instapaperOptionsHeader.setContent($L("Instapaper Options"));
+        this.$.clearInstapaperCredentialsButton.setContent($L("Clear Instapaper Credentials"));
     },
 	
 	rendered: function()
@@ -237,6 +246,13 @@ enyo.kind({
 		this.$.fontSizePickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
 		this.$.notificationIntervalPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
 		this.$.notificationFeedsPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
+		var windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);  
+		this.$.clearInstapaperCredentialsButton.addStyles({"width" : windowWidth - 42 + "px"});
+		
+		if(!enyo.platform.webos)
+	 	{
+	 		this.$.instapaperOptionsGroupbox.hide();
+	 	}
 	},
 
 	activate: function()
@@ -290,6 +306,19 @@ enyo.kind({
 		
 		//Set up Notifications groupbox
 		this.showAndHideStuff();
+		
+		//Set up Clear Instapaper Credentials Button
+		var ipUsername = Preferences.getInstapaperUsername();
+		var ipPassword = Preferences.getInstapaperPassword();
+		
+		if (ipUsername || ipPassword)
+		{
+			this.$.clearInstapaperCredentialsButton.setDisabled(false);
+		}
+		else
+		{
+			this.$.clearInstapaperCredentialsButton.setDisabled(true);
+		}
 		
 		this.render();
 	},
@@ -438,6 +467,13 @@ enyo.kind({
 	
 	feedSelectionComplete: function() {
 		this.$.notificationFeedsDialog.hide();
+	},
+	
+	clearInstapaperCredentials: function(){
+		Preferences.setInstapaperUsername(null);
+		Preferences.setInstapaperPassword(null);
+		this.$.clearInstapaperCredentialsButton.setDisabled(true);
+		Feeder.notify($L("Instapaper Credentials Cleared"));
 	},
 	
 	handleKeyUp: function(inSender, inEvent) {

@@ -8,6 +8,7 @@ enyo.depends(
 	"folderview.js",
 	"feedview.js",
 	"configuresharingdialog.js",
+	"instapaperlogindialog.js",
 	"articleview.js",
 	"oauthiframe.js",
 	"oauthwebview.js",

@@ -50,6 +50,7 @@ enyo.kind({
 		]},
 		{name: "installAppDialog", kind: FeedSpider2.ChoiceDialog, onAction: "openAppStore", onDismiss: "closeDialog"},
 		{name: "configureDialog", kind: FeedSpider2.ConfigureSharingDialog, onDismiss: "refreshSharingMenu"},
+		{name: "instapaperDialog", kind: FeedSpider2.InstapaperLoginDialog, onCredentialsSaved: "sendToInstapaper", onDismiss: "closeDialog"},
 		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
 	],
 	
@@ -278,6 +279,11 @@ enyo.kind({
 		}
 	},
 	
+	sendToInstapaper: function(inSender, inEvent) {
+		this.closeDialog();
+		Sharing.handleSelection(this.article, "send-to-instapaper", this);
+	},
+	
 	openAppStore: function(inSender, inEvent)
 	{
 		var request = new enyo.ServiceRequest({
@@ -291,8 +297,10 @@ enyo.kind({
 	
 	closeDialog: function(inSender, inEvent)
 	{
+		this.$.instapaperDialog.hide();
 		this.$.installAppDialog.hide();
 		this.$.configureDialog.hide();
+		this.resized();
 	},
 
 	refreshSharingMenu: function(inSender, inEvent)
