@@ -43,11 +43,6 @@ enyo.kind({
 		this.doLogout();
 	},
 
-	keyPressed: function(inSender, inEvent) {
-		console.log(inSender);
-		console.log(inEvent);
-	},
-
   	refreshList: function(list, items) {
   	  	var listLength = list.controls.length;
   	  	for (var i = 0; i < listLength; i++) { 
