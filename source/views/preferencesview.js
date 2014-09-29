@@ -454,21 +454,28 @@ enyo.kind({
     },
 
 	handleGoBack: function() {
-		if (this.originalNotificationInterval != Preferences.notificationInterval()) {
-		  feedspider.setInterval({action: "notificationIntervalChange"});
+		if (this.$.notificationFeedsDialog.showing)
+		{
+			this.feedSelectionComplete()
 		}
+		else
+		{
+			if (this.originalNotificationInterval != Preferences.notificationInterval()) {
+			  feedspider.setInterval({action: "notificationIntervalChange"});
+			}
 
-		changes = {};
+			changes = {};
 
-		if (this.originalAllowLandscape != Preferences.allowLandscape()) changes.allowLandscapeChanged = true;
-		if (this.originalSortOrder != Preferences.isOldestFirst()) changes.sortOrderChanged = true;
-		if (this.originalHideReadFeeds != Preferences.hideReadFeeds()) changes.hideReadFeedsChanged = true;
-		if (this.originalHideReadArticles != Preferences.hideReadArticles()) changes.hideReadArticlesChanged = true;
-		if (this.originalFontSize != Preferences.fontSize()) changes.fontSizeChanged = true;
-		if (this.originalFeedSortOrder != Preferences.isManualFeedSort()) changes.feedSortOrderChanged = true;
-		if (this.originalTheme != Preferences.getTheme()) changes.themeChanged = true;
-		if (this.originalFeedlySortEngagement != Preferences.isFeedlySortEngagement()) changes.sortOrderChanged = true;
+			if (this.originalAllowLandscape != Preferences.allowLandscape()) changes.allowLandscapeChanged = true;
+			if (this.originalSortOrder != Preferences.isOldestFirst()) changes.sortOrderChanged = true;
+			if (this.originalHideReadFeeds != Preferences.hideReadFeeds()) changes.hideReadFeedsChanged = true;
+			if (this.originalHideReadArticles != Preferences.hideReadArticles()) changes.hideReadArticlesChanged = true;
+			if (this.originalFontSize != Preferences.fontSize()) changes.fontSizeChanged = true;
+			if (this.originalFeedSortOrder != Preferences.isManualFeedSort()) changes.feedSortOrderChanged = true;
+			if (this.originalTheme != Preferences.getTheme()) changes.themeChanged = true;
+			if (this.originalFeedlySortEngagement != Preferences.isFeedlySortEngagement()) changes.sortOrderChanged = true;
 
-		this.doGoBack({lastPage: this.previousPage, changes: changes});
+			this.doGoBack({lastPage: this.previousPage, changes: changes});
+		}
 	},
 });
