@@ -1,5 +1,6 @@
 enyo.depends(
 	"views.js",
+	"dashboardnotification.js",
 	"divider.js",
 	"eventlist.js",
 	"choicedialog.js",

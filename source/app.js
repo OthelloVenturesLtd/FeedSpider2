@@ -188,6 +188,11 @@ enyo.kind({
 	},
  
  	notifyUnreadCount: function(count) {
- 		Feeder.notify($L("You have {unread} articles to read", {unread: count}));
+ 		if (this.dashboardWindow != null && this.dashboardWindow != undefined)
+		{
+ 			this.dashboardWindow.close();
+ 		}
+		
+		this.dashboardWindow = window.open(webos.fetchAppRootPath() + "webos-dashboard.html?count=" + count, "feedspiderDashboardWindow", 'attributes={"window": "dashboard"}'); 	
  	}
 });
