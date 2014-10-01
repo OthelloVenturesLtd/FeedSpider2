@@ -3,10 +3,11 @@
 	"version": "2.0.0",
 	"vendor": "Othello Ventures",
 	"type": "web",
-	"main": "index.html",
+	"main": "index-webos.html",
 	"title": "FeedSpider",
 	"icon": "icon-64.png",
 	"miniicon": "icon-48.png",
 	"splashicon": "icon-256.png",
+	"noWindow": "true",
 	"uiRevision": 2
 }
