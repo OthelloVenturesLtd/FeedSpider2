@@ -11,7 +11,7 @@ enyo.kind({
 		]},
 		{kind: "enyo.Scroller", fit: true, style: "padding: 10px", components: [
 			{tag: "div", content: "FeedSpider 2", style: "font-size: 24px; font-weight: bold"},
-			{tag: "div", content: "Version 2.0.0 by Othello Ventures Ltd."},
+			{tag: "div", content: "Version 2.0.1 by Othello Ventures Ltd."},
 			{tag: "br"},
 			{tag: "div", components: [
 				{tag: "div", content: "FeedSpider 2 is a cross-platform port of the original FeedSpider RSS Reader for webOS, designed to work with Google Reader compatible applications."},
@@ -38,6 +38,12 @@ enyo.kind({
 			]},
 			{tag: "br"},
 			{tag: "div", content: "History", style: "font-size: 20px; font-weight: bold"},
+			{tag: "div", components: [
+				{tag: "div", content: "2.0.1", style: "font-weight: bold" },
+				{tag: "ul", components: [
+					{tag: "li", content: "Added support for webOS 3.x and LuneOS"},
+				]}
+			]},
 			{tag: "div", components: [
 				{tag: "div", content: "2.0.0", style: "font-weight: bold" },
 				{tag: "ul", components: [
