@@ -38,7 +38,7 @@ var AolApi = Class.create({
 			additionalParameters: "&supportedIdType=facebook,google,twitter"
 		 };
 		 
-		 if(enyo.platform.webos)
+		 if(enyo.platform.webos || window.PalmSystem)
 	 	 {
 		 	oauthConfig.client_id = AolApi.CLIENT_ID_WEBOS;
 		 	oauthConfig.client_secret = AolApi.CLIENT_SECRET_WEBOS;

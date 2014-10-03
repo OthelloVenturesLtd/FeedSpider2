@@ -37,7 +37,7 @@ var FeedlyApi = Class.create({
         	service: credentials.service       	
 	 	};
 	 	
-	 	if(enyo.platform.webos)
+	 	if(enyo.platform.webos || window.PalmSystem)
 	 	{
 		 	oauthConfig.redirect_uri = 'urn:ietf:wg:oauth:2.0:oob'
 	 		controller.$.oAuthBrowserWebOS.beginOAuth(oauthConfig)

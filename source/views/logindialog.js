@@ -84,6 +84,14 @@ enyo.kind({
 		this.$.passwordInput.setPlaceholder($L("Password"));
 		this.$.serverURLInput.setPlaceholder($L("Server URL"));
 		
+		//LuneOS does not support enyo 1 webview at this point. May implement an iFrame based
+		//system in the future.
+		if (!enyo.platform.webos && window.PalmSystem)
+		{
+			this.$.aolPickerItem.hide();
+			this.$.feedlyPickerItem.hide();
+		}
+		
 		this.setService();
 	},
 	
@@ -171,7 +179,7 @@ enyo.kind({
 				this.$.oAuthBrowserWrapperFFOS.show();
 			}
 			
-			if(enyo.platform.webos)
+			if(enyo.platform.webos || window.PalmSystem)
 			{
 				this.$.oAuthBrowserWrapperWebOS.show();
 			}
@@ -247,7 +255,7 @@ enyo.kind({
 			}
 		}
 		
-		if(enyo.platform.webos)
+		if(enyo.platform.webos || window.PalmSystem)
 		{
 			if (!this.$.oAuthBrowserWebOS.canGoBack) {
 				this.$.oAuthBrowserWrapperWebOS.hide();

@@ -34,6 +34,29 @@ var Sharing = {
 	{id: "sharing-av", label: $L("Twitter"), command: "send-to-browser", defaultEnabled: true},
   ],
   
+  luneOSItems: [
+    {id: "sharing-aa", label: $L("Reader"), defaultEnabled: true},
+    {id: "sharing-ab", label: $L("Share"), command: "share-with-google", defaultEnabled: true},
+    {id: "sharing-ac", label: $L("Twitter"), defaultEnabled: true},
+    {id: "sharing-ad", label: $L("Project Macaw"), command: "send-to-project-macaw", defaultEnabled: true},
+    {id: "sharing-aw", label: $L("Spaz HD"), command: "send-to-spaz-hd", defaultEnabled: true},
+    {id: "sharing-ax", label: $L("Spaz Beta"), command: "send-to-spaz-beta", defaultEnabled: true},
+    {id: "sharing-ae", label: $L("Glimpse"), command: "send-to-glimpse", defaultEnabled: true},
+    {id: "sharing-av", label: $L("Browser"), command: "send-to-browser", defaultEnabled: true},
+    {id: "sharing-aq", label: $L("Quick Post"), defaultEnabled: true},
+    {id: "sharing-ar", label: $L("Default Accounts"), command: "send-to-qp-default", defaultEnabled: true},
+    {id: "sharing-as", label: $L("All Accounts"), command: "send-to-qp-all", defaultEnabled: true},
+    {id: "sharing-af", label: $L("Share"), defaultEnabled: true},
+    {id: "sharing-ah", label: $L("Email"), command: "send-to-email", defaultEnabled: true},
+    {id: "sharing-ap", label: $L("neato!"), command: "send-to-neato", defaultEnabled: true},
+    {id: "sharing-aj", label: $L("Read Later"), defaultEnabled: true},
+    {id: "sharing-ak", label: $L("Relego"), command: "send-to-relego", defaultEnabled: true},
+    {id: "sharing-al", label: $L("Spare Time"), command: "send-to-spare-time", defaultEnabled: true},
+    {id: "sharing-am", label: $L("Instapaper"), command: "send-to-instapaper", defaultEnabled: true},
+    {id: "sharing-an", label: $L("ReadOnTouch PHONE"), command: "send-to-readontouch-phone", defaultEnabled: true},
+    {id: "sharing-ao", label: $L("ReadOnTouch PRO"), command: "send-to-readontouch-pro", defaultEnabled: true}
+  ],
+  
   idToNameMapping: {
   	"com.funkatron.app.spaz-beta": "Spaz Beta",
   	"com.funkatron.app.spaz-hd": "Spaz HD",
@@ -59,6 +82,10 @@ var Sharing = {
     else if (enyo.platform.webos)
     {
     	Sharing.items = Sharing.webOSItems
+    }
+    else if (!enyo.platform.webos && window.PalmSystem)
+    {
+    	Sharing.items = Sharing.luneOSItems
     }
     
     var sortOrder = Preferences.getSharingOptionsSortOrder()
@@ -261,7 +288,7 @@ var Sharing = {
   	}
   	
   	var url = shorturl ? shorturl : article.url
-   	if (enyo.platform.webos) {
+   	if (enyo.platform.webos || window.PalmSystem) {
   		 Sharing.sendToApp("Email", "com.palm.app.email", {summary: article.title, text: article.title + "\n\n" + url})
   	}
   	else if (enyo.platform.firefoxOS)
@@ -310,6 +337,9 @@ var Sharing = {
   	if (enyo.platform.webos) {
   		Sharing.sendToApp("Browser", "com.palm.app.browser", {target: "https://twitter.com/intent/tweet?text=" + encodeURIComponent(article.title) + "&url=" + encodeURI(url)})
   	}
+  	else if (!enyo.platform.webos && window.PalmSystem) {
+  		Sharing.sendToApp("Browser", "org.webosports.app.browser", {target: "https://twitter.com/intent/tweet?text=" + encodeURIComponent(article.title) + "&url=" + encodeURI(url)})
+  	}
   	else if (enyo.platform.firefoxOS)
   	{
   		Sharing.sendToApp("Browser", "view", {type: "url", url: "https://twitter.com/intent/tweet?text=" + encodeURIComponent(article.title) + "&url=" + encodeURI(url)})
@@ -352,7 +382,7 @@ var Sharing = {
   },
 
   sendToApp: function(appName, id, params) {
-    if (enyo.platform.webos) {
+    if (enyo.platform.webos || window.PalmSystem) {
 		var request = new enyo.ServiceRequest({
     		service: "palm://com.palm.applicationManager",
     		method: "open"

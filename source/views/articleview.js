@@ -115,7 +115,7 @@ enyo.kind({
 				item.setContainer(self.$.sharingMenu);
 			})
 		}
-		else if (enyo.platform.webos)
+		else if (enyo.platform.webos || window.PalmSystem)
 		{
 			this.refreshSharingMenu();
 		}
@@ -185,7 +185,7 @@ enyo.kind({
         if (this.showing && inEvent.keyCode === 27)
         {
         	this.handleGoBack();
-        	if (enyo.platform.webos)
+        	if (enyo.platform.webos || window.PalmSystem)
         	{
         		inEvent.stopPropagation();
         		inEvent.preventDefault();
@@ -234,6 +234,14 @@ enyo.kind({
 				});
 				request.go({id: "com.palm.app.browser", params: { target: this.article.url } }); //any params would go in here
 			}
+			if (!enyo.platform.webos && window.PalmSystem)
+			{
+				var request = new enyo.ServiceRequest({
+					service: "palm://com.palm.applicationManager",
+					method: "open"
+				});
+				request.go({id: "org.webosports.app.browser", params: { target: this.article.url } }); //any params would go in here
+			}
 			else if (enyo.platform.firefoxOS)
 			{
 				var openURL = new MozActivity({
@@ -268,7 +276,7 @@ enyo.kind({
 		}
 		
 		//Refresh Sharing Menu (Unless running webOS)
-		if(!enyo.platform.webos)
+		if(!(enyo.platform.webos || window.PalmSystem))
 	 	{
 			this.$.sharingMenu = new onyx.Menu();
 			sharingMenu = Sharing.getPopupFor(this.article);

@@ -129,7 +129,7 @@ enyo.kind({
 					]},
 				]}
 			]},
-			{tag: "div", classes: "feedspider-groupbox", components: [
+			{name: "notificationsGroupbox", tag: "div", classes: "feedspider-groupbox", components: [
 				{name: "notificationsHeader", tag: "div", classes: "feedspider-groupbox-header"},
 				{name: "notificationsBody", tag: "div", components:[
 					{kind: "enyo.FittableColumns", style: "padding: 0px", noStretch: true, components: [
@@ -249,9 +249,14 @@ enyo.kind({
 		var windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);  
 		this.$.clearInstapaperCredentialsButton.addStyles({"width" : windowWidth - 42 + "px"});
 		
-		if(!enyo.platform.webos)
+		if(!(enyo.platform.webos || window.PalmSystem))
 	 	{
 	 		this.$.instapaperOptionsGroupbox.hide();
+	 	}
+	 	
+	 	if(!enyo.platform.webos && window.PalmSystem)
+	 	{
+	 		this.$.notificationsGroupbox.hide();
 	 	}
 	},
 
@@ -480,7 +485,7 @@ enyo.kind({
         if (this.showing && inEvent.keyCode === 27)
         {
         	this.handleGoBack();
-        	if (enyo.platform.webos)
+        	if (enyo.platform.webos || window.PalmSystem)
         	{
         		inEvent.stopPropagation();
         		inEvent.preventDefault();

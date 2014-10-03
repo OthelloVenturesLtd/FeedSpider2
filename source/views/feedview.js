@@ -185,7 +185,7 @@ enyo.kind({
         if (this.showing && inEvent.keyCode === 27)
         {
         	this.handleGoBack();
-        	if (enyo.platform.webos)
+        	if (enyo.platform.webos || window.PalmSystem)
         	{
         		inEvent.stopPropagation();
         		inEvent.preventDefault();
