@@ -32,6 +32,7 @@ var Sharing = {
   	{id: "sharing-ab", label: $L("Share"), command: "share-with-google", defaultEnabled: true},
   	{id: "sharing-ah", label: $L("Email"), command: "send-to-email", defaultEnabled: true},
 	{id: "sharing-av", label: $L("Twitter"), command: "send-to-browser", defaultEnabled: true},
+    {id: "sharing-am", label: $L("Instapaper"), command: "send-to-instapaper", defaultEnabled: true},
   ],
   
   luneOSItems: [

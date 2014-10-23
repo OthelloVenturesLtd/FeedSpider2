@@ -108,17 +108,8 @@ enyo.kind({
 		if(!this.article.isRead && !this.article.keepUnread) {
 			this.toggleState(this.$.readButton, "Read");
 		}
-		if (enyo.platform.firefoxOS)
-		{
-			sharingMenu = Sharing.getPopupFor(this.article);
-			sharingMenu.each(function(item){
-				item.setContainer(self.$.sharingMenu);
-			})
-		}
-		else if (enyo.platform.webos || window.PalmSystem)
-		{
-			this.refreshSharingMenu();
-		}
+
+		this.refreshSharingMenu();
 	},
 
 	setFontSize: function(fontSize) {
@@ -278,12 +269,7 @@ enyo.kind({
 		//Refresh Sharing Menu (Unless running webOS)
 		if(!(enyo.platform.webos || window.PalmSystem))
 	 	{
-			this.$.sharingMenu = new onyx.Menu();
-			sharingMenu = Sharing.getPopupFor(this.article);
-			sharingMenu.each(function(item){
-				item.setContainer(self.$.sharingMenu);
-			})
-			this.$.sharingMenu.render();
+			this.refreshSharingMenu();
 		}
 	},
 	

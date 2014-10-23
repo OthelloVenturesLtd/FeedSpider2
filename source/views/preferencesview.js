@@ -249,7 +249,7 @@ enyo.kind({
 		var windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);  
 		this.$.clearInstapaperCredentialsButton.addStyles({"width" : windowWidth - 42 + "px"});
 		
-		if(!(enyo.platform.webos || window.PalmSystem))
+		if(!(enyo.platform.webos || enyo.platform.firefoxOS || window.PalmSystem))
 	 	{
 	 		this.$.instapaperOptionsGroupbox.hide();
 	 	}
