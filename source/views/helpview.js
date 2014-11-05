@@ -11,7 +11,7 @@ enyo.kind({
 		]},
 		{kind: "enyo.Scroller", fit: true, style: "padding: 10px", components: [
 			{tag: "div", content: "FeedSpider 2", style: "font-size: 24px; font-weight: bold"},
-			{tag: "div", content: "Version 2.0.3 by Othello Ventures Ltd."},
+			{tag: "div", content: "Version 2.0.4 by Othello Ventures Ltd."},
 			{tag: "br"},
 			{tag: "div", components: [
 				{tag: "div", content: "FeedSpider 2 is a cross-platform port of the original FeedSpider RSS Reader for webOS, designed to work with Google Reader compatible applications."},
@@ -38,6 +38,12 @@ enyo.kind({
 			]},
 			{tag: "br"},
 			{tag: "div", content: "History", style: "font-size: 20px; font-weight: bold"},
+			{tag: "div", components: [
+				{tag: "div", content: "2.0.4", style: "font-weight: bold" },
+				{tag: "ul", components: [
+					{tag: "li", content: "Added localization support for Breton, German, Greek and Spanish"},
+				]}
+			]},
 			{tag: "div", components: [
 				{tag: "div", content: "2.0.3", style: "font-weight: bold" },
 				{tag: "ul", components: [
@@ -87,6 +93,35 @@ enyo.kind({
 			{tag: "div", components: [
 				{tag: "span", content: "Localization by SimpleLang: "},
 				{tag: "a", attributes: {"href": "https://github.com/minego/macaw-enyo/tree/master/lib/simplelang", "target": "_blank"}, content: "GitHub" }
+			]},
+			{tag: "br"},
+			{tag: "div", content: "Localization Team", style: "font-size: 20px; font-weight: bold"},
+			{tag: "br"},
+			{tag: "div", components: [
+				{tag: "span", content: "Breton: "},
+				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/Mediaoueg/", "target": "_blank"}, content: "Mediaoueg" }
+			]},
+			{tag: "div", components: [
+				{tag: "span", content: "German: "},
+				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/havi_moz/", "target": "_blank"}, content: "havi_moz" },
+				{tag: "span", content: ", "},
+				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/Samplidude/", "target": "_blank"}, content: "Samplidude™" },
+				{tag: "span", content: ", "},
+				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/grrd/", "target": "_blank"}, content: "Gerard Tyedmers" },
+			]},
+			{tag: "div", components: [
+				{tag: "span", content: "Greek: "},
+				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/jonakis/", "target": "_blank"}, content: "Jon Alexopoulos" }
+			]},
+			{tag: "div", components: [
+				{tag: "span", content: "Spanish: "},
+				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/havi_moz/", "target": "_blank"}, content: "havi_moz" },
+				{tag: "span", content: ", "},
+				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/CarlitoFft/", "target": "_blank"}, content: "Carlos Arturo Riveros Olivares" },
+				{tag: "span", content: ", "},
+				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/auroszx/", "target": "_blank"}, content: "auroszx" },
+				{tag: "span", content: ", "},
+				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/ravmn/", "target": "_blank"}, content: "Richard von Moltke" }
 			]},
 			{tag: "br"},
 		]},
