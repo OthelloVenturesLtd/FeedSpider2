@@ -39,6 +39,12 @@ enyo.kind({
 			{tag: "br"},
 			{tag: "div", content: "History", style: "font-size: 20px; font-weight: bold"},
 			{tag: "div", components: [
+				{tag: "div", content: "2.0.5", style: "font-weight: bold" },
+				{tag: "ul", components: [
+					{tag: "li", content: "Added localization support for Bengali (Bangladesh) and French"},
+				]}
+			]},
+			{tag: "div", components: [
 				{tag: "div", content: "2.0.4", style: "font-weight: bold" },
 				{tag: "ul", components: [
 					{tag: "li", content: "Added localization support for Breton, German, Greek and Spanish"},
@@ -98,8 +104,20 @@ enyo.kind({
 			{tag: "div", content: "Localization Team", style: "font-size: 20px; font-weight: bold"},
 			{tag: "br"},
 			{tag: "div", components: [
+				{tag: "span", content: "Bengali (Bangladesh): "},
+				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/hossainalikram/", "target": "_blank"}, content: "Hossain Al Ikram" },
+				{tag: "span", content: ", "},
+				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/Forhad/", "target": "_blank"}, content: "Forhad Hossain" },
+			]},
+			{tag: "div", components: [
 				{tag: "span", content: "Breton: "},
 				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/Mediaoueg/", "target": "_blank"}, content: "Mediaoueg" }
+			]},
+			{tag: "div", components: [
+				{tag: "span", content: "French: "},
+				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/havi_moz/", "target": "_blank"}, content: "havi_moz" },
+				{tag: "span", content: ", "},
+				{tag: "a", attributes: {"href": "https://www.transifex.com/accounts/profile/noreiller/"}, content: "Aurélien MANCA" },
 			]},
 			{tag: "div", components: [
 				{tag: "span", content: "German: "},
