@@ -11,7 +11,7 @@ enyo.kind({
 		]},
 		{kind: "enyo.Scroller", fit: true, style: "padding: 10px", components: [
 			{tag: "div", content: "FeedSpider 2", style: "font-size: 24px; font-weight: bold"},
-			{tag: "div", content: "Version 2.0.7 by Othello Ventures Ltd."},
+			{tag: "div", content: "Version 2.0.8 by Othello Ventures Ltd."},
 			{tag: "br"},
 			{tag: "div", components: [
 				{tag: "div", content: "FeedSpider 2 is a cross-platform port of the original FeedSpider RSS Reader for webOS, designed to work with Google Reader compatible applications."},
@@ -38,6 +38,12 @@ enyo.kind({
 			]},
 			{tag: "br"},
 			{tag: "div", content: "History", style: "font-size: 20px; font-weight: bold"},
+			{tag: "div", components: [
+				{tag: "div", content: "2.0.8", style: "font-weight: bold" },
+				{tag: "ul", components: [
+					{tag: "li", content: "New icon for FirefoxOS. Thanks to FabianOvrWrt"},
+				]}
+			]},
 			{tag: "div", components: [
 				{tag: "div", content: "2.0.7", style: "font-weight: bold" },
 				{tag: "ul", components: [
@@ -106,6 +112,11 @@ enyo.kind({
 			{tag: "br"},
 			{tag: "div", content: "Special Thanks", style: "font-size: 20px; font-weight: bold"},
 			{tag: "br"},
+			{tag: "div", components: [
+				{tag: "span", content: "FirefoxOS Icon by: "},
+				{tag: "a", attributes: {"href": "mailto:fabianovrwrt@gmail.com", "target": "_blank"}, content: "FabianOvrWrt" }
+			]},
+			{tag: "br"},			
 			{tag: "div", content: "Refresh Icon made by Yannick from www.flaticon.com"},
 			{tag: "br"},
 			{tag: "div", components: [
