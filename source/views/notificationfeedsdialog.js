@@ -34,13 +34,13 @@ enyo.kind({
 	},
 	
 	show: function(){
-    	var watchedFeeds = Preferences.getWatchedFeeds()
-		var self = this
+    	var watchedFeeds = Preferences.getWatchedFeeds();
+		var self = this;
 		
 		this.sources.subscriptions.items.each(function(subscription) {
-      		subscription.feedWatched = watchedFeeds.any(function(n) {return n == subscription.id})
-      		self.$.FeedsList.createComponent({kind: "FeedSpider2.NotificationFeed", checked: subscription.feedWatched, title: subscription.title, feedId: subscription.id})
-    	})
+      		subscription.feedWatched = watchedFeeds.any(function(n) {return n == subscription.id;});
+      		self.$.FeedsList.createComponent({kind: "FeedSpider2.NotificationFeed", checked: subscription.feedWatched, title: subscription.title, feedId: subscription.id});
+    	});
 		
 		this.inherited(arguments);
 	},
@@ -67,18 +67,18 @@ enyo.kind({
 	create: function() {
 		this.inherited(arguments);
 		
-		this.$.notificationFeedCheckbox.checked = this.checked
-		this.$.notificationFeedTitle.content = this.title
+		this.$.notificationFeedCheckbox.checked = this.checked;
+		this.$.notificationFeedTitle.content = this.title;
 	},
 	
 	addRemoveFeed: function(inSender, inEvent) {
 		if (inEvent.originator.checked === true)
 		{
-			Preferences.addNotificationFeed(this.feedId)
+			Preferences.addNotificationFeed(this.feedId);
 		}
 		else
 		{
-			Preferences.removeNotificationFeed(this.feedId)
+			Preferences.removeNotificationFeed(this.feedId);
 		}
 	}
 });

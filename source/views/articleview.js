@@ -61,14 +61,14 @@ enyo.kind({
 	catchLinkTap: function(inSender, inEvent)
 	{
 		//TODO: deal with for other OSes
-		if (inEvent.target.href != undefined) {
-			inEvent.target.target = "_blank"
+		if (inEvent.target.href !== undefined) {
+			inEvent.target.target = "_blank";
 		}
 		
 		//Catch images. These will be wrapped in an <a> tag.
-		if (inEvent.target.parentElement.href != undefined)
+		if (inEvent.target.parentElement.href !== undefined)
 		{
-			inEvent.target.parentElement.target = "_blank"
+			inEvent.target.parentElement.target = "_blank";
 		}
 	},
 	
@@ -166,7 +166,7 @@ enyo.kind({
 				if(success) {
 					self.setIcons();
 				}
-			}
+			};
 
 			this.article["turn" + state + (target.hasClass("on") ? "Off" : "On")](onComplete, function() {}, sticky);
 		}
@@ -225,13 +225,13 @@ enyo.kind({
 				});
 				request.go({id: "com.palm.app.browser", params: { target: this.article.url } }); //any params would go in here
 			}
-			if (!enyo.platform.webos && window.PalmSystem)
+			else if (!enyo.platform.webos && window.PalmSystem)
 			{
-				var request = new enyo.ServiceRequest({
+				var luneOSRequest = new enyo.ServiceRequest({
 					service: "palm://com.palm.applicationManager",
 					method: "open"
 				});
-				request.go({id: "org.webosports.app.browser", params: { target: this.article.url } }); //any params would go in here
+				luneOSRequest.go({id: "org.webosports.app.browser", params: { target: this.article.url } }); //any params would go in here
 			}
 			else if (enyo.platform.firefoxOS)
 			{
@@ -245,7 +245,7 @@ enyo.kind({
 			}
 			else if (enyo.platform.ie || enyo.platform.safari || enyo.platform.chrome || enyo.platform.firefox)
 			{
-				var ref = window.open(this.article.url, "_blank");
+				var browserRef = window.open(this.article.url, "_blank");
 			}
 			else
 			{
@@ -283,7 +283,7 @@ enyo.kind({
 		var request = new enyo.ServiceRequest({
 			service: "palm://com.palm.applicationManager",
 			method: "open"
-		})
+		});
 	
 		request.go({target: "http://developer.palm.com/appredirect/?packageid=" + inEvent.data});
 		this.closeDialog();
@@ -302,12 +302,12 @@ enyo.kind({
 		var self = this;
 		this.closeDialog();
 		
-		this.$.sharingMenu.destroyClientControls()
+		this.$.sharingMenu.destroyClientControls();
 		
 		sharingMenu = Sharing.getPopupFor(this.article);
 		sharingMenu.each(function(item){
 			item.setContainer(self.$.sharingMenu);
-		})
+		});
 		this.$.sharingMenu.render();
 	},
 

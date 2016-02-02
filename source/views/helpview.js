@@ -230,6 +230,6 @@ enyo.kind({
     },
     	
 	handleGoBack: function() {
-		this.doGoBack({lastPage: this.previousPage})
+		this.doGoBack({lastPage: this.previousPage});
 	},
-})
+});

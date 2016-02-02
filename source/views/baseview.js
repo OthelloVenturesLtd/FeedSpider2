@@ -50,17 +50,17 @@ enyo.kind({
     		list.controls[0].setContainer(null);
     	}
   	    
-  	    for (var i = 0; i < items.length; i++) { 
-    		if(i == items.length - 1)
+  	    for (var j = 0; j < items.length; j++) { 
+    		if(j == items.length - 1)
     		{
-    			items[i].last = true;
+    			items[j].last = true;
     		}
 
-    		items[i].setContainer(list);
+    		items[j].setContainer(list);
     	}
   	},
 
 	scrollToTop: function() {
 		this.$.MainList.scrollToStart();
 	}
-})
+});

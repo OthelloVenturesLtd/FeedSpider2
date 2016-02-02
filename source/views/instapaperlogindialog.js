@@ -59,7 +59,7 @@ enyo.kind({
 	},
 
 	activate: function() {
-		var username = Preferences.getInstapaperUsername()
+		var username = Preferences.getInstapaperUsername();
 		
 		if(username)
 		{
@@ -73,7 +73,7 @@ enyo.kind({
 	},
 	
 	checkCredentials: function() {
-		if (this.$.usernameInput.value == "" || this.$.passwordInput.value == "") 
+		if (this.$.usernameInput.value === "" || this.$.passwordInput.value === "")
 		{
 			return;
 		}

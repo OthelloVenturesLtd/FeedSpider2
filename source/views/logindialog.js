@@ -111,7 +111,7 @@ enyo.kind({
 	setService: function() {
 		//This method is called like this since it is the onchange handler for the servicePicker, so is initially called before
 		//the groups are created - so we need to ignore it on the first run (ie. the groups don't yet exist)
-		if(this.$.usernameGroup != undefined){
+		if(this.$.usernameGroup !== undefined){
 			if (this.$.servicePicker.selected.value == "feedly" || this.$.servicePicker.selected.value == "aol")
 			{
 				this.$.usernameGroup.hide();
@@ -134,23 +134,23 @@ enyo.kind({
 	},
 	
 	checkCredentials: function() {
-		this.credentials.service = this.$.servicePicker.selected.value
+		this.credentials.service = this.$.servicePicker.selected.value;
 		if (this.$.servicePicker.selected.value == "feedly" || this.$.servicePicker.selected.value == "aol")
 		{
 			this.tryLogin();
 		}
 		else
 		{
-			if (this.$.usernameInput.value == "" || this.$.passwordInput.value == "") 
+			if (this.$.usernameInput.value === "" || this.$.passwordInput.value === "")
 			{
 				this.loginFailure();
-				return
+				return;
 			}
 			
-			if ((this.$.servicePicker.selected.value == "ttrss" || this.$.servicePicker.selected.value == "oc") && this.$.serverURLInput.value == "")
+			if ((this.$.servicePicker.selected.value == "ttrss" || this.$.servicePicker.selected.value == "oc") && this.$.serverURLInput.value === "")
 			{
 				this.loginFailure();
-				return			
+				return;
 			}
 			else
 			{
@@ -252,7 +252,7 @@ enyo.kind({
 					self.$.oAuthBrowserWrapperFFOS.hide();
 					self.$.loginWindow.show();
 				}
-			}
+			};
 		}
 		
 		if(enyo.platform.webos || window.PalmSystem)

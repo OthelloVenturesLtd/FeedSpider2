@@ -123,7 +123,7 @@ enyo.kind({
 	},
 	
 	scrollEvent: function(inSender, inEvent) {
-		if(this.subscription.continuation != undefined && this.subscription.continuation != false && (inEvent.scrollBounds.top >= inEvent.scrollBounds.maxTop - inEvent.scrollBounds.clientHeight) && this.loadingArticles == false)
+		if(this.subscription.continuation !== undefined && this.subscription.continuation !== false && (inEvent.scrollBounds.top >= inEvent.scrollBounds.maxTop - inEvent.scrollBounds.clientHeight) && this.loadingArticles === false)
 		{
 			this.findArticles();
 		}
@@ -138,7 +138,7 @@ enyo.kind({
 	},
 
 	foundArticles: function(scrollToTop) {
-		if (this.subscription.continuation != undefined && this.subscription.continuation != false)
+		if (this.subscription.continuation !== undefined && this.subscription.continuation !== false)
 		{
 			this.$.MainList.setCount(this.subscription.items.length + 1);
 		}
@@ -262,7 +262,7 @@ enyo.kind({
 		this.previousDate = item.sortDate;
 		
 		var nextItem = this.subscription.items[i+1];
-		if (nextItem != undefined)
+		if (nextItem !== undefined)
 		{
 			if (item.sortDate == nextItem.sortDate)
 			{
@@ -291,7 +291,7 @@ enyo.kind({
 			return true;
 		}
 
-		this.swiping = true
+		this.swiping = true;
         
         if (inEvent.xDirection == 1)
         {
@@ -370,6 +370,6 @@ enyo.kind({
 			}.bind(this),
 
 			this.showError.bind(this)
-		)
+		);
 	},
 });

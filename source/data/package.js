@@ -6,7 +6,6 @@ enyo.depends(
 	"folders.js",
 	"preferences.js",
 	"sort-order.js",
-	"data.js",
 	"credentials.js",
 	"api.js",
 	"aol-api.js",

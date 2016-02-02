@@ -338,7 +338,7 @@ enyo.kind({
 	},
 	
 	showAndHideStuff: function() {
-		if(Preferences.notificationInterval() == 0) {
+		if(Preferences.notificationInterval() === 0) {
 		  this.$.notificationFeedsRow.hide();
 		  this.$.notificationFeedsSelectionRow.hide();
 		  this.$.notificationsBody.removeClass("feedspider-groupbox-body");
@@ -497,7 +497,7 @@ enyo.kind({
 	handleGoBack: function() {
 		if (this.$.notificationFeedsDialog.showing)
 		{
-			this.feedSelectionComplete()
+			this.feedSelectionComplete();
 		}
 		else
 		{

@@ -69,23 +69,23 @@ enyo.kind({
 	activate: function(changes) {
 		if (Preferences.isManualFeedSort())
 		{
-			this.$.MainList.setReorderable(true)
+			this.$.MainList.setReorderable(true);
 		}
 		else
 		{
-			this.$.MainList.setReorderable(false)
+			this.$.MainList.setReorderable(false);
 		}
 		
 		if (Preferences.hideReadFeeds()){
-			this.$.showHideFeedsMenuItem.setContent($L("Show Read Feeds"))
+			this.$.showHideFeedsMenuItem.setContent($L("Show Read Feeds"));
 		}
 		else
 		{
-			this.$.showHideFeedsMenuItem.setContent($L("Hide Read Feeds"))
+			this.$.showHideFeedsMenuItem.setContent($L("Hide Read Feeds"));
 		}
 		
-		this.$.title.setContent(this.folder.title)
-		this.filterAndRefresh()
+		this.$.title.setContent(this.folder.title);
+		this.filterAndRefresh();
 	},
 
 	setupItem: function(inSender, inEvent) {
@@ -172,7 +172,7 @@ enyo.kind({
 	setupSwipeItem: function(inSender, inEvent) {
         // because setting it on the list itself fails:
         this.$.MainList.setPersistSwipeableItem(true);
-        this.$.MainList.setReorderable(false)
+        this.$.MainList.setReorderable(false);
         this.activeItem = inEvent.index;
         this.swiping = true;
     },
@@ -182,21 +182,21 @@ enyo.kind({
         this.swiping = false;
         if (Preferences.isManualFeedSort())
 		{
-			this.$.MainList.setReorderable(true)
+			this.$.MainList.setReorderable(true);
 		}
 		else
 		{
-			this.$.MainList.setReorderable(false)
+			this.$.MainList.setReorderable(false);
 		}
     },
 
 	filterAndRefresh: function() {
 		this.$.MainList.setCount(0);
-		this.filter()
-		this.refreshList(this.$.stickySources, this.folder.stickySubscriptions)
+		this.filter();
+		this.refreshList(this.$.stickySources, this.folder.stickySubscriptions);
 		this.$.MainList.setCount(this.subscriptions.items.length);
 		if(!this.subscriptions.items.length) {
-			this.handleGoBack()
+			this.handleGoBack();
 		}
 		this.$.stickySources.render();
 		this.$.MainList.refresh();
@@ -204,13 +204,13 @@ enyo.kind({
 	},
 
 	filter: function() {
-		this.subscriptions.items.clear()
+		this.subscriptions.items.clear();
 
 		this.folder.subscriptions.items.each(function(subscription) {
 			if(subscription.unreadCount || !Preferences.hideReadFeeds()) {
-				this.subscriptions.items.push(subscription)
+				this.subscriptions.items.push(subscription);
 			}
-		}.bind(this))
+		}.bind(this));
 	},
 
 	sourceTapped: function(inSender, inEvent) {
@@ -219,7 +219,7 @@ enyo.kind({
 			return true;
 		}
 		
-		this.doSwitchPanels({target: "feed", api: this.api, subscription: inEvent, previousPage: this})
+		this.doSwitchPanels({target: "feed", api: this.api, subscription: inEvent, previousPage: this});
 		return true;
 	},
 
@@ -231,8 +231,8 @@ enyo.kind({
 		
 		var i = inEvent.index;
 		var item = this.subscriptions.items[i];
-		this.doSwitchPanels({target: "feed", api: this.api, subscription: item, previousPage: this})
-		return true
+		this.doSwitchPanels({target: "feed", api: this.api, subscription: item, previousPage: this});
+		return true;
 	},
 
     deleteButtonTapped: function(inSender, inEvent) {
@@ -248,26 +248,26 @@ enyo.kind({
     },
 
 	sourcesReordered: function(inSender, inEvent) {
-		var beforeSubscription = null
+		var beforeSubscription = null;
 
 		if(inEvent.reorderTo < this.subscriptions.items.length - 1) {
-			var beforeIndex = inEvent.reorderTo
+			var beforeIndex = inEvent.reorderTo;
 
 			if(inEvent.reorderFrom < inEvent.reorderTo) {
-				beforeIndex += 1
+				beforeIndex += 1;
 			}
 
-			beforeSubscription = this.subscriptions.items[beforeIndex]
+			beforeSubscription = this.subscriptions.items[beforeIndex];
 		}
 
-		this.folder.subscriptions.move(this.subscriptions.items[inEvent.reorderFrom], beforeSubscription)
+		this.folder.subscriptions.move(this.subscriptions.items[inEvent.reorderFrom], beforeSubscription);
    		this.filterAndRefresh();
 	},
 
 	sourceDeleted: function(event) {
-		var unreadCount = (this.subscriptions.items[event].unreadCount)
-		this.folder.subscriptions.remove(this.subscriptions.items[event])
-		this.folder.recalculateUnreadCounts()
+		var unreadCount = (this.subscriptions.items[event].unreadCount);
+		this.folder.subscriptions.remove(this.subscriptions.items[event]);
+		this.folder.recalculateUnreadCounts();
 	},
 	
 	handleKeyUp: function(inSender, inEvent) {
@@ -284,6 +284,6 @@ enyo.kind({
     },
 	
 	handleGoBack: function() {
-		this.doGoBack({lastPage: this.previousPage})
+		this.doGoBack({lastPage: this.previousPage});
 	},	
 });
