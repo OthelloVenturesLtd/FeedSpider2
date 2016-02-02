@@ -34,8 +34,8 @@ enyo.kind({
 	create: function() {
 		this.inherited(arguments);
 		
-		this.$.sourceIcon.setSrc(this.icon);
-		this.$.sourceName.setContent(this.title);
+		this.$.sourceIcon.set("src", this.icon);
+		this.$.sourceName.set("content", this.title);
 	},
 	
 	rendered: function() {
