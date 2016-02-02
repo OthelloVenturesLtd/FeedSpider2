@@ -294,7 +294,7 @@ enyo.kind({
 		this.$.instapaperDialog.hide();
 		this.$.installAppDialog.hide();
 		this.$.configureDialog.hide();
-		this.resized();
+		this.resize();
 	},
 
 	refreshSharingMenu: function(inSender, inEvent)

@@ -200,7 +200,7 @@ enyo.kind({
 		}
 		this.$.stickySources.render();
 		this.$.MainList.refresh();
-		this.resized();
+		this.resize();
 	},
 
 	filter: function() {
