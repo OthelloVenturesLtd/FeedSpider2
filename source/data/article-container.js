@@ -3,8 +3,8 @@ enyo.kind({
 	kind: "FeedSpider2.Countable",
 	
 	published: { 
-  		api: "",
-  		continuation: "",
+  		api: null,
+  		continuation: false,
   		icon: "",
   		items: [],
   		itemTap: "",
@@ -23,13 +23,6 @@ enyo.kind({
 			{name: "sourceUnreadCount", classes: "subscription-count", tag: "span"}
 		]}
 	],
-	
-	constructor: function(api) {
-		this.inherited(arguments);		
-		this.api = api;
-		this.continuation = false;
-		this.items = [];
-	},
 	
 	create: function() {
 		this.inherited(arguments);

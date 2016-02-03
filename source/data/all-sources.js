@@ -1,39 +1,39 @@
 var AllSources = Class.create({
   initialize: function(api) {
-    this.stickySources = {items: []}
+    this.stickySources = {items: []};
 
     if (api.supportsAllArticles())
     {
-    	this.all = new FeedSpider2.AllArticles(api)
-    	this.stickySources.items.push(this.all)
+    	this.all = new FeedSpider2.AllArticles({api: api});
+    	this.stickySources.items.push(this.all);
     }
   	
     if (api.supportsFresh())
     {
-    	this.fresh = new FeedSpider2.Fresh(api)
-    	this.stickySources.items.push(this.fresh)
+    	this.fresh = new FeedSpider2.Fresh({api: api});
+    	this.stickySources.items.push(this.fresh);
     }
  
     if (api.supportsStarred())
     {
-    	this.starred = new FeedSpider2.Starred(api)
-    	this.stickySources.items.push(this.starred)
+    	this.starred = new FeedSpider2.Starred({api: api});
+    	this.stickySources.items.push(this.starred);
     }
    
     if (api.supportsShared())
     {
-    	this.shared = new FeedSpider2.Shared(api)
-    	this.stickySources.items.push(this.shared)
+    	this.shared = new FeedSpider2.Shared({api: api});
+    	this.stickySources.items.push(this.shared);
     }
     
     if (api.supportsArchived())
     {
-    	this.archived = new FeedSpider2.Archived(api)
-    	this.stickySources.items.push(this.archived)
+    	this.archived = new FeedSpider2.Archived({api: api});
+    	this.stickySources.items.push(this.archived);
     }
 	
-    this.subscriptions = new FeedSpider2.AllSubscriptions(api)
-    this.subscriptionSources = {items: []}
+    this.subscriptions = new FeedSpider2.AllSubscriptions({api: api});
+    this.subscriptionSources = {items: []};
   },
 
   findAll: function(success, failure) {

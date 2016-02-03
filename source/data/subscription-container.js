@@ -2,10 +2,9 @@ enyo.kind({
 	name: "FeedSpider2.SubscriptionContainer",
 	kind: "FeedSpider2.Countable",
 	
-	constructor: function(api) {
-		this.inherited(arguments);
-		this.items = [];
-    	this.api = api;
+	published: {
+		api: null,
+		items: [],
 	},
 	
 	remove: function(subscription) {

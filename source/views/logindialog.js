@@ -190,7 +190,7 @@ enyo.kind({
 		}
 		
 		// Attempt login
-    	this.api = new Api();
+		this.api = this.generateAPI(this.credentials);
     	this.api.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this), this);
 	},
 
@@ -205,7 +205,7 @@ enyo.kind({
 		this.$.loginSpinner.show();
 		
 		// Attempt login
-    	this.api = new Api();
+    	this.api = this.generateAPI(this.credentials);
     	this.api.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this), this);
 	},
 	
@@ -321,4 +321,38 @@ enyo.kind({
 	checkBlur: function(source, event) {
 		source.addStyles("color: white");
 	},
+
+	generateAPI: function(credentials)
+	{
+		var api;
+
+		switch(credentials.service)
+    	{
+		  	case "tor":
+				api = new FeedSpider2.TorAPI();
+				break;
+		  	case "ino":
+		  		api = new FeedSpider2.InoAPI();
+				break;
+			case "bq":
+		  		api = new FeedSpider2.BQAPI();
+				break;
+			case "ttrss":
+		  		api = new FeedSpider2.TTRSSAPI();
+				break;
+			case "feedly":
+		  		api = new FeedSpider2.FeedlyAPI();
+				break;
+			case "aol":
+		  		api = new FeedSpider2.AolAPI();
+				break;
+			case "oc":
+		  		api = new FeedSpider2.OCAPI();
+				break;
+			default:
+				api = new FeedSpider2.API();  		
+    	}
+
+    	return api;
+	}
 });
