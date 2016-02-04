@@ -1,19 +1,32 @@
 var Instapaper = {
   send: function(url, title, success, badCredentials, failure) {
-    var username = FeedSpider2.Preferences.getInstapaperUsername()
-    var password = FeedSpider2.Preferences.getInstapaperPassword()
+    var username = FeedSpider2.Preferences.getInstapaperUsername();
+    var password = FeedSpider2.Preferences.getInstapaperPassword();
 
     if(username) {
-      new Ajax.Request("https://www.instapaper.com/api/add", {
-        method: "get",
-        parameters: {username: username, password: password, url: url, title: title},
-        onSuccess: success,
-        on403: badCredentials,
-        onFailure: failure
-      })
+      var request = new enyo.Ajax({
+        url: "https://www.instapaper.com/api/add",
+        xhrFields: {mozSystem: true},
+        cacheBust: false
+      });
+
+      request.error(failure);
+
+      request.response(function (inRequest, inResponse){
+          if (inRequest.xhrResponse.status == 403)
+          {
+            badCredentials();
+          }
+          else
+          {
+            success(inResponse.tags);
+          }
+      }, this);
+
+      request.go({output: "json"});
     }
     else {
-      badCredentials()
+      badCredentials();
     }
   }
-}
+};
