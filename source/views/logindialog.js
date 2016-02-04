@@ -55,18 +55,18 @@ enyo.kind({
 			{name: "errorMessage", tag: "div", style: "color: red; font-size 14px; font-weight: bold; margin-bottom: 10px; display:none"},
 			{name: "loginButton", kind: "onyx.Button", classes: "onyx-affirmative", style: "width: 60%", ontap: "checkCredentials"}
 		]},
-		{name: "loginSpinner", style: "text-align: center; display: none", components: [
+		{name: "loginSpinner", style: "text-align: center;", showing: false, components: [
 			{kind: "onyx.Spinner", style: "background: url('assets/login-spinner.gif') no-repeat 0 0;width: 132px; height: 132px"},
 			{name: "loginSpinnerLabel", tag: "p", style: "text-align:center; font-weight: bold; font-size: 20px"},
 		]},
-		{name: "oAuthBrowserWrapperFFOS", kind: "enyo.FittableRows", style: "width: 100%; text-align: left; display: none", components: [
+		{name: "oAuthBrowserWrapperFFOS", kind: "enyo.FittableRows", style: "width: 100%; text-align: left;", showing: false, components: [
 			{name: "backButtonFFOS", kind: "onyx.IconButton", style: "margin-bottom: 5px;", ontap: "browserGoBack", src: "assets/go-back.png"},
 			{name: "oAuthBrowserFFOS", kind: "FeedSpider2.OAuthIFrame", style: "height: 300px; width: 100%;", onOAuthSuccess: "oasuccess", onCodeGot: "codegot", onOAuthFailure: "oafailure"}
 		]},
-		{name: "oAuthBrowserWrapperWebOS", kind: "enyo.FittableRows", style: "width: 100%; text-align: left; display: none", components: [
+		{name: "oAuthBrowserWrapperWebOS", kind: "enyo.FittableRows", style: "width: 100%; text-align: left;", showing: false, components: [
 			{components:[
 				{name: "backButtonWebOS", kind: "onyx.IconButton", style: "margin-bottom: 5px;", ontap: "browserGoBack", src: "assets/go-back.png"},
-				{name: "smallSpinnerWebOS", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "float: right; display: none"},
+				{name: "smallSpinnerWebOS", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "float: right;", showing: false},
 			]},
 			{name: "oAuthBrowserWebOS", kind: "FeedSpider2.OAuthWebView", style: "width: 100%;", onOAuthSuccess: "oasuccess", onCodeGot: "codegot", onOAuthFailure: "oafailure", onLoadStarted: "showOauthSpinner", onLoadStopped: "hideOauthSpinner", onLoadComplete: "hideOauthSpinner",}
 		]}
@@ -211,6 +211,7 @@ enyo.kind({
 		// Hide the window and put up the spinner
 		this.$.loginWindow.hide();
 		this.$.loginSpinner.show();
+		this.resize();
 		
 		// Attempt login
 		this.set("api", this.generateAPI(this.get("credentials")));

@@ -45,7 +45,7 @@ enyo.kind({
 			]},
 			{style: "width: 18%; text-align:center; margin-left: 0px; margin-right: 0px;", components: [
 				{name: "nextButton", kind: "onyx.IconButton", ontap: "nextArticle", src: "assets/next-article.png"},
-				{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
+				{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", showing: false},
 			]},
 		]},
 		{name: "installAppDialog", kind: FeedSpider2.ChoiceDialog, onAction: "openAppStore", onDismiss: "closeDialog"},

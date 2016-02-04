@@ -12,8 +12,8 @@ enyo.kind({
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
 			{name: "viewTitle", tag: "span", style:"font-weight: bold; text-align: center", fit: true},
 			{name: "blankIcon", kind: "onyx.Icon"}, //This is here to keep the header centered.
-			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", style: "display: none"},
-			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
+			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", showing: false},
+			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", showing: false},
 		]},
 		{kind: "enyo.FittableRows", style: "width: 100%; padding-bottom: 1px; border-bottom: black 1px solid", components: [
 			{kind: "onyx.InputDecorator", style: "background-color: white; width: 100%", components: [

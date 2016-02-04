@@ -18,8 +18,8 @@ enyo.kind({
     			]}
 			]},
 			{name: "viewTitle", tag: "span", style:"font-weight: bold; text-align: center", fit: true, ontap: "scrollToTop"},
-			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", style: "display: none", ontap: "reload"},
-			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
+			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", showing: false, ontap: "reload"},
+			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", showing: false},
 			{name: "refreshButton", kind: "onyx.IconButton", src: "assets/refresh.png", ontap: "reload"}
 		]},
 		
