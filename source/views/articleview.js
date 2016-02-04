@@ -9,7 +9,8 @@ enyo.kind({
 	},
 	
 	handlers: {
-        onSelect: "sendTo"
+        onSelect: "sendTo",
+        onShowInstapaperDialog: "handleShowInstapaperDialog"
     },
 	
 	components:[
@@ -50,7 +51,7 @@ enyo.kind({
 		]},
 		{name: "installAppDialog", kind: FeedSpider2.ChoiceDialog, onAction: "openAppStore", onDismiss: "closeDialog"},
 		{name: "configureDialog", kind: FeedSpider2.ConfigureSharingDialog, onDismiss: "refreshSharingMenu"},
-		{name: "instapaperDialog", kind: FeedSpider2.InstapaperLoginDialog, onCredentialsSaved: "sendToInstapaper", onDismiss: "closeDialog"},
+		{kind: "FeedSpider2.Sharing"},
 		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
 	],
 	
@@ -259,11 +260,11 @@ enyo.kind({
 				
 		if (inEvent.originator.command == "configure")
 		{
-			this.$.configureDialog.show(Sharing.webOSItems);
+			this.$.configureDialog.show(this.$.sharing.webOSItems);
 		}
 		else
 		{
-			Sharing.handleSelection(this.article, inEvent.originator.command, this);
+			this.$.sharing.handleSelection(this.article, inEvent.originator.command, this);
 		}
 		
 		//Refresh Sharing Menu (Unless running webOS)
@@ -275,9 +276,18 @@ enyo.kind({
 	
 	sendToInstapaper: function(inSender, inEvent) {
 		this.closeDialog();
-		Sharing.handleSelection(this.article, "send-to-instapaper", this);
+		this.$.sharing.handleSelection(this.article, "send-to-instapaper", this);
 	},
 	
+	handleShowInstapaperDialog: function(inSender, inEvent)
+	{
+		if (this.$.instapaperDialog) this.$.instapaperDialog.hide();
+		if (this.$.instapaperDialog) this.$.instapaperDialog.destroy();		
+		this.createComponent({name: "instapaperDialog", kind: FeedSpider2.InstapaperLoginDialog, onCredentialsSaved: "sendToInstapaper", onDismiss: "closeDialog"}, {owner:this});
+		this.$.instapaperDialog.show();
+		return true;
+	},
+
 	openAppStore: function(inSender, inEvent)
 	{
 		var request = new enyo.ServiceRequest({
@@ -291,7 +301,7 @@ enyo.kind({
 	
 	closeDialog: function(inSender, inEvent)
 	{
-		this.$.instapaperDialog.hide();
+		if (this.$.instapaperDialog) this.$.instapaperDialog.hide();
 		this.$.installAppDialog.hide();
 		this.$.configureDialog.hide();
 		this.resize();
@@ -304,7 +314,7 @@ enyo.kind({
 		
 		this.$.sharingMenu.destroyClientControls();
 		
-		sharingMenu = Sharing.getPopupFor(this.article);
+		sharingMenu = this.$.sharing.getPopupFor(this.article);
 		sharingMenu.forEach(function(item){
 			item.setContainer(self.$.sharingMenu);
 		});

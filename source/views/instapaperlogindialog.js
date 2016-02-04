@@ -7,7 +7,7 @@ enyo.kind({
 	centered: true,
 	scrim: true,
 	
-	style: "padding-top: 10px; padding-left: 20px; padding-right: 20px;  padding-bottom: 20px; width: 80%; max-width: 300px; ",
+	style: "padding-top: 10px; padding-left: 20px; padding-right: 20px; padding-bottom: 20px; width: 80%; max-width: 300px;",
 	
 	events: {
 		onCredentialsSaved: "",
@@ -29,7 +29,7 @@ enyo.kind({
 				]},
 				{tag: "div", style: "margin: 10px"},
 			]},
-			{name: "errorMessage", tag: "div", style: "color: red; font-size 14px; font-weight: bold; margin-bottom: 10px; display:none"},
+			{name: "errorMessage", tag: "div", style: "color: red; font-size 14px; font-weight: bold; margin-bottom: 10px;", showing: false},
 			{components: [ 
 				{name: "loginButton", kind: "onyx.Button", classes: "onyx-affirmative", style: "width: 38%", ontap: "checkCredentials"},
 				{name: "cancelButton", kind: "onyx.Button", style: "margin-left: 4%; width: 38%", ontap: "cancelLogin"}
@@ -39,6 +39,7 @@ enyo.kind({
 	
   	create: function() {
     	this.inherited(arguments);
+    	console.log("PING!!!")
 		this.$.dialogTitle.setContent($L("Instapaper Login"));
 		this.$.errorMessage.setContent($L("Login Failed"));
 		this.$.loginButton.setContent($L("Login"));
@@ -48,8 +49,11 @@ enyo.kind({
 	},
 	
 	show: function() {
+		console.log("2")
 		this.activate();
-		this.inherited(arguments);      
+		console.log("3")
+		this.inherited(arguments);
+		console.log("4")  
 	},
 	
 	hide: function() {

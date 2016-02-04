@@ -1,4 +1,6 @@
-var Instapaper = {
+enyo.kind({
+  name: "FeedSpider2.InstapaperAPI",
+  
   send: function(url, title, success, badCredentials, failure) {
     var username = FeedSpider2.Preferences.getInstapaperUsername();
     var password = FeedSpider2.Preferences.getInstapaperPassword();
@@ -10,23 +12,25 @@ var Instapaper = {
         cacheBust: false
       });
 
-      request.error(failure);
+      request.error(function(inRequest, inResponse) {
+        if (inResponse == 403)
+        {
+          badCredentials();
+        }
+        else
+        {
+          failure();
+        }
+      });
 
       request.response(function (inRequest, inResponse){
-          if (inRequest.xhrResponse.status == 403)
-          {
-            badCredentials();
-          }
-          else
-          {
-            success(inResponse.tags);
-          }
+        success(inResponse.tags);
       }, this);
 
-      request.go({output: "json"});
+      request.go({username: username, password: password, url: url, title: title});
     }
     else {
       badCredentials();
     }
   }
-};
+});
