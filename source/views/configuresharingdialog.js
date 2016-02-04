@@ -35,7 +35,7 @@ enyo.kind({
 	},
 	
 	closeDialog: function(){
-		this.sources.each(function(item) {
+		this.sources.forEach(function(item) {
       		FeedSpider2.Preferences.setSharingOptionEnabled(item.id, item.enabled);
     	});
 		
@@ -45,7 +45,7 @@ enyo.kind({
 	show: function(sharingOptions){
     	this.sources = sharingOptions;
     	
-    	this.sources.each(function(item) {
+    	this.sources.forEach(function(item) {
       		item.enabled = FeedSpider2.Preferences.isSharingOptionEnabled(item.id, item.defaultEnabled);
     	});
     	

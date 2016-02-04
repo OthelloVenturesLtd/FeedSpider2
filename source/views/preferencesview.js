@@ -347,7 +347,7 @@ enyo.kind({
 		else {
 		  this.$.notificationsBody.removeClass("feedspider-groupbox-body-single");
 		  this.$.notificationsBody.addClass("feedspider-groupbox-body");
-		  this.$.notificationFeedsPickerHeader.addStyles({"width" : this.$.notificationIntervalPickerHeader.domStyles.width});
+		  //this.$.notificationFeedsPickerHeader.addStyles({"width" : this.$.notificationIntervalPickerHeader.domStyles.width});
 		  this.$.notificationFeedsRow.show();
 
 		  if(FeedSpider2.Preferences.anyOrSelectedFeedsForNotifications() == "any") {

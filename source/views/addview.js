@@ -103,7 +103,7 @@ enyo.kind({
 		this.$.errorIcon.hide();
 		this.$.blankIcon.show();
 				
-		subscriptions.each(function(subscription) {
+		subscriptions.forEach(function(subscription) {
 			this.subscriptions.items.push(this.buildSubscription(subscription));
 		}.bind(this));
 

@@ -37,7 +37,7 @@ enyo.kind({
     	var watchedFeeds = FeedSpider2.Preferences.getWatchedFeeds();
 		var self = this;
 		
-		this.sources.subscriptions.items.each(function(subscription) {
+		this.sources.subscriptions.items.forEach(function(subscription) {
       		subscription.feedWatched = watchedFeeds.any(function(n) {return n == subscription.id;});
       		self.$.FeedsList.createComponent({kind: "FeedSpider2.NotificationFeed", checked: subscription.feedWatched, title: subscription.title, feedId: subscription.id});
     	});
