@@ -13,7 +13,7 @@ enyo.kind({
 		{
 			if(!enyo.platform.webos)
 			{
-				if (arguments[0].alarmId == Preferences.getExpectedNotificationEvent())
+				if (arguments[0].alarmId == FeedSpider2.Preferences.getExpectedNotificationEvent())
 				{
 					this.checkForUpdates();
 					this.setInterval(false);
@@ -40,12 +40,12 @@ enyo.kind({
 		var self = this
 		var api = new Api()
 
-		api.login(new Credentials(), function() {
+		api.login(new FeedSpider2.Credentials(), function() {
 			api.getUnreadCounts(function(counts) {
 				var unreadCount = 0
 
 				$A(counts).each(function(count) {
-					if(count.count && Preferences.wantsNotificationFor(count.id)) {
+					if(count.count && FeedSpider2.Preferences.wantsNotificationFor(count.id)) {
 						unreadCount += count.count
 					}
 				})
@@ -69,7 +69,7 @@ enyo.kind({
 
 		if (enyo.platform.webos)
 		{	
-			if (Preferences.notificationInterval() == 0 || changed) {
+			if (FeedSpider2.Preferences.notificationInterval() == 0 || changed) {
 				var clearRequest = new enyo.ServiceRequest({
 			  		service: "palm://com.palm.power/timeout",
 					method: "clear",
@@ -77,13 +77,13 @@ enyo.kind({
 				clearRequest.go({"key": webos.identifier().appID + ".timer"});
 			}
 
-			if (Preferences.notificationInterval() != 0) {
+			if (FeedSpider2.Preferences.notificationInterval() != 0) {
 				var wakeupRequest = new enyo.ServiceRequest({
 					service: "palm://com.palm.power/timeout",
 					method: "set"
 				});
 				
-				var totalSec = Preferences.notificationInterval()
+				var totalSec = FeedSpider2.Preferences.notificationInterval()
 				var hours = parseInt( totalSec / 3600 ) % 24;
 				var minutes = parseInt( totalSec / 60 ) % 60;
 				var seconds = totalSec % 60;
@@ -108,16 +108,16 @@ enyo.kind({
 		}
 		else if (enyo.platform.firefoxOS)
 		{
-			if (Preferences.notificationInterval() == 0 || changed) {
-				if (Preferences.getExpectedNotificationEvent() != 0)
+			if (FeedSpider2.Preferences.notificationInterval() == 0 || changed) {
+				if (FeedSpider2.Preferences.getExpectedNotificationEvent() != 0)
 				{
-					navigator.mozAlarms.remove(Preferences.getExpectedNotificationEvent());
+					navigator.mozAlarms.remove(FeedSpider2.Preferences.getExpectedNotificationEvent());
 				}
 			}
 
-			if (Preferences.notificationInterval() != 0) {
+			if (FeedSpider2.Preferences.notificationInterval() != 0) {
 				var notificationDate  = new Date();
-				notificationDate.setSeconds(notificationDate.getSeconds() + Preferences.notificationInterval());
+				notificationDate.setSeconds(notificationDate.getSeconds() + FeedSpider2.Preferences.notificationInterval());
 
 				var data = {
 					source: "feedspider"
@@ -127,7 +127,7 @@ enyo.kind({
 
 				request.onsuccess = function () {
 					Log.debug("The alarm has been scheduled: " + this.result);
-					Preferences.setExpectedNotificationEvent(this.result)
+					FeedSpider2.Preferences.setExpectedNotificationEvent(this.result)
 				};
 
 				request.onerror = function () { 

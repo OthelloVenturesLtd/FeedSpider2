@@ -252,7 +252,7 @@ var OCApi = Class.create({
   getAllArticles: function(continuation, success, failure) {
     this._getArticles(
       "all",
-      Preferences.hideReadArticles() ? false : true,
+      FeedSpider2.Preferences.hideReadArticles() ? false : true,
       continuation,
       success,
       failure
@@ -289,7 +289,7 @@ var OCApi = Class.create({
   getAllArticlesFor: function(id, continuation, success, failure) {
     this._getArticles(
       id,
-      Preferences.hideReadArticles() ? false : true,
+      FeedSpider2.Preferences.hideReadArticles() ? false : true,
       continuation,
       success,
       failure

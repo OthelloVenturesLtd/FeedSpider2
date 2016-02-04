@@ -22,7 +22,7 @@ enyo.kind({
       url: "https://theoldreader.com/reader/api/0/accounts/ClientLogin",
       method: "post",
       handleAs: "text",
-      postBody: {client: "FeedSpider2", accountType: "HOSTED_OR_GOOGLE", service: "reader", Email: credentials.email, Passwd: credentials.password},
+      postBody: {client: "FeedSpider2", accountType: "HOSTED_OR_GOOGLE", service: "reader", Email: credentials.get("email"), Passwd: credentials.get("password")},
       xhrFields: {mozSystem: true}
     });
 
@@ -220,7 +220,7 @@ enyo.kind({
     var self = this;
     var titles = {};
 
-    subscriptions.each(function(subscription) {
+    subscriptions.forEach(function(subscription) {
       titles[subscription.id] = subscription.title;
     });
 
@@ -255,7 +255,7 @@ enyo.kind({
   getAllArticles: function(continuation, success, failure) {
     this._getArticles(
       "user/-/state/com.google/reading-list",
-      Preferences.hideReadArticles() ? "user/-/state/com.google/read" : null,
+      FeedSpider2.Preferences.hideReadArticles() ? "user/-/state/com.google/read" : null,
       continuation,
       success,
       failure
@@ -309,7 +309,7 @@ enyo.kind({
   getAllArticlesFor: function(id, continuation, success, failure) {
     this._getArticles(
       id,
-      Preferences.hideReadArticles() ? "user/-/state/com.google/read" : null,
+      FeedSpider2.Preferences.hideReadArticles() ? "user/-/state/com.google/read" : null,
       continuation,
       success,
       failure
@@ -322,7 +322,7 @@ enyo.kind({
 	
     if(id != "user/-/state/com.google/starred" &&
        id != "user/-/state/com.google/broadcast" &&
-       Preferences.isOldestFirst()) {
+       FeedSpider2.Preferences.isOldestFirst()) {
       parameters.r = "o";
     }
 

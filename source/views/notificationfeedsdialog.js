@@ -34,7 +34,7 @@ enyo.kind({
 	},
 	
 	show: function(){
-    	var watchedFeeds = Preferences.getWatchedFeeds();
+    	var watchedFeeds = FeedSpider2.Preferences.getWatchedFeeds();
 		var self = this;
 		
 		this.sources.subscriptions.items.each(function(subscription) {
@@ -74,11 +74,11 @@ enyo.kind({
 	addRemoveFeed: function(inSender, inEvent) {
 		if (inEvent.originator.checked === true)
 		{
-			Preferences.addNotificationFeed(this.feedId);
+			FeedSpider2.Preferences.addNotificationFeed(this.feedId);
 		}
 		else
 		{
-			Preferences.removeNotificationFeed(this.feedId);
+			FeedSpider2.Preferences.removeNotificationFeed(this.feedId);
 		}
 	}
 });

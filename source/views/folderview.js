@@ -67,7 +67,7 @@ enyo.kind({
 	},
 
 	activate: function(changes) {
-		if (Preferences.isManualFeedSort())
+		if (FeedSpider2.Preferences.isManualFeedSort())
 		{
 			this.$.MainList.setReorderable(true);
 		}
@@ -76,7 +76,7 @@ enyo.kind({
 			this.$.MainList.setReorderable(false);
 		}
 		
-		if (Preferences.hideReadFeeds()){
+		if (FeedSpider2.Preferences.hideReadFeeds()){
 			this.$.showHideFeedsMenuItem.setContent($L("Show Read Feeds"));
 		}
 		else
@@ -180,7 +180,7 @@ enyo.kind({
 	completeSwipeItem: function() {
         this.$.MainList.completeSwipe();
         this.swiping = false;
-        if (Preferences.isManualFeedSort())
+        if (FeedSpider2.Preferences.isManualFeedSort())
 		{
 			this.$.MainList.setReorderable(true);
 		}
@@ -207,7 +207,7 @@ enyo.kind({
 		this.subscriptions.items.clear();
 
 		this.folder.subscriptions.items.each(function(subscription) {
-			if(subscription.unreadCount || !Preferences.hideReadFeeds()) {
+			if(subscription.unreadCount || !FeedSpider2.Preferences.hideReadFeeds()) {
 				this.subscriptions.items.push(subscription);
 			}
 		}.bind(this));

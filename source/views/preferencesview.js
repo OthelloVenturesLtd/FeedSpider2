@@ -239,15 +239,15 @@ enyo.kind({
 	{
 		this.inherited(arguments);
 		
-		//Fix pickers - there is a rendering error if the pickers have their width set if they are hidden 
-		this.$.themePickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
-		this.$.feedSortOrderPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
-		this.$.sortOrderPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
-		this.$.fontSizePickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
-		this.$.notificationIntervalPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
-		this.$.notificationFeedsPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
-		var windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);  
-		this.$.clearInstapaperCredentialsButton.addStyles({"width" : windowWidth - 42 + "px"});
+		//Fix pickers - there is a rendering error if the pickers have their width set if they are hidden
+		// this.$.themePickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
+		// this.$.feedSortOrderPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
+		// this.$.sortOrderPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
+		// this.$.fontSizePickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
+		// this.$.notificationIntervalPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
+		// this.$.notificationFeedsPickerHeader.addStyles({"width" : this.$.generalGroupbox.domStyles.width});
+		// var windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);  
+		// this.$.clearInstapaperCredentialsButton.addStyles({"width" : windowWidth - 42 + "px"});
 		
 		if(!(enyo.platform.webos || enyo.platform.firefoxOS || window.PalmSystem))
 	 	{
@@ -263,43 +263,43 @@ enyo.kind({
 	activate: function()
 	{
 		//Cache Existing Values
-		this.originalAllowLandscape = Preferences.allowLandscape();
-		this.originalSortOrder = Preferences.isOldestFirst();
-		this.originalHideReadFeeds = Preferences.hideReadFeeds();
-		this.originalHideReadArticles = Preferences.hideReadArticles();
-		this.originalFontSize = Preferences.fontSize();
-		this.originalFeedSortOrder = Preferences.isManualFeedSort();
-		this.originalTheme = Preferences.getTheme();
-		this.originalNotificationInterval = Preferences.notificationInterval();
-		this.originalFeedlySortEngagement = Preferences.isFeedlySortEngagement();
+		this.originalAllowLandscape = FeedSpider2.Preferences.allowLandscape();
+		this.originalSortOrder = FeedSpider2.Preferences.isOldestFirst();
+		this.originalHideReadFeeds = FeedSpider2.Preferences.hideReadFeeds();
+		this.originalHideReadArticles = FeedSpider2.Preferences.hideReadArticles();
+		this.originalFontSize = FeedSpider2.Preferences.fontSize();
+		this.originalFeedSortOrder = FeedSpider2.Preferences.isManualFeedSort();
+		this.originalTheme = FeedSpider2.Preferences.getTheme();
+		this.originalNotificationInterval = FeedSpider2.Preferences.notificationInterval();
+		this.originalFeedlySortEngagement = FeedSpider2.Preferences.isFeedlySortEngagement();
 		
 		//Setup checkboxes
-		this.$.allowLandscape.checked = Preferences.allowLandscape();
-		//this.$.gestureScrolling.checked = Preferences.gestureScrolling();
-		this.$.hideReadFeeds.checked = Preferences.hideReadFeeds();
-		this.$.hideReadArticles.checked = Preferences.hideReadArticles();
-		this.$.backAfterMarkRead.checked = Preferences.goBackAfterMarkAsRead();
-		this.$.combineFolders.checked = Preferences.combineFolders();
-		//this.$.markReadScroll.value = Preferences.markReadAsScroll();
-		this.$.feedlySortEngagement.checked = Preferences.isFeedlySortEngagement();
-		this.$.shortenURLs.checked = Preferences.isShortenURLs();
+		this.$.allowLandscape.checked = FeedSpider2.Preferences.allowLandscape();
+		//this.$.gestureScrolling.checked = FeedSpider2.Preferences.gestureScrolling();
+		this.$.hideReadFeeds.checked = FeedSpider2.Preferences.hideReadFeeds();
+		this.$.hideReadArticles.checked = FeedSpider2.Preferences.hideReadArticles();
+		this.$.backAfterMarkRead.checked = FeedSpider2.Preferences.goBackAfterMarkAsRead();
+		this.$.combineFolders.checked = FeedSpider2.Preferences.combineFolders();
+		//this.$.markReadScroll.value = FeedSpider2.Preferences.markReadAsScroll();
+		this.$.feedlySortEngagement.checked = FeedSpider2.Preferences.isFeedlySortEngagement();
+		this.$.shortenURLs.checked = FeedSpider2.Preferences.isShortenURLs();
 
 		//Get Picker values
-		this.sortOrder = (Preferences.isOldestFirst() ? "oldest": "newest");
-		this.fontSize = Preferences.fontSize();
-		this.feedSortOrder = (Preferences.isManualFeedSort() ? "manual": "alphabetical");
-		this.theme = Preferences.getTheme();
-		this.debug = Preferences.isDebugging(); //TODO: Decide whether to eliminate debugging or not.
-		this.notificationInterval = Preferences.notificationInterval();
-		this.notificationFeeds = Preferences.anyOrSelectedFeedsForNotifications();
+		this.sortOrder = (FeedSpider2.Preferences.isOldestFirst() ? "oldest": "newest");
+		this.fontSize = FeedSpider2.Preferences.fontSize();
+		this.feedSortOrder = (FeedSpider2.Preferences.isManualFeedSort() ? "manual": "alphabetical");
+		this.theme = FeedSpider2.Preferences.getTheme();
+		this.debug = FeedSpider2.Preferences.isDebugging(); //TODO: Decide whether to eliminate debugging or not.
+		this.notificationInterval = FeedSpider2.Preferences.notificationInterval();
+		this.notificationFeeds = FeedSpider2.Preferences.anyOrSelectedFeedsForNotifications();
 		
 		//Cache current values (this prevents additional callbacks when setting up pickers)
-		this.currentTheme = Preferences.getTheme();
-		this.currentFeedSortOrder = (Preferences.isManualFeedSort() ? "manual": "alphabetical");
-		this.currentSortOrder = (Preferences.isOldestFirst() ? "oldest": "newest");
-		this.currentFontSize = Preferences.fontSize();
-		this.currentNotificationInterval = Preferences.notificationInterval();
-		this.currentNotificationFeeds = Preferences.anyOrSelectedFeedsForNotifications();
+		this.currentTheme = FeedSpider2.Preferences.getTheme();
+		this.currentFeedSortOrder = (FeedSpider2.Preferences.isManualFeedSort() ? "manual": "alphabetical");
+		this.currentSortOrder = (FeedSpider2.Preferences.isOldestFirst() ? "oldest": "newest");
+		this.currentFontSize = FeedSpider2.Preferences.fontSize();
+		this.currentNotificationInterval = FeedSpider2.Preferences.notificationInterval();
+		this.currentNotificationFeeds = FeedSpider2.Preferences.anyOrSelectedFeedsForNotifications();
 		
 		//Set Pickers
 		this.setPicker(this.$.themePicker, this.$.themePickerHeader, this.theme);
@@ -313,8 +313,8 @@ enyo.kind({
 		this.showAndHideStuff();
 		
 		//Set up Clear Instapaper Credentials Button
-		var ipUsername = Preferences.getInstapaperUsername();
-		var ipPassword = Preferences.getInstapaperPassword();
+		var ipUsername = FeedSpider2.Preferences.getInstapaperUsername();
+		var ipPassword = FeedSpider2.Preferences.getInstapaperPassword();
 		
 		if (ipUsername || ipPassword)
 		{
@@ -338,7 +338,7 @@ enyo.kind({
 	},
 	
 	showAndHideStuff: function() {
-		if(Preferences.notificationInterval() === 0) {
+		if(FeedSpider2.Preferences.notificationInterval() === 0) {
 		  this.$.notificationFeedsRow.hide();
 		  this.$.notificationFeedsSelectionRow.hide();
 		  this.$.notificationsBody.removeClass("feedspider-groupbox-body");
@@ -350,7 +350,7 @@ enyo.kind({
 		  this.$.notificationFeedsPickerHeader.addStyles({"width" : this.$.notificationIntervalPickerHeader.domStyles.width});
 		  this.$.notificationFeedsRow.show();
 
-		  if(Preferences.anyOrSelectedFeedsForNotifications() == "any") {
+		  if(FeedSpider2.Preferences.anyOrSelectedFeedsForNotifications() == "any") {
 		  	this.$.notificationFeedsSelectionRow.hide();
 		  }
 		  else {
@@ -368,26 +368,26 @@ enyo.kind({
 	},
 
 	setShortenURLs: function() {
-		Preferences.setShortenURLs(this.$.shortenURLs.checked);
+		FeedSpider2.Preferences.setShortenURLs(this.$.shortenURLs.checked);
 	},
 
 	setFeedlySortEngagement: function() {
-		Preferences.setFeedlySortEngagement(this.$.feedlySortEngagement.checked);
+		FeedSpider2.Preferences.setFeedlySortEngagement(this.$.feedlySortEngagement.checked);
 	},
 
 	setAllowLandscape: function() {
-		Preferences.setAllowLandscape(this.$.allowLandscape.checked);
+		FeedSpider2.Preferences.setAllowLandscape(this.$.allowLandscape.checked);
 	},
 
 	setGestureScrolling: function() {
-		Preferences.setGestureScrolling(this.$.gestureScrolling.checked);
+		FeedSpider2.Preferences.setGestureScrolling(this.$.gestureScrolling.checked);
 	},
 
 	setSortOrder: function(inSender, inEvent) {
 		if (inEvent.selected.value != this.currentSortOrder)
 		{
 			this.currentSortOrder = inEvent.selected.value;
-			Preferences.setOldestFirst(inEvent.selected.value == "oldest");
+			FeedSpider2.Preferences.setOldestFirst(inEvent.selected.value == "oldest");
 			this.$.sortOrderPickerHeader.content = inEvent.selected.content;
 		}
 	},
@@ -396,33 +396,33 @@ enyo.kind({
 		if (inEvent.selected.value != this.currentFontSize)
 		{
 			this.currentFontSize = inEvent.selected.value;
-			Preferences.setFontSize(inEvent.selected.value);
+			FeedSpider2.Preferences.setFontSize(inEvent.selected.value);
 			this.$.fontSizePickerHeader.content = inEvent.selected.content;
 		}	
 		
 	},
 
 	setHideReadFeeds: function() {
-		Preferences.setHideReadFeeds(this.$.hideReadFeeds.checked);
+		FeedSpider2.Preferences.setHideReadFeeds(this.$.hideReadFeeds.checked);
 	},
 
 	setHideReadArticles: function() {
-		Preferences.setHideReadArticles(this.$.hideReadArticles.checked);
+		FeedSpider2.Preferences.setHideReadArticles(this.$.hideReadArticles.checked);
 	},
 
 	setBackAfterMarkRead: function() {
-		Preferences.setBackAfterMarkAsRead(this.$.backAfterMarkRead.checked);
+		FeedSpider2.Preferences.setBackAfterMarkAsRead(this.$.backAfterMarkRead.checked);
 	},
 
 	setCombineFolders: function() {
-		Preferences.setCombineFolders(this.$.combineFolders.checked);
+		FeedSpider2.Preferences.setCombineFolders(this.$.combineFolders.checked);
 	},
 
 	setFeedSortOrder: function(inSender, inEvent) {
 		if (inEvent.selected.value != this.currentFeedSortOrder)
 		{
 			this.currentFeedSortOrder = inEvent.selected.value;
-			Preferences.setManualFeedSort(inEvent.selected.value == "manual");
+			FeedSpider2.Preferences.setManualFeedSort(inEvent.selected.value == "manual");
 			this.$.feedSortOrderPickerHeader.content = inEvent.selected.content;
 		}
 	},
@@ -431,7 +431,7 @@ enyo.kind({
 		if (inEvent.selected.value != this.currentTheme)
 		{
 			this.currentTheme = inEvent.selected.value;
-			Preferences.setTheme(inEvent.selected.value);
+			FeedSpider2.Preferences.setTheme(inEvent.selected.value);
 			this.$.themePickerHeader.content = inEvent.selected.content;
 			this.doSetTheme();
 		}
@@ -441,7 +441,7 @@ enyo.kind({
 		if (inEvent.selected.value != this.currentNotificationInterval)
 		{
 			this.currentNotificationInterval = inEvent.selected.value;
-			Preferences.setNotificationInterval(inEvent.selected.value);
+			FeedSpider2.Preferences.setNotificationInterval(inEvent.selected.value);
 			this.showAndHideStuff();
 			this.$.notificationIntervalPickerHeader.content = inEvent.selected.content;
 		}
@@ -451,18 +451,18 @@ enyo.kind({
 		if (inEvent.selected.value != this.currentNotificationFeeds)
 		{
 			this.currentNotificationFeeds = inEvent.selected.value;
-			Preferences.setAnyOrSelectedFeedsForNotification(inEvent.selected.value);
+			FeedSpider2.Preferences.setAnyOrSelectedFeedsForNotification(inEvent.selected.value);
 			this.showAndHideStuff();
 			this.$.notificationFeedsPickerHeader.content = inEvent.selected.content;
 		}
 	},
 
 	setDebugging: function() {
-		Preferences.setDebugging(this.$.debug.checked);
+		FeedSpider2.Preferences.setDebugging(this.$.debug.checked);
 	},
 
 	setMarkReadScroll: function() {
-		Preferences.setMarkReadAsScroll(this.$.markReadScroll.checked);
+		FeedSpider2.Preferences.setMarkReadAsScroll(this.$.markReadScroll.checked);
 	},
 
 	selectFeeds: function() {
@@ -475,8 +475,8 @@ enyo.kind({
 	},
 	
 	clearInstapaperCredentials: function(){
-		Preferences.setInstapaperUsername(null);
-		Preferences.setInstapaperPassword(null);
+		FeedSpider2.Preferences.setInstapaperUsername(null);
+		FeedSpider2.Preferences.setInstapaperPassword(null);
 		this.$.clearInstapaperCredentialsButton.setDisabled(true);
 		Feeder.notify($L("Instapaper Credentials Cleared"));
 	},
@@ -501,20 +501,20 @@ enyo.kind({
 		}
 		else
 		{
-			if (this.originalNotificationInterval != Preferences.notificationInterval()) {
+			if (this.originalNotificationInterval != FeedSpider2.Preferences.notificationInterval()) {
 			  feedspider.setInterval({action: "notificationIntervalChange"});
 			}
 
 			changes = {};
 
-			if (this.originalAllowLandscape != Preferences.allowLandscape()) changes.allowLandscapeChanged = true;
-			if (this.originalSortOrder != Preferences.isOldestFirst()) changes.sortOrderChanged = true;
-			if (this.originalHideReadFeeds != Preferences.hideReadFeeds()) changes.hideReadFeedsChanged = true;
-			if (this.originalHideReadArticles != Preferences.hideReadArticles()) changes.hideReadArticlesChanged = true;
-			if (this.originalFontSize != Preferences.fontSize()) changes.fontSizeChanged = true;
-			if (this.originalFeedSortOrder != Preferences.isManualFeedSort()) changes.feedSortOrderChanged = true;
-			if (this.originalTheme != Preferences.getTheme()) changes.themeChanged = true;
-			if (this.originalFeedlySortEngagement != Preferences.isFeedlySortEngagement()) changes.sortOrderChanged = true;
+			if (this.originalAllowLandscape != FeedSpider2.Preferences.allowLandscape()) changes.allowLandscapeChanged = true;
+			if (this.originalSortOrder != FeedSpider2.Preferences.isOldestFirst()) changes.sortOrderChanged = true;
+			if (this.originalHideReadFeeds != FeedSpider2.Preferences.hideReadFeeds()) changes.hideReadFeedsChanged = true;
+			if (this.originalHideReadArticles != FeedSpider2.Preferences.hideReadArticles()) changes.hideReadArticlesChanged = true;
+			if (this.originalFontSize != FeedSpider2.Preferences.fontSize()) changes.fontSizeChanged = true;
+			if (this.originalFeedSortOrder != FeedSpider2.Preferences.isManualFeedSort()) changes.feedSortOrderChanged = true;
+			if (this.originalTheme != FeedSpider2.Preferences.getTheme()) changes.themeChanged = true;
+			if (this.originalFeedlySortEngagement != FeedSpider2.Preferences.isFeedlySortEngagement()) changes.sortOrderChanged = true;
 
 			this.doGoBack({lastPage: this.previousPage, changes: changes});
 		}

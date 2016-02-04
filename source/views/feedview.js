@@ -83,7 +83,7 @@ enyo.kind({
 	},
 
 	activate: function(changes_or_scroll) {
-		if (Preferences.hideReadArticles()){
+		if (FeedSpider2.Preferences.hideReadArticles()){
 			this.$.showHideArticlesMenuItem.setContent($L("Show Read Articles"));
 		}
 		else
@@ -364,7 +364,7 @@ enyo.kind({
 
 				this.doMassMarkAsRead({id: this.subscription.id, count: count});
 
-				if(Preferences.goBackAfterMarkAsRead()) {
+				if(FeedSpider2.Preferences.goBackAfterMarkAsRead()) {
 	 				this.handleGoBack();
 				}
 			}.bind(this),

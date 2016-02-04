@@ -2,16 +2,21 @@ enyo.kind({
 	name: "FeedSpider2.Subscription",
 	kind: "FeedSpider2.ArticleContainer",
 	
-	constructor: function(api, data) {
-		this.inherited(arguments);	
-		this.id = data.id
-		this.title = data.title
-		this.icon = "assets/rss-grey.png"
-		this.divideBy = $L("Subscriptions")
-		this.canMarkAllRead = true
-		this.sortId = data.sortid
-		this.categories = data.categories
+	published: {
+		canMarkAllRead: true,
+		categories: null,
+		data: null,
+		divideBy: $L("Subscriptions"),
+		icon: "assets/rss-grey.png",	
+		sortId: null		
 	},
+
+	bindings: [
+		{from: ".data.id", to: ".id"},
+		{from: ".data.title", to: ".title"},
+		{from: ".data.sortid", to: ".sortId"},
+		{from: ".data.categories", to: ".categories"}
+	],
 	
 	rendered: function() {
 		this.$.sourceIcon.addClass("subscription-rss");
@@ -19,30 +24,27 @@ enyo.kind({
 	},
 
 	belongsToFolder: function() {
-		return this.categories && this.categories.length
+		return this.categories && this.categories.length;
 	},
 
 	makeApiCall: function(continuation, success, failure) {
-		this.api.getAllArticlesFor(this.id, continuation, success, failure)
+		this.get("api").getAllArticlesFor(this.get("id"), continuation, success, failure);
 	},
 
 	articleRead: function(subscriptionId) {
-		if(this.id == subscriptionId) {this.decrementUnreadCountBy(1)}
+		if(this.get("id") == subscriptionId) {this.decrementUnreadCountBy(1);}
 	},
 
 	articleNotRead: function(subscriptionId) {
-		if(this.id == subscriptionId) {this.incrementUnreadCountBy(1)}
+		if(this.get("id") == subscriptionId) {this.incrementUnreadCountBy(1);}
 	},
 
 	markSourceRead: function(success, error) {
-		this.api.markAllRead(this.id,
+		this.get("api").markAllRead(this.get("id"),
 	  		function() {
-				this.clearUnreadCount()
-				this.items.each(function(item) {item.isRead = true})
-				success()
-	  		}.bind(this),
-
-	  		error
-		)
+				this.clearUnreadCount();
+				this.get("items").forEach(function(item) {item.set("isRead", true);});
+				success();
+	  		}.bind(this), error);
 	}
 });

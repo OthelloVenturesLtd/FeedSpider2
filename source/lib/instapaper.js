@@ -1,7 +1,7 @@
 var Instapaper = {
   send: function(url, title, success, badCredentials, failure) {
-    var username = Preferences.getInstapaperUsername()
-    var password = Preferences.getInstapaperPassword()
+    var username = FeedSpider2.Preferences.getInstapaperUsername()
+    var password = FeedSpider2.Preferences.getInstapaperPassword()
 
     if(username) {
       new Ajax.Request("https://www.instapaper.com/api/add", {

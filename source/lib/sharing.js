@@ -89,7 +89,7 @@ var Sharing = {
     	Sharing.items = Sharing.luneOSItems
     }
     
-    var sortOrder = Preferences.getSharingOptionsSortOrder()
+    var sortOrder = FeedSpider2.Preferences.getSharingOptionsSortOrder()
 
     if(sortOrder.length) {
       sortOrder.each(function(id, i) {
@@ -130,7 +130,7 @@ var Sharing = {
     }
 
     Sharing.items.each(function(item) {
-      if(Preferences.isSharingOptionEnabled(item.id, item.defaultEnabled)) {
+      if(FeedSpider2.Preferences.isSharingOptionEnabled(item.id, item.defaultEnabled)) {
         item = Object.clone(item)
 
         if(item.command) {
@@ -201,7 +201,7 @@ var Sharing = {
   },
 
   sendToFacebook: function(article, shorturl) {
-  	if(Preferences.isShortenURLs() && !shorturl)
+  	if(FeedSpider2.Preferences.isShortenURLs() && !shorturl)
   	{
   		Sharing.getShortURL(article, article.url, "sendToFacebook")
   		return
@@ -212,7 +212,7 @@ var Sharing = {
   },
 
   sendToProjectMacaw: function(article, shorturl) {
-  	if(Preferences.isShortenURLs() && !shorturl)
+  	if(FeedSpider2.Preferences.isShortenURLs() && !shorturl)
   	{
   		Sharing.getShortURL(article, article.url, "sendToProjectMacaw")
   		return
@@ -223,7 +223,7 @@ var Sharing = {
   },
 
   sendToGlimpse: function(article, shorturl) {
-    if(Preferences.isShortenURLs() && !shorturl)
+    if(FeedSpider2.Preferences.isShortenURLs() && !shorturl)
   	{
   		Sharing.getShortURL(article, article.url, "sendToGlimpse")
   		return
@@ -234,7 +234,7 @@ var Sharing = {
   },
 
   sendToQPDefault: function(article, shorturl) {
-    if(Preferences.isShortenURLs() && !shorturl)
+    if(FeedSpider2.Preferences.isShortenURLs() && !shorturl)
   	{
   		Sharing.getShortURL(article, article.url, "sendToQPDefault")
   		return
@@ -245,7 +245,7 @@ var Sharing = {
   },
 
   sendToQPAll: function(article, shorturl) {
-    if(Preferences.isShortenURLs() && !shorturl)
+    if(FeedSpider2.Preferences.isShortenURLs() && !shorturl)
   	{
   		Sharing.getShortURL(article, article.url, "sendToQPAll")
   		return
@@ -282,7 +282,7 @@ var Sharing = {
   },
 
   sendToEmail: function(article, shorturl) {
-  	if(Preferences.isShortenURLs() && !shorturl)
+  	if(FeedSpider2.Preferences.isShortenURLs() && !shorturl)
   	{
   		Sharing.getShortURL(article, article.url, "sendToEmail")
   		return
@@ -299,7 +299,7 @@ var Sharing = {
   },
 
   sendToSms: function(article, shorturl) {
-   	if(Preferences.isShortenURLs() && !shorturl)
+   	if(FeedSpider2.Preferences.isShortenURLs() && !shorturl)
   	{
   		Sharing.getShortURL(article, article.url, "sendToSms")
   		return
@@ -328,7 +328,7 @@ var Sharing = {
   },
   
   sendToBrowser: function(article, shorturl) {
-  	if(Preferences.isShortenURLs() && !shorturl)
+  	if(FeedSpider2.Preferences.isShortenURLs() && !shorturl)
   	{
   		Sharing.getShortURL(article, article.url, "sendToBrowser")
   		return
@@ -348,7 +348,7 @@ var Sharing = {
   },
   
   sendToSpazHD: function(article, shorturl) {
-  	if(Preferences.isShortenURLs() && !shorturl)
+  	if(FeedSpider2.Preferences.isShortenURLs() && !shorturl)
   	{
   		Sharing.getShortURL(article, article.url, "sendToSpazHD")
   		return
@@ -359,7 +359,7 @@ var Sharing = {
   },
   
   sendToSpazBeta: function(article, shorturl) {
-  	if(Preferences.isShortenURLs() && !shorturl)
+  	if(FeedSpider2.Preferences.isShortenURLs() && !shorturl)
   	{
   		Sharing.getShortURL(article, article.url, "sendToSpazBeta")
   		return

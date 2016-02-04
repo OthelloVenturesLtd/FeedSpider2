@@ -317,7 +317,7 @@ var TTRSSApi = Class.create({
   getAllArticles: function(continuation, success, failure) {
     this._getArticles(
       -4,
-      Preferences.hideReadArticles() ? "unread" : "all_articles",
+      FeedSpider2.Preferences.hideReadArticles() ? "unread" : "all_articles",
       continuation,
       success,
       failure
@@ -372,7 +372,7 @@ var TTRSSApi = Class.create({
   getAllArticlesFor: function(id, continuation, success, failure) {
     this._getArticles(
       id,
-      Preferences.hideReadArticles() ? "unread" : "all_articles",
+      FeedSpider2.Preferences.hideReadArticles() ? "unread" : "all_articles",
       continuation,
       success,
       failure
@@ -393,7 +393,7 @@ var TTRSSApi = Class.create({
        id != -3 &&
        id != -2 &&
        id != 0 &&
-       Preferences.isOldestFirst()) {
+       FeedSpider2.Preferences.isOldestFirst()) {
       parameters.order_by = "date_reverse"
     } else {
       parameters.order_by = "feed_dates"

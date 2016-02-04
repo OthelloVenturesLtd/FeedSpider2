@@ -1,4 +1,4 @@
-Preferences = {
+FeedSpider2.Preferences = {
   OLDEST_FIRST: "oldest-first",
   HIDE_READ_FEEDS: "hide-read-feeds",
   HIDE_READ_ARTICLES: "hide-read-articles",
@@ -211,7 +211,7 @@ Preferences = {
       return id.startsWith("feed/");
     }
     else {
-      return this.getWatchedFeeds().any(function(n) {return n == id});
+      return this.getWatchedFeeds().any(function(n) {return n == id;});
     }
   },
 
@@ -223,12 +223,12 @@ Preferences = {
 
   removeNotificationFeed: function(feed) {
     var feeds = this.getWatchedFeeds();
-    feeds = feeds.reject(function(n) {return n == feed});
+    feeds = feeds.reject(function(n) {return n == feed;});
     this.setWatchedFeeds(feeds);
   },
 
   getCookie: function(name, defaultValue) {
-    if (localStorage.getItem(name) != null)
+    if (localStorage.getItem(name) !== null)
     {
     	return JSON.parse(localStorage.getItem(name));
     }
@@ -242,5 +242,4 @@ Preferences = {
     Log.debug("setting " + name + " to " + value);
     localStorage.setItem(name, JSON.stringify(value));
   },
-}
-
+};

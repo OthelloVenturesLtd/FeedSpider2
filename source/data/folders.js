@@ -1,38 +1,37 @@
-var Folders = Class.create({
-  initialize: function(api) {
-    this.api = api
-    this.items = []
+enyo.kind({
+  name: "FeedSpider2.Folders",
+
+  published: {
+    api: null,
+    items: []
   },
 
   clear: function() {
-    this.items.clear()
+    this.get("items").clear();
   },
 
   addSubscription: function(id, label, subscription) {
-    var folder = this.items.find(function(f) {return f.id == id})
+    var folder = this.get("items").find(function(f) {return f.id == id;});
 
     if(!folder) {
-      folder = new FeedSpider2.Folder(this.api, label, id)
-      this.items.push(folder)
+      folder = new FeedSpider2.Folder({api: this.get("api"), title: label, id: id});
+      this.get("items").push(folder);
     }
 
-    folder.subscriptions.items.push(subscription)
+    folder.get("subscriptions").get("items").push(subscription);
   },
 
   addSortIds: function(success, failure) {
-    var self = this
+    var self = this;
 
-    self.api.getTags(
+    self.get("api").getTags(
       function(tags) {
         tags.each(function(tag) {
-          var folder = self.items.find(function(item) {return item.id == tag.id})
-          if(folder) folder.sortId = tag.sortid
-        })
+          var folder = self.get("items").find(function(item) {return item.id == tag.id;});
+          if(folder) folder.set("sortId". tag.sortid);
+        });
         
-        success()
-      },
-
-      failure
-    )
+        success();
+      }, failure);
   }
-})
+});

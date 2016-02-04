@@ -36,7 +36,7 @@ enyo.kind({
 	
 	closeDialog: function(){
 		this.sources.each(function(item) {
-      		Preferences.setSharingOptionEnabled(item.id, item.enabled);
+      		FeedSpider2.Preferences.setSharingOptionEnabled(item.id, item.enabled);
     	});
 		
 		this.doDismiss();
@@ -46,7 +46,7 @@ enyo.kind({
     	this.sources = sharingOptions;
     	
     	this.sources.each(function(item) {
-      		item.enabled = Preferences.isSharingOptionEnabled(item.id, item.defaultEnabled);
+      		item.enabled = FeedSpider2.Preferences.isSharingOptionEnabled(item.id, item.defaultEnabled);
     	});
     	
     	//Calculate list height

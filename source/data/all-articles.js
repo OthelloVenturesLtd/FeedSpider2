@@ -1,17 +1,16 @@
 enyo.kind({
 	name: "FeedSpider2.AllArticles",
 	kind: "FeedSpider2.ArticleContainer",
-	
-	constructor: function(api) {
-		this.inherited(arguments);	
-		this.id = "user/-/state/com.google/reading-list";
-		this.title = $L("All Items");
-		this.icon = "assets/list.png";
-		this.sticky = true;
-		this.divideBy = "Home";
-		this.hideDivider = "hide-divider";
-		this.showOrigin = true;
-		this.canMarkAllRead = true;
+
+	published: {
+		id: "user/-/state/com.google/reading-list",
+		title: $L("All Items"),
+		icon: "assets/list.png",
+		sticky: true,
+		divideBy: "Home",
+		hideDivider: "hide-divider",
+		showOrigin: true,
+		canMarkAllRead: true
 	},
 
 	rendered: function() {
@@ -20,7 +19,7 @@ enyo.kind({
 	},
 	
 	makeApiCall: function(continuation, success, failure) {
-		this.api.getAllArticles(continuation, success, failure);
+		this.get("api").getAllArticles(continuation, success, failure);
 	},
 
 	articleRead: function(subscriptionId) {
@@ -32,10 +31,10 @@ enyo.kind({
 	},
 
 	markSourceRead: function(success) {
-		this.api.markAllRead(this.id, function() {
+		this.get("api").markAllRead(this.get("id"), function() {
 		  this.clearUnreadCount();
-		  this.items.each(function(item) {item.isRead = true});
+		  this.get("items").forEach(function(item) {item.isRead = true;});
 		  success();
-		}.bind(this))
+		}.bind(this));
 	}
 });

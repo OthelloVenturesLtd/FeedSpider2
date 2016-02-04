@@ -59,7 +59,7 @@ enyo.kind({
 	},
 
 	activate: function() {
-		var username = Preferences.getInstapaperUsername();
+		var username = FeedSpider2.Preferences.getInstapaperUsername();
 		
 		if(username)
 		{
@@ -78,8 +78,8 @@ enyo.kind({
 			return;
 		}
 					
-		Preferences.setInstapaperUsername(this.$.usernameInput.value);
-		Preferences.setInstapaperPassword(this.$.passwordInput.value);
+		FeedSpider2.Preferences.setInstapaperUsername(this.$.usernameInput.value);
+		FeedSpider2.Preferences.setInstapaperPassword(this.$.passwordInput.value);
 				
 		this.doCredentialsSaved();
 	},

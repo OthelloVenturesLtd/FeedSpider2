@@ -9,6 +9,11 @@ enyo.kind({
 	
 	style: "padding-top: 10px; padding-left: 20px; padding-right: 20px;  padding-bottom: 20px; width: 80%; max-width: 300px; ",
 	
+	published: {
+		api: null,
+		credentials: null
+	},
+
 	events: {
 		onLoginSuccess: "",	
 	},
@@ -98,14 +103,17 @@ enyo.kind({
 	rendered: function() {
 		this.inherited(arguments);
 		this.activate();
-		if(((this.credentials.service !== "ttrss" || this.credentials.service !== "oc") && this.credentials.email && this.credentials.password) || ((this.credentials.service === "ttrss" || this.credentials.service === "oc") && this.credentials.email && this.credentials.password && this.credentials.server) || this.credentials.service === "feedly" || this.credentials.service === "aol" ) {
+		if(((this.get("credentials").get("service") !== "ttrss" || this.get("credentials").get("service") !== "oc") && this.get("credentials").get("email") && this.get("credentials").get("password")) || 
+			((this.get("credentials").get("service") === "ttrss" || this.get("credentials").get("service") === "oc") && this.get("credentials").get("email") && this.get("credentials").get("password") && this.get("credentials").get("server")) || 
+			this.get("credentials").get("service") === "feedly" || 
+			this.get("credentials").get("service") === "aol" ) {
 			this.tryLoginWithSavedCredentials();
 		}        
 	},
 
 	activate: function() {
 		// Get credentials for login
-		this.credentials = new Credentials();
+		this.set("credentials", new FeedSpider2.Credentials());
 	},
 	
 	setService: function() {
@@ -134,7 +142,7 @@ enyo.kind({
 	},
 	
 	checkCredentials: function() {
-		this.credentials.service = this.$.servicePicker.selected.value;
+		this.get("credentials").set("service", this.$.servicePicker.selected.value);
 		if (this.$.servicePicker.selected.value == "feedly" || this.$.servicePicker.selected.value == "aol")
 		{
 			this.tryLogin();
@@ -154,11 +162,11 @@ enyo.kind({
 			}
 			else
 			{
-				this.credentials.server = this.$.serverURLInput.value;
+				this.get("credentials").set("server", this.$.serverURLInput.value);
 			}
 			
-			this.credentials.email = this.$.usernameInput.value;
-			this.credentials.password = this.$.passwordInput.value;
+			this.get("credentials").set("email", this.$.usernameInput.value);
+			this.get("credentials").set("password", this.$.passwordInput.value);
 					
 			this.tryLogin();
 		}
@@ -172,7 +180,7 @@ enyo.kind({
 		
 		// Hide the window and put up the spinner
 		this.$.loginWindow.hide();
-		if (this.credentials.service == "feedly" || this.credentials.service == "aol")
+		if (this.get("credentials").get("service") == "feedly" || this.get("credentials").get("service") == "aol")
 		{
 			if(enyo.platform.firefoxOS)
 			{
@@ -190,8 +198,8 @@ enyo.kind({
 		}
 		
 		// Attempt login
-		this.api = this.generateAPI(this.credentials);
-    	this.api.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this), this);
+		this.set("api", this.generateAPI(this.get("credentials")));
+    	this.get("api").login(this.get("credentials"), this.loginSuccess.bind(this), this.loginFailure.bind(this), this);
 	},
 
 	tryLoginWithSavedCredentials: function() {
@@ -205,8 +213,8 @@ enyo.kind({
 		this.$.loginSpinner.show();
 		
 		// Attempt login
-    	this.api = this.generateAPI(this.credentials);
-    	this.api.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this), this);
+		this.set("api", this.generateAPI(this.get("credentials")));
+    	this.get("api").login(this.get("credentials"), this.loginSuccess.bind(this), this.loginFailure.bind(this), this);
 	},
 	
 	codegot: function(inSender, inEvent) {
@@ -217,19 +225,19 @@ enyo.kind({
 	
 	oasuccess: function(inSender, inEvent) {
 		//Set up the credentials object
-		this.credentials.email = false;
-		this.credentials.password = false;
-		this.credentials.id = inEvent.id;
-		this.credentials.refreshToken = inEvent.refresh_token;
-		this.credentials.accessToken = inEvent.access_token;
-		this.credentials.tokenType = inEvent.token_type;
-		this.credentials.plan = inEvent.plan;
+		this.get("credentials").set("email", false);
+		this.get("credentials").set("password", false);
+		this.get("credentials").set("id", inEvent.id);
+		this.get("credentials").set("refreshToken", inEvent.refresh_token);
+		this.get("credentials").set("accessToken", inEvent.access_token);
+		this.get("credentials").set("tokenType", inEvent.token_type);
+		this.get("credentials").set("plan", inEvent.plan);
 		
 		var expiryDate = new Date();
 		expiryDate.setSeconds(expiryDate.getSeconds() + inEvent.expires_in);
-		this.credentials.tokenExpiry = expiryDate.getTime();
+		this.get("credentials").set("tokenExpiry", expiryDate.getTime());
 		
-		this.api.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this), this);
+		this.get("api").login(this.get("credentials"), this.loginSuccess.bind(this), this.loginFailure.bind(this), this);
 	},
 	
 	oafailure: function(inSender, inEvent) {
@@ -277,7 +285,7 @@ enyo.kind({
 	
 	loginSuccess: function() {
 		//On success, bubble up a success event, and pass the primed API
-		this.credentials.save();
+		this.get("credentials").save();
 
 		//Reset the window for next time
 		this.$.oAuthBrowserWrapperFFOS.hide();
@@ -286,24 +294,24 @@ enyo.kind({
 		this.$.loginSpinner.hide();
 		this.$.loginWindow.show();
 		
-		this.doLoginSuccess(this.api);
+		this.doLoginSuccess(this.get("api"));
 	},
 	
 	loginFailure: function() {
 		//On failure, populate the fields
 		for (var i = 0; i < this.$.servicePicker.controls.length; i++) {
-        	if (this.$.servicePicker.controls[i].value === this.credentials.service) {
+        	if (this.$.servicePicker.controls[i].value === this.get("credentials").get("service")) {
             	this.$.servicePicker.setSelected(this.$.servicePicker.controls[i]);
         	}
     	}
 		
-		if (this.credentials.email)
+		if (this.get("credentials").get("email"))
 		{
-			this.$.usernameInput.setValue(this.credentials.email);
+			this.$.usernameInput.setValue(this.get("credentials").get("email"));
 		}
-		if (this.credentials.server)
+		if (this.get("credentials").get("server"))
 		{
-			this.$.serverURLInput.setValue(this.credentials.server);
+			this.$.serverURLInput.setValue(this.get("credentials").get("server"));
 		}
 		
 		//Next, hide the spinner and clear the window
@@ -326,7 +334,7 @@ enyo.kind({
 	{
 		var api;
 
-		switch(credentials.service)
+		switch(credentials.get("service"))
     	{
 		  	case "tor":
 				api = new FeedSpider2.TorAPI();

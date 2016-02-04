@@ -242,7 +242,7 @@ var AolApi = Class.create({
   getAllArticles: function(continuation, success, failure) {
     this._getArticles(
       "user/-/state/reading-list",
-      Preferences.hideReadArticles() ? "user/-/state/read" : null,
+      FeedSpider2.Preferences.hideReadArticles() ? "user/-/state/read" : null,
       continuation,
       success,
       failure
@@ -298,7 +298,7 @@ var AolApi = Class.create({
   getAllArticlesFor: function(id, continuation, success, failure) {
     this._getArticles(
       id,
-      Preferences.hideReadArticles() ? "user/-/state/read" : null,
+      FeedSpider2.Preferences.hideReadArticles() ? "user/-/state/read" : null,
       continuation,
       success,
       failure
@@ -310,7 +310,7 @@ var AolApi = Class.create({
     var parameters = {output: "json", n: 40, access_token: this._getAuthToken()}
 
     if(id != "user/-/state/starred" &&
-       Preferences.isOldestFirst()) {
+       FeedSpider2.Preferences.isOldestFirst()) {
       parameters.r = "o"
     }
 

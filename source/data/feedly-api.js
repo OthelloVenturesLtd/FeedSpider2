@@ -239,7 +239,7 @@ var FeedlyApi = Class.create({
   getAllArticles: function(continuation, success, failure) {
     this._getArticles(
       "user/" + this.credentials.id + "/category/global.all",
-      Preferences.hideReadArticles() ? true : false,
+      FeedSpider2.Preferences.hideReadArticles() ? true : false,
       continuation,
       success,
       failure
@@ -296,7 +296,7 @@ var FeedlyApi = Class.create({
   getAllArticlesFor: function(id, continuation, success, failure) {
     this._getArticles(
       id,
-      Preferences.hideReadArticles() ? true : false,
+      FeedSpider2.Preferences.hideReadArticles() ? true : false,
       continuation,
       success,
       failure
@@ -307,7 +307,7 @@ var FeedlyApi = Class.create({
   _getArticles: function(id, exclude, continuation, success, failure) {
     var parameters = {output: "json", count: 40}
 
-    if(!id.endsWith("/tag/global.saved") && Preferences.isOldestFirst()) {
+    if(!id.endsWith("/tag/global.saved") && FeedSpider2.Preferences.isOldestFirst()) {
       parameters.ranked = "oldest"
     }
 
@@ -319,7 +319,7 @@ var FeedlyApi = Class.create({
       parameters.unreadOnly = exclude
     }
 	
-	if (Preferences.isFeedlySortEngagement() && !id.endsWith("/tag/global.saved")){
+	if (FeedSpider2.Preferences.isFeedlySortEngagement() && !id.endsWith("/tag/global.saved")){
 		parameters.count = 20
 		
 		new Ajax.Request(FeedlyApi.BASE_URL + "mixes/" + encodeURIComponent(id) + "/contents", {

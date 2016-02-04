@@ -204,7 +204,7 @@ var InoApi = Class.create({
   getAllArticles: function(continuation, success, failure) {
     this._getArticles(
       "user/-/state/com.google/reading-list",
-      Preferences.hideReadArticles() ? "user/-/state/com.google/read" : null,
+      FeedSpider2.Preferences.hideReadArticles() ? "user/-/state/com.google/read" : null,
       continuation,
       success,
       failure
@@ -258,7 +258,7 @@ var InoApi = Class.create({
   getAllArticlesFor: function(id, continuation, success, failure) {
     this._getArticles(
       id,
-      Preferences.hideReadArticles() ? "user/-/state/com.google/read" : null,
+      FeedSpider2.Preferences.hideReadArticles() ? "user/-/state/com.google/read" : null,
       continuation,
       success,
       failure
@@ -271,7 +271,7 @@ var InoApi = Class.create({
 
     if(id != "user/-/state/com.google/starred" &&
        id != "user/-/state/com.google/broadcast" &&
-       Preferences.isOldestFirst()) {
+       FeedSpider2.Preferences.isOldestFirst()) {
       parameters.r = "o"
     }
 

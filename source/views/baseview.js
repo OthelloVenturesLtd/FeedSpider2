@@ -26,12 +26,12 @@ enyo.kind({
 	},
 	
 	toggleFeeds: function() {
-		Preferences.setHideReadFeeds(!Preferences.hideReadFeeds());
+		FeedSpider2.Preferences.setHideReadFeeds(!FeedSpider2.Preferences.hideReadFeeds());
 		this.activate();
 	},
 
 	toggleArticles: function() {
-		Preferences.setHideReadArticles(!Preferences.hideReadArticles());
+		FeedSpider2.Preferences.setHideReadArticles(!FeedSpider2.Preferences.hideReadArticles());
 		this.activate({feedChanged: true});
 	},
 

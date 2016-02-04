@@ -51,7 +51,7 @@ enyo.kind({
 	
   	create: function() {
     	this.inherited(arguments);
-    	this.credentials = new Credentials();
+    	this.credentials = new FeedSpider2.Credentials();
     	this.loaded = false;
     	this.reloading = false;
     	this.swiping = false;
@@ -70,7 +70,7 @@ enyo.kind({
 	},
 
 	activate: function(changes) {
-		if (Preferences.isManualFeedSort())
+		if (FeedSpider2.Preferences.isManualFeedSort())
 		{
 			this.$.MainList.setReorderable(true);
 		}
@@ -79,7 +79,7 @@ enyo.kind({
 			this.$.MainList.setReorderable(false);
 		}
 		
-		if (Preferences.hideReadFeeds()){
+		if (FeedSpider2.Preferences.hideReadFeeds()){
 			this.$.showHideFeedsMenuItem.setContent($L("Show Read Feeds"));
 		}
 		else
@@ -93,7 +93,7 @@ enyo.kind({
 	loginSuccess: function(inSender, inEvent) {
     	this.$.LoginDialog.hide();
     	this.api = inEvent;
-    	this.sources = new AllSources(this.api);
+    	this.sources = new FeedSpider2.AllSources({api: this.api});
     	this.parent.sources = this.sources;
     	this.loaded = false;
     	this.showAddSubscription = true;
@@ -195,7 +195,7 @@ enyo.kind({
 	completeSwipeItem: function() {
         this.$.MainList.completeSwipe();
         this.swiping = false;
-        if (Preferences.isManualFeedSort())
+        if (FeedSpider2.Preferences.isManualFeedSort())
 		{
 			this.$.MainList.setReorderable(true);
 		}
@@ -269,7 +269,7 @@ enyo.kind({
 			return true;
 		}
 		
-		if(inEvent.isFolder && !Preferences.combineFolders()) {
+		if(inEvent.isFolder && !FeedSpider2.Preferences.combineFolders()) {
 			this.doSwitchPanels({target: "folder", api: this.api, folder: inEvent, previousPage: this});
 		}
 		else {
@@ -286,7 +286,7 @@ enyo.kind({
 		
 		var i = inEvent.index;
 		var item = this.sources.subscriptionSources.items[i];
-		if(item.isFolder && !Preferences.combineFolders()) {
+		if(item.isFolder && !FeedSpider2.Preferences.combineFolders()) {
 			this.doSwitchPanels({target: "folder", api: this.api, folder: item, previousPage: this});
 		}
 		else {
