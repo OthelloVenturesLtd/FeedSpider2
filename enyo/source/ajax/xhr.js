@@ -197,7 +197,7 @@
 					// mozSystem allows you to do cross-origin requests on Firefox OS
 					// As seen in:
 					//   https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#Non-standard_properties
-					if (params.mozSystem) {
+					if (params.xhrFields.mozSystem) {
 						xhrOptions.mozSystem = true;
 						shouldCreateNonStandardXHR = true;
 					}
@@ -205,7 +205,7 @@
 					// mozAnon allows you to send a request without cookies or authentication headers
 					// As seen in:
 					//   https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#Non-standard_properties
-					if (params.mozAnon) {
+					if (params.xhrFields.mozAnon) {
 						xhrOptions.mozAnon = true;
 						shouldCreateNonStandardXHR = true;
 					}
