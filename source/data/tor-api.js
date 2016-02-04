@@ -116,7 +116,7 @@ enyo.kind({
         };
 
         var request = new enyo.Ajax({
-          url: this.get("baseURL") + "preference/stream/set",
+          url: this.get("baseURL") + "subscription/edit",
           method: "post",
           headers: this._requestHeaders(),
           xhrFields: {mozSystem: true},
