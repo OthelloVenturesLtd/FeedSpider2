@@ -204,11 +204,11 @@ enyo.kind({
 	},
 
 	filter: function() {
-		this.subscriptions.items.clear();
+		this.get("subscriptions").items = [];
 
-		this.folder.subscriptions.items.each(function(subscription) {
+		this.get("folder").get("subscriptions").get("items").forEach(function(subscription) {
 			if(subscription.unreadCount || !FeedSpider2.Preferences.hideReadFeeds()) {
-				this.subscriptions.items.push(subscription);
+				this.get("subscriptions").items.push(subscription);
 			}
 		}.bind(this));
 	},

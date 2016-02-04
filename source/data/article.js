@@ -42,11 +42,11 @@ enyo.kind({
 		{from: ".subscription.api", to: ".api"},
 		{from: ".data.id", to: ".id"},
 		{from: ".data.title", to: ".title", transform: function(v){
-			return data.title ? data.title : "No Title";
+			return v ? v : "No Title";
 		}},
 		{from: ".data.author", to: ".author"},
 		{from: ".data", to: ".summary", transform: function(v){
-			var content = data.content || data.summary || {content: ""};
+			var content = v.content || v.summary || {content: ""};
 			return this.cleanUp(content.content);
 		}},
 		{from: ".data.isReadStateLocked", to: ".readLocked"},
@@ -149,7 +149,7 @@ enyo.kind({
 
 	setArticleLink: function(alternates) {
 		(alternates || []).forEach(function(alternate) {
-			if(alternate.type.include("html")) {
+			if(alternate.type.indexOf("html") !== -1) {
 				this.url = alternate.href;
 			}
 		}.bind(this));

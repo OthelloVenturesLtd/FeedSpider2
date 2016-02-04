@@ -46,14 +46,14 @@ enyo.kind({
   	refreshList: function(list, items) {
   	  	var listLength = list.controls.length;
   	  	for (var i = 0; i < listLength; i++) { 
-    		list.controls[0].last = false;
+    		list.controls[0].set("last", false);
     		list.controls[0].setContainer(null);
     	}
   	    
   	    for (var j = 0; j < items.length; j++) { 
     		if(j == items.length - 1)
     		{
-    			items[j].last = true;
+    			items[j].set("last", true);
     		}
 
     		items[j].setContainer(list);

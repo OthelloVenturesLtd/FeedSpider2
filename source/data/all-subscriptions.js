@@ -100,7 +100,31 @@ enyo.kind({
 			});
 
 			self.sortBy(function(itemA, itemB) {
-				return ((itemA.get("isFolder") ? "__FOLDER_" : "__SUBSCRIPTION_") + itemA.get("title").toUpperCase()) - ((itemB.get("isFolder") ? "__FOLDER_" : "__SUBSCRIPTION_") + itemB.get("title").toUpperCase());
+				if (itemA.get("isFolder") && !itemB.get("isFolder"))
+				{
+					return -1;
+				}
+				else if (!itemA.get("isFolder") && itemB.get("isFolder"))
+				{
+					return 1;
+				}
+				else //if (itemA.get("isFolder") && itemB.get("isFolder"))
+				{
+					if (itemB.get("title").toUpperCase() < itemA.get("title").toUpperCase())
+					{
+						return 1;
+					}
+					else if (itemA.get("title").toUpperCase() < itemB.get("title").toUpperCase())
+					{
+						return -1;
+					}
+					else
+					{
+						return 0;
+					}
+				}
+
+				// return ((itemA.get("isFolder") ? "__FOLDER_" : "__SUBSCRIPTION_") + itemA.get("title").toUpperCase()) - ((itemB.get("isFolder") ? "__FOLDER_" : "__SUBSCRIPTION_") + itemB.get("title").toUpperCase());
 			});
 
 			self.sorted = "alphabetic";
@@ -137,8 +161,8 @@ enyo.kind({
 	},
 
 	sortBy: function(f) {
-		var sortedItems = this.get("items").sortBy(f);
-		this.get("items").clear();
+		var sortedItems = this.get("items").sort(f);
+		this.set("items", []);
 		this.get("items").push.apply(this.get("items"), sortedItems);
 	},
 

@@ -60,7 +60,7 @@ enyo.kind({
 
   sortAndFilter: function(success, failure) {
     var self = this;
-    self.get("subscriptionSources").items.clear();
+    self.get("subscriptionSources").items = [];
 
     self.get("subscriptions").sort(
       function() {

@@ -5,7 +5,7 @@ enyo.kind({
     published: {
     	icon: "assets/folder-grey.png",
     	divideBy: $L("Subscriptions"),
-    	stickySubscriptions: [this],
+    	stickySubscriptions: [],
     	subscriptions: null,
     	showOrigin: true,
     	canMarkAllRead: true,
@@ -15,6 +15,7 @@ enyo.kind({
     create: function() {
     	this.inherited(arguments);
     	this.set("subscriptions", new FeedSpider2.SubscriptionContainer({api: this.get("api"), subscriptionOrderingStream: this.get("id")}));
+    	this.set("stickySubscriptions", [this]);
     },
 
 	rendered: function() {
@@ -84,7 +85,18 @@ enyo.kind({
 
 	sortAlphabetically: function() {
 		this.sortBy(function(subscriptionA, subscriptionB) {
-			return subscriptionA.get("title").toUpperCase() - subscriptionB.get("title").toUpperCase();
+			if (subscriptionB.get("title").toUpperCase() < subscriptionA.get("title").toUpperCase())
+			{
+				return 1;
+			}
+			else if (subscriptionA.get("title").toUpperCase() < subscriptionB.get("title").toUpperCase())
+			{
+				return -1;
+			}
+			else
+			{
+				return 0;
+			}
 		});
 	},
 
@@ -100,7 +112,7 @@ enyo.kind({
 
 	sortBy: function(f) {
 		var sortedItems = this.get("subscriptions").get("items").sort(f);
-		this.get("subscriptions").get("items").clear();
+		this.get("subscriptions").set("items", []);
 		this.get("subscriptions").get("items").push.apply(this.get("subscriptions").get("items"), sortedItems);
 	}
 });

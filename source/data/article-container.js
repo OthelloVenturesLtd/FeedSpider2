@@ -52,7 +52,7 @@ enyo.kind({
 	},
 	
 	reset: function() {
-		this.get("items").clear();
+		this.set("items", []);
 		this.set("continuation", false);
 	},
 
@@ -68,7 +68,7 @@ enyo.kind({
 			if (articles && articles.length > 0)
 			{
 				articles.forEach(function(articleData) {
-					this.get("items").push(new FeedSpider2.Article({data: articleData, subscription: this}));
+					this.get("items").push(new FeedSpider2.Article({api: this.get("api"), data: articleData, subscription: this}));
 				}.bind(this));
 			}
 

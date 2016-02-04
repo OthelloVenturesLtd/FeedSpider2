@@ -305,7 +305,7 @@ enyo.kind({
 		this.$.sharingMenu.destroyClientControls();
 		
 		sharingMenu = Sharing.getPopupFor(this.article);
-		sharingMenu.each(function(item){
+		sharingMenu.forEach(function(item){
 			item.setContainer(self.$.sharingMenu);
 		});
 		this.$.sharingMenu.render();

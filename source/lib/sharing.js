@@ -129,28 +129,31 @@ var Sharing = {
       }
     }
 
-    Sharing.items.each(function(item) {
-      if(FeedSpider2.Preferences.isSharingOptionEnabled(item.id, item.defaultEnabled)) {
-        item = Object.clone(item)
+    if (Sharing.items)
+    {
+      Sharing.items.forEach(function(item) {
+        if(FeedSpider2.Preferences.isSharingOptionEnabled(item.id, item.defaultEnabled)) {
+          item = Object.clone(item)
 
-        if(item.command) {
-          if(article.api.supportsShared() == true && item.command == "share-with-google") {
-			if(item.command == "share-with-google" && article.isShared) {
-				item.command = "unshare-with-google"
-				item.label = "Unshare"
-			}
-          	
-          	addItem(item)
+          if(item.command) {
+            if(article.api.supportsShared() == true && item.command == "share-with-google") {
+  			if(item.command == "share-with-google" && article.isShared) {
+  				item.command = "unshare-with-google"
+  				item.label = "Unshare"
+  			}
+            	
+            	addItem(item)
+            }
+            else if (item.command != "share-with-google"){
+            	addItem(item)
+            }
           }
-          else if (item.command != "share-with-google"){
-          	addItem(item)
+          else {
+            addGroup(item)
           }
         }
-        else {
-          addGroup(item)
-        }
-      }
-    })
+      });
+    }
 
     if(parentGroup && parentGroup.items > 0) {
       popupItems.push(parentGroup)
