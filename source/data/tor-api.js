@@ -23,7 +23,8 @@ enyo.kind({
       method: "post",
       handleAs: "text",
       postBody: {client: "FeedSpider2", accountType: "HOSTED_OR_GOOGLE", service: "reader", Email: credentials.get("email"), Passwd: credentials.get("password")},
-      xhrFields: {mozSystem: true}
+      xhrFields: {mozSystem: true},
+      cacheBust: false
     });
 
     request.error(failure);
