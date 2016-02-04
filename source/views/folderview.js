@@ -104,9 +104,9 @@ enyo.kind({
     		//this point, we can guarantee the presence of at least one source.
     		if (enyo.platform.firefoxOS || enyo.platform.firefox)
     		{
-    			var width = this.$.stickySources.controls[0].controls[0].controls[1].domStyles.width;
+    			var width = this.$.stickySources.controls[0].controls[0].controls[1].getBounds().width;
     			var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
-    			this.$.sourceName.setStyle("width:" + width + "; font-weight: bold");
+    			this.$.sourceName.setStyle("width:" + width + "px; font-weight: bold");
     			this.$.sourceUnreadCount.setStyle("width:" + remainder + "px; text-align: right; font-weight: bold");
     		}
     		else
@@ -146,9 +146,9 @@ enyo.kind({
     		//this point, we can guarantee the presence of at least one source.
     		if (enyo.platform.firefoxOS || enyo.platform.firefox)
     		{
-    			var width = this.$.stickySources.controls[0].controls[0].controls[1].domStyles.width;
+    			var width = this.$.stickySources.controls[0].controls[0].controls[1].getBounds().width;
     			var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
-    			this.$.reorderName.setStyle("width:" + width + "; font-weight: bold");
+    			this.$.reorderName.setStyle("width:" + width + "px; font-weight: bold");
     			this.$.reorderUnreadCount.setStyle("width:" + remainder + "px; text-align: right; font-weight: bold");
     		}
     		else
