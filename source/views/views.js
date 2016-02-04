@@ -26,8 +26,8 @@ enyo.kind({
 			theme: "notification.Firefox",
 			stay: false,
 			duration: 1
-		})
-		return true
+		});
+		return true;
 	}	
 });
 
