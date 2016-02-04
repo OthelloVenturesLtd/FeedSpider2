@@ -38,7 +38,8 @@ enyo.kind({
     var request = new enyo.Ajax({
       url: this.get("baseURL") + "tag/list",
       headers: this._requestHeaders(),
-      xhrFields: {mozSystem: true}
+      xhrFields: {mozSystem: true},
+      cacheBust: false
     });
 
     request.error(failure);
@@ -54,7 +55,8 @@ enyo.kind({
     var request = new enyo.Ajax({
       url: this.get("baseURL") + "preference/stream/list",
       headers: this._requestHeaders(),
-      xhrFields: {mozSystem: true}
+      xhrFields: {mozSystem: true},
+      cacheBust: false
     });
 
     request.error(failure);
@@ -95,7 +97,8 @@ enyo.kind({
         method: "post",
         headers: this._requestHeaders(),
         xhrFields: {mozSystem: true},
-        postBody: parameters
+        postBody: parameters,
+        cacheBust: false,
       });
 
       request.go();
@@ -120,7 +123,8 @@ enyo.kind({
           method: "post",
           headers: this._requestHeaders(),
           xhrFields: {mozSystem: true},
-          postBody: parameters
+          postBody: parameters,
+          cacheBust: false
         });
 
         request.response(function(inRequest, inResponse){
@@ -145,7 +149,8 @@ enyo.kind({
         method: "post",
         headers: this._requestHeaders(),
         xhrFields: {mozSystem: true},
-        postBody: parameters
+        postBody: parameters,
+        cacheBust: false
       });
 
       request.response(function(inRequest, inResponse){
@@ -160,7 +165,8 @@ enyo.kind({
     var request = new enyo.Ajax({
       url: this.get("baseURL") + "feed-finder",
       headers: this._requestHeaders(),
-      xhrFields: {mozSystem: true}
+      xhrFields: {mozSystem: true},
+      cacheBust: false
     });
 
     request.error(failure);
@@ -184,7 +190,8 @@ enyo.kind({
         method: "post",
         headers: this._requestHeaders(),
         xhrFields: {mozSystem: true},
-        postBody: parameters
+        postBody: parameters,
+        cacheBust: false
       });
 
       request.error(failure);
@@ -207,7 +214,8 @@ enyo.kind({
     var request = new enyo.Ajax({
       url: this.get("baseURL") + "subscription/list",
       headers: this._requestHeaders(),
-      xhrFields: {mozSystem: true}
+      xhrFields: {mozSystem: true},
+      cacheBust: false
     });
 
     request.error(failure);
@@ -240,7 +248,8 @@ enyo.kind({
     var request = new enyo.Ajax({
       url: this.get("baseURL") + "unread-count",
       headers: this._requestHeaders(),
-      xhrFields: {mozSystem: true}
+      xhrFields: {mozSystem: true},
+      cacheBust: false
     });
 
     request.error(failure);
@@ -342,7 +351,8 @@ enyo.kind({
     var request = new enyo.Ajax({
       url: this.get("baseURL2") + escape(id),
       headers: this._requestHeaders(),
-      xhrFields: {mozSystem: true}
+      xhrFields: {mozSystem: true},
+      cacheBust: false
     });
 
     request.error(failure);
@@ -384,7 +394,8 @@ enyo.kind({
           method: "post",
           headers: this._requestHeaders(),
           xhrFields: {mozSystem: true},
-          postBody: parameters
+          postBody: parameters,
+          cacheBust: false
         });
 
         request.error(failure);
@@ -409,7 +420,8 @@ enyo.kind({
     var request = new enyo.Ajax({
       url: this.get("baseURL") + "search/items/ids",
       headers: this._requestHeaders(),
-      xhrFields: {mozSystem: true}
+      xhrFields: {mozSystem: true},
+      cacheBust: false
     });
 
     request.error(failure);
@@ -436,7 +448,8 @@ enyo.kind({
             method: "post",
             headers: self._requestHeaders(),
             xhrFields: {mozSystem: true},
-            postBody: parameters
+            postBody: parameters,
+            cacheBust: false
           });
 
           request.error(failure);
@@ -543,7 +556,8 @@ enyo.kind({
           method: "post",
           headers: this._requestHeaders(),
           xhrFields: {mozSystem: true},
-          postBody: parameters
+          postBody: parameters,
+          cacheBust: false
         });
 
         request.error(failure);
@@ -567,7 +581,8 @@ enyo.kind({
       var request = new enyo.Ajax({
         url: this.get("baseURL") + "token",
         headers: this._requestHeaders(),
-        xhrFields: {mozSystem: true}
+        xhrFields: {mozSystem: true},
+        cacheBust: false
       });
 
       request.error(failure);

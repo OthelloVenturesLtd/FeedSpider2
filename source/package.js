@@ -14,6 +14,8 @@ enyo.depends(
 	"style",
 	// Libraries
 	"lib",
+	// APIs
+	"api",
 	// Model and data definitions
 	"data",
 	// View kind definitions
