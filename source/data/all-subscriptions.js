@@ -108,7 +108,7 @@ enyo.kind({
 				{
 					return 1;
 				}
-				else //if (itemA.get("isFolder") && itemB.get("isFolder"))
+				else
 				{
 					if (itemB.get("title").toUpperCase() < itemA.get("title").toUpperCase())
 					{
@@ -123,8 +123,6 @@ enyo.kind({
 						return 0;
 					}
 				}
-
-				// return ((itemA.get("isFolder") ? "__FOLDER_" : "__SUBSCRIPTION_") + itemA.get("title").toUpperCase()) - ((itemB.get("isFolder") ? "__FOLDER_" : "__SUBSCRIPTION_") + itemB.get("title").toUpperCase());
 			});
 
 			self.sorted = "alphabetic";
