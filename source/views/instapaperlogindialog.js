@@ -39,7 +39,6 @@ enyo.kind({
 	
   	create: function() {
     	this.inherited(arguments);
-    	console.log("PING!!!")
 		this.$.dialogTitle.setContent($L("Instapaper Login"));
 		this.$.errorMessage.setContent($L("Login Failed"));
 		this.$.loginButton.setContent($L("Login"));
@@ -49,11 +48,8 @@ enyo.kind({
 	},
 	
 	show: function() {
-		console.log("2")
 		this.activate();
-		console.log("3")
 		this.inherited(arguments);
-		console.log("4")  
 	},
 	
 	hide: function() {

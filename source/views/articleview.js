@@ -281,10 +281,13 @@ enyo.kind({
 	
 	handleShowInstapaperDialog: function(inSender, inEvent)
 	{
-		if (this.$.instapaperDialog) this.$.instapaperDialog.hide();
-		if (this.$.instapaperDialog) this.$.instapaperDialog.destroy();		
-		this.createComponent({name: "instapaperDialog", kind: FeedSpider2.InstapaperLoginDialog, onCredentialsSaved: "sendToInstapaper", onDismiss: "closeDialog"}, {owner:this});
-		this.$.instapaperDialog.show();
+		//Set this on a small timeout to make sure that the menu disappears before showing the dialog.
+		setTimeout(enyo.bind(this, function(){
+			if (this.$.instapaperDialog) this.$.instapaperDialog.hide();
+			if (this.$.instapaperDialog) this.$.instapaperDialog.destroy();		
+			this.createComponent({name: "instapaperDialog", kind: FeedSpider2.InstapaperLoginDialog, onCredentialsSaved: "sendToInstapaper", onDismiss: "closeDialog"}, {owner:this});
+			this.$.instapaperDialog.show();
+		}), 100);
 		return true;
 	},
 
