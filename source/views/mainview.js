@@ -241,9 +241,9 @@ enyo.kind({
 					
 			   		self.$.stickySources.render();
 					self.$.MainList.refresh();
-					self.resize();
 					self.$.smallSpinner.hide();
 					self.$.refreshButton.show();
+					self.resize();
 				},
 
 				this.showError.bind(this)

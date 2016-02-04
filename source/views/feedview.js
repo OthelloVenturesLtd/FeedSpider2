@@ -147,7 +147,6 @@ enyo.kind({
 			this.$.MainList.setCount(this.subscription.items.length);
 		}
 
-		this.resize();
 		if(scrollToTop) {
 			this.$.MainList.scrollToStart();
 		}
@@ -157,6 +156,7 @@ enyo.kind({
 		this.$.errorIcon.hide();
 		this.showMarkAllRead();
 		this.showMessageIfEmpty();
+		this.resize();
 	},
 
 	showMessageIfEmpty: function() {

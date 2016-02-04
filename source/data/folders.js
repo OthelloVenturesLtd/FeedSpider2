@@ -12,17 +12,12 @@ enyo.kind({
 
   addSubscription: function(id, label, subscription) {
     var folder = this.get("items").find(function(f) {return f.id == id;});
-    //console.log("FOLDER", folder)
 
     if(!folder) {
-      //console.log("NEW FOLDER!", id, this.get("items"));
       folder = new FeedSpider2.Folder({api: this.get("api"), title: label, id: id});
       this.get("items").push(folder);
     }
-
-    //console.log(folder.title, folder.get("subscriptions").get("items"))
-    var subscriptions = folder.get("subscriptions");
-    subscriptions.get("items").push(subscription);
+    folder.get("subscriptions").get("items").push(subscription);
   },
 
   addSortIds: function(success, failure) {

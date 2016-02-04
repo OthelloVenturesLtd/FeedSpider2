@@ -14,7 +14,7 @@ enyo.kind({
 
     create: function() {
     	this.inherited(arguments);
-    	this.set("subscriptions", new FeedSpider2.SubscriptionContainer({api: this.get("api"), subscriptionOrderingStream: this.get("id")}));
+    	this.set("subscriptions", new FeedSpider2.SubscriptionContainer({api: this.get("api"), items: [], subscriptionOrderingStream: this.get("id")}));
     	this.set("stickySubscriptions", [this]);
     },
 
