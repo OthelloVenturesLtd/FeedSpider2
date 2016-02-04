@@ -150,6 +150,8 @@ enyo.kind({
       request.response(function(inRequest, inResponse){
         feedspider.handleApiStateChanged({state: "FolderDeleted", id: folder.id});
       });
+
+      request.go();
     }.bind(this));
   },
 
@@ -194,6 +196,8 @@ enyo.kind({
             failure();
           }
       });
+
+      request.go();
     }.bind(this));
   },
 
@@ -385,6 +389,8 @@ enyo.kind({
         request.error(failure);
 
         request.response(success);
+
+        request.go();
       }.bind(this), failure);
   },
 
@@ -437,6 +443,8 @@ enyo.kind({
           request.response(function(inRequest, inResponse) {
               success(inResponse.items, inResponse.id, inResponse.continuation);
           });
+
+          request.go();
         }
       );
     }
@@ -539,8 +547,9 @@ enyo.kind({
 
         request.error(failure);
 
-        request.response(success);        
+        request.response(success);
 
+        request.go();
       }.bind(this), failure);
   },
 
