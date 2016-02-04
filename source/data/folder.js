@@ -5,6 +5,7 @@ enyo.kind({
     published: {
     	icon: "assets/folder-grey.png",
     	divideBy: $L("Subscriptions"),
+    	feedWatched: false,
     	stickySubscriptions: [],
     	subscriptions: null,
     	showOrigin: true,

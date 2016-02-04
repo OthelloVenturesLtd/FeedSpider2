@@ -7,8 +7,9 @@ enyo.kind({
 		categories: null,
 		data: null,
 		divideBy: $L("Subscriptions"),
-		icon: "assets/rss-grey.png",	
-		sortId: null		
+		feedWatched: false,
+		icon: "assets/rss-grey.png",
+		sortId: null	
 	},
 
 	bindings: [
