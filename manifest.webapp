@@ -6,7 +6,7 @@
     "version": "2.0.8",
     "name": "FeedSpider",
     "pkgName": "com.othelloventures.feedspider2",
-    "description": "An RSS Reader client that is lets you access your feeds from Feedly, The Old Reader, InoReader, BazQux Reader, Tiny Tiny RSS, AOL Reader, and OwnCloud News.",
+    "description": "An RSS Reader client that is lets you access your feeds from Feedly, The Old Reader, InoReader, BazQux Reader, Tiny Tiny RSS, and OwnCloud News.",
     "developer": {
         "name": "Brent Hunter",
         "url": "http://www.feedspider.net"
@@ -30,7 +30,7 @@
      		"description": "Allows loading remote content"
     	},
     	"browser": {
-    		"description": "Enables authentication to Feedly and AOL Reader via OAuth."
+    		"description": "Enables authentication to Feedly via OAuth."
     	},
     	"alarms": {
       		"description": "Required to schedule alarms"
