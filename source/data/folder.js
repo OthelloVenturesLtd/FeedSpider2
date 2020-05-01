@@ -26,7 +26,6 @@ enyo.kind({
 
 	addSubscription: function(subscription)
 	{
-		console.log("Entering Add Subscription");
 		var subscriptionItems = this.get("subscriptions").get("items");
 		//Check to make sure that the subscription doesn't already exist
 		var subscriptionIndex;
@@ -36,16 +35,14 @@ enyo.kind({
 			if (value.id === subscription.id) {subscriptionIndex = index;}
 			return value.id === subscription.id;
 		});
-console.log("Got Subscription Index", subscriptionIndex);
+
 		if (subscriptionIndex >= 0)
 		{
-			console.log("Replacing Existing subscription", subscription);
 			//Assume that a fresh subscription contains updated data that should superscede what we already have.
 			subscriptionItems[subscriptionIndex] = subscription;
 		}
 		else
 		{
-			console.log("Pushing New Subscription", subscription);
 			//Otherwise, add it to the end. The sort function will take care of sorting things.
 			subscriptionItems.push(subscription);
 		}
