@@ -333,29 +333,29 @@ enyo.kind({
 		var api;
 
 		switch(credentials.get("service"))
-    	{
-		  	case "tor":
+		{
+			case "tor":
 				api = new FeedSpider2.TorAPI();
 				break;
-		  	case "ino":
-		  		api = new FeedSpider2.InoAPI();
+			case "ino":
+				api = new FeedSpider2.InoAPI();
 				break;
 			case "bq":
-		  		api = new FeedSpider2.BQAPI();
+				api = new FeedSpider2.BQAPI();
 				break;
 			case "ttrss":
-		  		api = new FeedSpider2.TTRSSAPI();
+				api = new FeedSpider2.TTRSSAPI();
 				break;
 			case "feedly":
-		  		api = new FeedSpider2.FeedlyAPI();
+				api = new FeedSpider2.FeedlyAPI();
 				break;
 			case "oc":
-		  		api = new FeedSpider2.OCAPI();
+				api = new FeedSpider2.OCAPI();
 				break;
 			default:
 				api = new FeedSpider2.API();  		
-    	}
+		}
 
-    	return api;
+		return api;
 	}
 });
