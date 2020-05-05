@@ -47,7 +47,7 @@ enyo.kind({
 		self.get("api").getUnreadCounts(
 			function(counts) {
 				counts.forEach(function(count) {
-					if(count.id.toString().startsWith("feed") || count.id > 0){       	
+					if(count.id.toString().indexOf("feed") === 0 || count.id > 0){       	
 						self.incrementUnreadCountBy(count.count);
 
 						self.get("items").forEach(function(item) {
