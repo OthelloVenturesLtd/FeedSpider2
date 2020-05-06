@@ -145,7 +145,7 @@ enyo.kind({
 
 					self.get("items").forEach(function(item) {
 						item.set("sortNumber", rootSortOrder.getSortNumberFor(item.get("sortId")));
-						if(item.get("isFolder")) item.sortManually(sortOrders[item.get("id").gsub(/user\/\d+\//, "user/-/")]);
+						if(item.get("isFolder")) item.sortManually(sortOrders[item.get("id").replace(/user\/\d+\//g, "user/-/")]);
 					});
 
 					self.sortBy(function(itemA, itemB) {

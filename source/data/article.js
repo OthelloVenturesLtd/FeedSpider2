@@ -118,19 +118,19 @@ enyo.kind({
 
 	setStates: function(categories) {
 		categories.forEach(function(category) {
-			if(category.endsWith("/state/com.google/read")) {
+			if(category.indexOf("/state/com.google/read") === (category.length - "/state/com.google/read".length)) {
 				this.set("isRead", true);
 			}
 
-			if(category.endsWith("/state/com.google/kept-unread")) {
+			if(category.indexOf("/state/com.google/kept-unread") === (category.length - "/state/com.google/kept-unread".length)) {
 				this.set("keepUnread", true);
 			}
 
-			if(category.endsWith("/state/com.google/starred")) {
+			if(category.indexOf("/state/com.google/starred") === (category.length - "/state/com.google/starred".length)) {
 				this.set("isStarred", true);
 			}
 
-			if(category.endsWith("/state/com.google/broadcast")) {
+			if(category.indexOf("/state/com.google/broadcast") === (category.length - "/state/com.google/broadcast".length)) {
 				this.set("isShared", true);
 			}
 		}.bind(this));

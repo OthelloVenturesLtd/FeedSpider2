@@ -67,15 +67,19 @@ enyo.kind({
 			var sortOrder = {};
 
 			if(prefs && prefs.streamprefs) {
-				$H(prefs.streamprefs).each(function(pair) {
-					pair.key = pair.key.gsub(/user\/\d+\//, "user/-/");
+				var streamprefsKeys = Object.keys(prefs.streamprefs);
+				for (var i = 0; i < streamprefsKeys.length; i++)
+				{
+					var key = streamprefsKeys[i].replace(/user\/\d+\//g, "user/-/");
+					var valueArray = prefs.streamprefs[streamprefsKeys[i]];
 
-					$A(pair.value).each(function(pref) {
-						if("subscription-ordering" == pref.id) {
-							sortOrder[pair.key] = new FeedSpider2.SortOrder(pref.value);
+					for (var j = 0; j < valueArray.length; j++)
+					{
+						if("subscription-ordering" == valueArray[j].id) {
+							sortOrder[key] = new FeedSpider2.SortOrder(valueArray[j].value);
 						}
-					});
-				});
+					}
+				}
 			}
 
 			success(sortOrder);
