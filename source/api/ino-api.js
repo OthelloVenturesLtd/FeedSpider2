@@ -39,7 +39,6 @@ enyo.kind({
 			url: this.get("baseURL")+ "tag/list",
 			method: "get",
 			xhrFields: {mozSystem: true},
-			parameters: {output: "json"},
 			headers: this._requestHeaders(),
 			cacheBust: false
 		});
@@ -56,7 +55,6 @@ enyo.kind({
 			url: this.get("baseURL")+ "preference/stream/list",
 			method: "get",
 			xhrFields: {mozSystem: true},
-			parameters: {output: "json"},
 			headers: this._requestHeaders(),
 			cacheBust: false
 		});
@@ -217,7 +215,6 @@ enyo.kind({
 		var request = new enyo.Ajax({
 			url: this.get("baseURL")+ "subscription/list", 
 			method: "get",
-			parameters: {output: "json"},
 			xhrFields: {mozSystem: true},
 			headers: this._requestHeaders(),
 			cacheBust: false
@@ -247,7 +244,6 @@ enyo.kind({
 		var request = new enyo.Ajax({
 			url: this.get("baseURL")+ "unread-count", 
 			method: "get",
-			parameters: {output: "json"},
 			xhrFields: {mozSystem: true},
 			headers: this._requestHeaders(),
 			cacheBust: false
@@ -351,7 +347,6 @@ enyo.kind({
 			url: this.get("baseURL")+ "stream/contents/" + escape(id),
 			method: "get",
 			xhrFields: {mozSystem: true},
-			parameters: parameters,
 			headers: this._requestHeaders(),
 			cacheBust: false
 		});
@@ -360,7 +355,7 @@ enyo.kind({
 		request.response(function(inRequest, inResponse) {
 			success(inResponse.items, inResponse.id, inResponse.continuation);
 		}, this);
-		request.go({output: "json"});
+		request.go(parameters);
 	},
 
 	markAllRead: function(id, success, failure) {
@@ -404,14 +399,13 @@ enyo.kind({
 			url: this.get("baseURL")+ "search/items/ids",
 			method: "get",
 			xhrFields: {mozSystem: true},
-			parameters: parameters,
 			headers: this._requestHeaders(),
 			cacheBust: false
 		});
 
 		request.error(failure);
 		request.response(this.searchItemsFound.bind(this, success, failure));
-		request.go({output: "json"});
+		request.go(parameters);
 	},
 
 	searchItemsFound: function(success, failure, response) {
