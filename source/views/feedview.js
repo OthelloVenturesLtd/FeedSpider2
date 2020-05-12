@@ -20,14 +20,14 @@ enyo.kind({
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
 			{kind: "onyx.MenuDecorator", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
-			    {kind: "onyx.Menu", floating: true, components: [
-        			{name: "showHideArticlesMenuItem", onSelect: "toggleArticles"},
-        			{classes: "onyx-menu-divider"},
-        			{name: "preferencesMenuItem", onSelect: "openPreferences"},
-        			{name: "helpMenuItem", onSelect: "openHelp"},
-        			{classes: "onyx-menu-divider"},
-        			{name: "logoutMenuItem", onSelect: "handleLogout"},
-    			]}
+				{kind: "onyx.Menu", floating: true, components: [
+					{name: "showHideArticlesMenuItem", onSelect: "toggleArticles"},
+					{classes: "onyx-menu-divider"},
+					{name: "preferencesMenuItem", onSelect: "openPreferences"},
+					{name: "helpMenuItem", onSelect: "openHelp"},
+					{classes: "onyx-menu-divider"},
+					{name: "logoutMenuItem", onSelect: "handleLogout"},
+				]}
 			]},
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
 			{name: "title", tag: "span", style:"font-weight: bold; text-align: center", fit: true, ontap: "scrollToTop"},
@@ -69,17 +69,17 @@ enyo.kind({
 		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
 	],
 	
-  	create: function() {
-    	this.inherited(arguments);
-    	this.loaded = false;
-    	this.reloading = false;
-    	this.swiping = false;
-    	this.loadingArticles = false;
-    	this.previousDate = "";
-    	this.$.preferencesMenuItem.setContent($L("Preferences"));
-    	this.$.helpMenuItem.setContent($L("Help"));
-    	this.$.logoutMenuItem.setContent($L("Logout"));
-    	this.$.noArticles.setContent($L("No articles were found"));
+	create: function() {
+		this.inherited(arguments);
+		this.loaded = false;
+		this.reloading = false;
+		this.swiping = false;
+		this.loadingArticles = false;
+		this.previousDate = "";
+		this.$.preferencesMenuItem.setContent($L("Preferences"));
+		this.$.helpMenuItem.setContent($L("Help"));
+		this.$.logoutMenuItem.setContent($L("Logout"));
+		this.$.noArticles.setContent($L("No articles were found"));
 	},
 
 	activate: function(changes_or_scroll) {
@@ -216,38 +216,38 @@ enyo.kind({
 		this.$.articleOrigin.setContent(item.origin);
 				
 		if (!item.isRead)
-    	{
-    		this.$.articleName.setStyle("font-weight: bold");	
-    	}
-    	else
-    	{
-    		this.$.articleName.setStyle("");
-    	}
-    	
-    	if (item.isStarred)
-    	{
-    		this.$.starredIcon.show();
-    	}
-    	else
-    	{
-    		this.$.starredIcon.hide();
-    	}
+		{
+			this.$.articleName.setStyle("font-weight: bold");	
+		}
+		else
+		{
+			this.$.articleName.setStyle("");
+		}
+		
+		if (item.isStarred)
+		{
+			this.$.starredIcon.show();
+		}
+		else
+		{
+			this.$.starredIcon.hide();
+		}
 		
 		if (item.subscription.showOrigin)
-    	{
-    		if (!item.isRead)
-    		{
-    			this.$.articleOrigin.setStyle("font-weight: bold");
-    		}
-    		else
-    		{
-    			this.$.articleOrigin.setStyle("");
-    		}
-    	}
-    	else
-    	{
-    		this.$.articleOrigin.setStyle("display:none;");
-    	}
+		{
+			if (!item.isRead)
+			{
+				this.$.articleOrigin.setStyle("font-weight: bold");
+			}
+			else
+			{
+				this.$.articleOrigin.setStyle("");
+			}
+		}
+		else
+		{
+			this.$.articleOrigin.setStyle("display:none;");
+		}
 		
 		if (item.sortDate == this.previousDate)
 		{
@@ -282,7 +282,7 @@ enyo.kind({
 	},
 
 	setupSwipeItem: function(inSender, inEvent) {
-        var i = inEvent.index;
+		var i = inEvent.index;
 		var item = this.subscription.items[i];
 
 		if(i == this.subscription.items.length)
@@ -293,40 +293,40 @@ enyo.kind({
 
 		this.swiping = true;
         
-        if (inEvent.xDirection == 1)
-        {
-        	var remainder = window.innerWidth - 50;
-        	this.$.swipeSpacer.setStyle("width: " + remainder + "px");
-        	
-        	if (item.isRead) 
-        	{
-        		this.$.articleReadIcon.setStyle("height: 100%; width: 30px; margin-right: 10px; background: url(assets/swipe-read.png) center center no-repeat;");
-        	}
-        	else 
-        	{
-        		this.$.articleReadIcon.setStyle("height: 100%; width: 30px; margin-right: 10px; background: url(assets/swipe-read-on.png) center center no-repeat;");
-        	}
-        	
-        	this.$.articleStarredIcon.hide();
-        	this.$.articleReadIcon.show();
-        	item.toggleRead();
-        }
-        if (inEvent.xDirection == -1)
-        {
-           	if (item.isStarred) 
-        	{
-        		this.$.articleStarredIcon.setStyle("height: 100%; width: 30px; margin-left: 10px; background: url(assets/swipe-starred.png) center center no-repeat;");
-        	}
-        	else 
-        	{
-        		this.$.articleStarredIcon.setStyle("height: 100%; width: 30px; margin-left: 10px; background: url(assets/swipe-starred-on.png) center center no-repeat;");
-        	}
-        	
-        	this.$.articleReadIcon.hide();
-        	this.$.articleStarredIcon.show();
-        	item.toggleStarred();   
-        } 
-    },
+		if (inEvent.xDirection == 1)
+		{
+			var remainder = window.innerWidth - 50;
+			this.$.swipeSpacer.setStyle("width: " + remainder + "px");
+			
+			if (item.isRead) 
+			{
+				this.$.articleReadIcon.setStyle("height: 100%; width: 30px; margin-right: 10px; background: url(assets/swipe-read.png) center center no-repeat;");
+			}
+			else 
+			{
+				this.$.articleReadIcon.setStyle("height: 100%; width: 30px; margin-right: 10px; background: url(assets/swipe-read-on.png) center center no-repeat;");
+			}
+			
+			this.$.articleStarredIcon.hide();
+			this.$.articleReadIcon.show();
+			item.toggleRead();
+		}
+		if (inEvent.xDirection == -1)
+		{
+			if (item.isStarred) 
+			{
+				this.$.articleStarredIcon.setStyle("height: 100%; width: 30px; margin-left: 10px; background: url(assets/swipe-starred.png) center center no-repeat;");
+			}
+			else 
+			{
+				this.$.articleStarredIcon.setStyle("height: 100%; width: 30px; margin-left: 10px; background: url(assets/swipe-starred-on.png) center center no-repeat;");
+			}
+			
+			this.$.articleReadIcon.hide();
+			this.$.articleStarredIcon.show();
+			item.toggleStarred();   
+		} 
+	},
 	
 	articleTapped: function(inSender, inEvent) {
 		if (this.swiping || inEvent.index == this.subscription.items.length)
@@ -365,7 +365,7 @@ enyo.kind({
 				this.doMassMarkAsRead({id: this.subscription.id, count: count});
 
 				if(FeedSpider2.Preferences.goBackAfterMarkAsRead()) {
-	 				this.handleGoBack();
+					this.handleGoBack();
 				}
 			}.bind(this),
 
