@@ -1,10 +1,26 @@
 enyo.kind({
 	name: "FeedSpider2.Article",
 	kind: "enyo.Control",
+	index: 0,
 	
-	published: { 
+	published: {
+  		api: null,
+  		author: "",
   		continuation: "",
-  		last: false
+  		data: null,
+  		displayDate: "",
+  		id: null,
+  		isRead: false,
+  		isShared: false,
+  		isStarred: false,
+  		last: false,
+  		origin: "",
+  		readLocked: null,
+  		sortDate: "",
+  		subscription: null,
+  		subscriptionId: null,
+  		summary: "",
+  		title: ""
 	},
 	
 	events: {
@@ -21,52 +37,51 @@ enyo.kind({
 			{name: "borderContainer", style: "padding-top: 12px; width: 100%"}
 		]}
 	],
-	
-	constructor: function(data, subscription) {
-		this.inherited(arguments);		
-		this.api = subscription.api
-		this.id = data.id
-		this.subscription = subscription
-		this.subscriptionId = data.origin ? data.origin.streamId : subscription.id
-		this.title = data.title || "No Title"
-		this.author = data.author
-		this.origin = this.api.titleFor(this.subscriptionId)
-		var content = data.content || data.summary || {content: ""}
-		this.summary = this.cleanUp(content.content)
-		this.readLocked = data.isReadStateLocked
-		this.isRead = false
-		this.isShared = false
-		this.isStarred = false
-		this.setStates(data.categories)
-		this.setDates(parseInt(data.crawlTimeMsec, 10))
-		this.setArticleLink(data.alternate)
-	},
+
+	bindings: [
+		{from: ".subscription.api", to: ".api"},
+		{from: ".data.id", to: ".id"},
+		{from: ".data.title", to: ".title", transform: function(v){
+			return v ? v : "No Title";
+		}},
+		{from: ".data.author", to: ".author"},
+		{from: ".data", to: ".summary", transform: function(v){
+			var content = v.content || v.summary || {content: ""};
+			return this.cleanUp(content.content);
+		}},
+		{from: ".data.isReadStateLocked", to: ".readLocked"},
+		{from: ".title", to: ".$.articleName.content"},
+		{from: ".origin", to: ".$.articleOrigin.content"},
+	],
 	
 	create: function() {
 		this.inherited(arguments);
-		
-		this.$.articleName.setContent(this.title);
-		this.$.articleOrigin.setContent(this.origin);
+
+		this.set("subscriptionId", this.get("data").origin ? this.get("data").origin.streamId : this.get("subscription").id);
+		this.set("origin", this.get("api").titleFor(this.get("subscriptionId")));
+		this.setStates(this.get("data").categories);
+		this.setDates(parseInt(this.get("data").crawlTimeMsec, 10));
+		this.setArticleLink(this.get("data").alternate);
 	},
 	
 	rendered: function() {
-	    if (!this.isRead)
+	    if (!this.get("isRead"))
     	{
     		this.$.articleName.addStyles("font-weight: bold");
     		this.$.articleOrigin.addStyles("font-weight: bold");		
     	}
     	
-    	if (this.isStarred)
+    	if (this.get("isStarred"))
     	{
-    		this.$.starredIcon.show()
+    		this.$.starredIcon.show();
     	}
 		
-		if (this.subscription.showOrigin)
+		if (this.get("subscription").showOrigin)
     	{
-    		this.$.articleOrigin.show()
+    		this.$.articleOrigin.show();
     	}
 		
-		if (this.last == false)
+		if (!this.get("last"))
     	{
     		this.$.borderContainer.addStyles("border-bottom-width: 1px; border-bottom-style: groove");
     	}
@@ -74,202 +89,201 @@ enyo.kind({
 	},
 	
 	itemTapped: function() {
-		this.doArticleTap(this)
+		this.doArticleTap(this);
 	},
 	
 	cleanUp: function(content) {
-		var cleaned = this.replaceYouTubeLinks(content)
-		cleaned = cleaned.replace(/<script.*?<\/script.*?>/g , "")
-		cleaned = cleaned.replace(/<iframe.*?<\/iframe.*?>/g , "")
-		cleaned = cleaned.replace(/<object.*?<\/object.*?>/g , "")
-		return cleaned
+		var cleaned = this.replaceYouTubeLinks(content);
+		cleaned = cleaned.replace(/<script.*?<\/script.*?>/g , "");
+		cleaned = cleaned.replace(/<iframe.*?<\/iframe.*?>/g , "");
+		cleaned = cleaned.replace(/<object.*?<\/object.*?>/g , "");
+		return cleaned;
 	},
 
 	replaceYouTubeLinks: function(content) {
-		var embed = /<(embed|iframe).*src="(.*?youtube.com.*?)".*<\/(embed|iframe)>/
-		var urlMatch = embed.exec(content)
+		var embed = /<(embed|iframe).*src="(.*?youtube.com.*?)".*<\/(embed|iframe)>/;
+		var urlMatch = embed.exec(content);
 
 		if(urlMatch) {
-			var idMatch = /\/(embed|v)\/([_\-a-zA-Z0-9]+)/.exec(urlMatch[2])
+			var idMatch = /\/(embed|v)\/([_\-a-zA-Z0-9]+)/.exec(urlMatch[2]);
 
 			if(idMatch) {
-				var id = idMatch[2]
-				content = content.replace(embed, '<div class="youtube"><img class="youtube-thumbnail" src="http://img.youtube.com/vi/' + id + '/0.jpg"><div class="youtube-play" data-url="http://youtube.com/watch?v=' + id + '">&nbsp;</div></div>')
+				var id = idMatch[2];
+				content = content.replace(embed, '<div class="youtube"><img class="youtube-thumbnail" src="http://img.youtube.com/vi/' + id + '/0.jpg"><div class="youtube-play" data-url="http://youtube.com/watch?v=' + id + '">&nbsp;</div></div>');
 			}
 		}
 
-		return content
+		return content;
 	},
 
 	setStates: function(categories) {
-		categories.each(function(category) {
-			if(category.endsWith("/state/com.google/read")) {
-				this.isRead = true
+		categories.forEach(function(category) {
+			if(category.indexOf("/state/com.google/read") === (category.length - "/state/com.google/read".length)) {
+				this.set("isRead", true);
 			}
 
-			if(category.endsWith("/state/com.google/kept-unread")) {
-				this.keepUnread = true
+			if(category.indexOf("/state/com.google/kept-unread") === (category.length - "/state/com.google/kept-unread".length)) {
+				this.set("keepUnread", true);
 			}
 
-			if(category.endsWith("/state/com.google/starred")) {
-				this.isStarred = true
+			if(category.indexOf("/state/com.google/starred") === (category.length - "/state/com.google/starred".length)) {
+				this.set("isStarred", true);
 			}
 
-			if(category.endsWith("/state/com.google/broadcast")) {
-				this.isShared = true
-			}    		
-		}.bind(this))
+			if(category.indexOf("/state/com.google/broadcast") === (category.length - "/state/com.google/broadcast".length)) {
+				this.set("isShared", true);
+			}
+		}.bind(this));
 	},
 
 	setDates: function(milliseconds) {
-		this.updatedAt = new Date(milliseconds)
-		var month = this.leftPad(this.updatedAt.getMonth() + 1)
-		var day = this.leftPad(this.updatedAt.getDate())
-		var year = "" + this.updatedAt.getFullYear()
+		var updatedAt = new Date(milliseconds);
+		var month = this.leftPad(updatedAt.getMonth() + 1);
+		var day = this.leftPad(updatedAt.getDate());
+		var year = "" + updatedAt.getFullYear();
 		
-		var options = {year: "numeric", month: "short", day: "numeric"}
-		this.displayDate = this.updatedAt.toLocaleDateString("en-US", options)
-		this.sortDate = year + month + day
+		var options = {year: "numeric", month: "short", day: "numeric"};
+		this.set("displayDate", updatedAt.toLocaleDateString("en-US", options));
+		this.set("sortDate", year + month + day);
 	},
 
 	setArticleLink: function(alternates) {
-		(alternates || []).each(function(alternate) {
-			if(alternate.type.include("html")) {
-				this.url = alternate.href
-				return
+		(alternates || []).forEach(function(alternate) {
+			if(alternate.type.indexOf("html") !== -1) {
+				this.url = alternate.href;
 			}
-		}.bind(this))
+		}.bind(this));
 	},
 
 	leftPad: function(number) {
-		var s = "0000" + number
-		return s.substr(s.length - 2)
+		var s = "0000" + number;
+		return s.substr(s.length - 2);
 	},
 
 	toggleRead: function() {
-		if(this.isRead) {
-			this.turnReadOff(function() {}, function() {}, true)
+		if(this.get("isRead")) {
+			this.turnReadOff(function() {}, function() {}, true);
 		}
 		else {
-			this.turnReadOn(function() {}, function() {})
+			this.turnReadOn(function() {}, function() {});
 		}
 	},
 
 	toggleStarred: function() {
-		if(this.isStarred) {
-			this.turnStarOff(function() {}, function() {})
+		if(this.get("isStarred")) {
+			this.turnStarOff(function() {}, function() {});
 		}
 		else {
-			this.turnStarOn(function() {}, function() {})
+			this.turnStarOn(function() {}, function() {});
 		}
 	},
 
 	turnReadOn: function(success, failure) {
-		this._setState("Read", "isRead", true, success, failure)
+		this._setState("Read", "isRead", true, success, failure);
 	},
 
 	turnReadOff: function(success, failure, sticky) {
-		this.keepUnread = sticky
-		this._setState("NotRead", "isRead", false, success, failure, sticky)
+		this.set("keepUnread", sticky);
+		this._setState("NotRead", "isRead", false, success, failure, sticky);
 	},
 
 	turnShareOn: function(success, failure) {
-		if(this.api.supportsShared())
+		if(this.get("api").supportsShared())
 		{
-			this._setState("Shared", "isShared", true, success, failure)
+			this._setState("Shared", "isShared", true, success, failure);
 		}
 		else
 		{
-			Feeder.notify($L("Sharing Not Available"))
+			Feeder.notify($L("Sharing Not Available"));
 		}
 	},
 
 	turnShareOff: function(success, failure) {
-		if(this.api.supportsShared())
+		if(this.get("api").supportsShared())
 		{
-			this._setState("NotShared", "isShared", false, success, failure)
+			this._setState("NotShared", "isShared", false, success, failure);
 		}
 		else
 		{
-			Feeder.notify($L("Sharing Not Available"))
+			Feeder.notify($L("Sharing Not Available"));
 		}
 	},
 
 	turnStarOn: function(success, failure) {
-		if(this.api.supportsStarred())
+		if(this.get("api").supportsStarred())
 		{
-			this._setState("Starred", "isStarred", true, success, failure)
+			this._setState("Starred", "isStarred", true, success, failure);
 		}
 		else
 		{
-			Feeder.notify($L("Starring Not Available"))
+			Feeder.notify($L("Starring Not Available"));
 		}
 	},
 
 	turnStarOff: function(success, failure) {
-		if(this.api.supportsStarred())
+		if(this.get("api").supportsStarred())
 		{
-			this._setState("NotStarred", "isStarred", false, success, failure)
+			this._setState("NotStarred", "isStarred", false, success, failure);
 		}
 		else
 		{
-			Feeder.notify($L("Starring Not Available"))
+			Feeder.notify($L("Starring Not Available"));
 		}
 	},
 
 	_setState: function(apiState, localProperty, localValue, success, failure, sticky) {
-		Log.debug("setting article state - " + apiState)
+		Log.debug("setting article state - " + apiState);
 
-		if(apiState.match(/Read/) && this.readLocked) {
-			Feeder.notify($L("Read state has been locked by the service"))
-			success(false)
+		if(apiState.match(/Read/) && this.get("readLocked")) {
+			Feeder.notify($L("Read state has been locked by the service"));
+			success(false);
 		}
 		else {
-			this[localProperty] = localValue
+			this.set(localProperty, localValue);
 
 			var onComplete = function() {
 				feedspider.handleApiStateChanged({state: apiState, subscriptionId: this.subscriptionId});
-				success(true)
-			}.bind(this)
+				success(true);
+			}.bind(this);
 
-			this.api["setArticle" + apiState](this.id, this.subscriptionId, onComplete, failure, sticky)
+			this.get("api")["setArticle" + apiState](this.get("id"), this.subscriptionId, onComplete, failure, sticky);
 		}
 	},
 
 	getPrevious: function(callback) {
-		var previousIndex = this.index - 1
-		var previous = null
+		var previousIndex = this.index - 1;
+		var previous = null;
 
 		if(this.index) {
-			previous = this.subscription.items[previousIndex]
-			previous.index = previousIndex
+			previous = this.get("subscription").get("items")[previousIndex];
+			previous.index = previousIndex;
 		}
 
-		callback(previous)
+		callback(previous);
 	},
 
 	getNext: function(callback, loadingMore) {
-		var nextIndex = this.index + 1
-		var next = null
+		var nextIndex = this.index + 1;
+		var next = null;
 
-		if(nextIndex < this.subscription.items.length) {
-			next = this.subscription.items[nextIndex]
-			next.index = nextIndex
+		if(nextIndex < this.get("subscription").get("items").length) {
+			next = this.get("subscription").get("items")[nextIndex];
+			next.index = nextIndex;
 		}
 
-		if(nextIndex == this.subscription.items.length && this.subscription.continuation != undefined && this.subscription.continuation != false) {
-			loadingMore()
+		if(nextIndex == this.get("subscription").get("items").length && this.get("subscription").get("continuation") !== undefined && this.get("subscription").get("continuation") !== false) {
+			loadingMore();
 
 			var foundMore = function() {
-				next = this.subscription.items[nextIndex]
-				next.index = nextIndex
-				callback(next)
-			}.bind(this)
+				next = this.subscription.get("items")[nextIndex];
+				next.index = nextIndex;
+				callback(next);
+			}.bind(this);
 
-			this.subscription.findArticles(foundMore, callback)
+			this.get("subscription").findArticles(foundMore, callback);
 		}
 		else {
-			callback(next)
+			callback(next);
 		}
 	}
-})
+});

@@ -12,8 +12,8 @@ enyo.kind({
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
 			{name: "viewTitle", tag: "span", style:"font-weight: bold; text-align: center", fit: true},
 			{name: "blankIcon", kind: "onyx.Icon"}, //This is here to keep the header centered.
-			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", style: "display: none"},
-			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
+			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", showing: false},
+			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", showing: false},
 		]},
 		{kind: "enyo.FittableRows", style: "width: 100%; padding-bottom: 1px; border-bottom: black 1px solid", components: [
 			{kind: "onyx.InputDecorator", style: "background-color: white; width: 100%", components: [
@@ -44,11 +44,11 @@ enyo.kind({
     },
 	
 	activate: function() {
-		this.$.smallSpinner.hide()
-		this.$.errorIcon.hide()
-		this.$.blankIcon.show()
-		this.$.query.setValue("")
-		this.$.list.count = 0
+		this.$.smallSpinner.hide();
+		this.$.errorIcon.hide();
+		this.$.blankIcon.show();
+		this.$.query.setValue("");
+		this.$.list.count = 0;
 	},
 
 	handleKeyUp: function(inSender, inEvent) {
@@ -65,53 +65,53 @@ enyo.kind({
     },
 	
 	handleGoBack: function() {
-		this.doGoBack({lastPage: this.previousPage})
+		this.doGoBack({lastPage: this.previousPage});
 	},
 	
 	search: function() {
-		this.$.blankIcon.hide()
-		this.$.errorIcon.hide()
-		this.$.smallSpinner.show()
-		this.$.list.count = 0
-		this.api.addSubscription(this.$.query.value, this.subscriptionAdded.bind(this), this.subscriptionAddFailure.bind(this))
+		this.$.blankIcon.hide();
+		this.$.errorIcon.hide();
+		this.$.smallSpinner.show();
+		this.$.list.count = 0;
+		this.api.addSubscription(this.$.query.value, this.subscriptionAdded.bind(this), this.subscriptionAddFailure.bind(this));
 	},
 
 	add: function() {
-		this.$.blankIcon.hide()
-		this.$.errorIcon.hide()
-		this.$.smallSpinner.show()
+		this.$.blankIcon.hide();
+		this.$.errorIcon.hide();
+		this.$.smallSpinner.show();
 		var item = this.subscriptions.items[this.selectedIndex];
-		this.api.addSubscription(item.url, this.subscriptionAdded.bind(this), this.subscriptionAddFailure.bind(this))
+		this.api.addSubscription(item.url, this.subscriptionAdded.bind(this), this.subscriptionAddFailure.bind(this));
 	},
 
 	subscriptionAdded: function() {
-		this.$.smallSpinner.hide()
-		this.$.errorIcon.hide()
-		this.$.blankIcon.show()
-		Feeder.notify($L("Subscription added"))
+		this.$.smallSpinner.hide();
+		this.$.errorIcon.hide();
+		this.$.blankIcon.show();
+		Feeder.notify($L("Subscription added"));
 		this.handleGoBack();
 	},
 
 	subscriptionAddFailure: function() {
-		this.api.searchSubscriptions(this.$.query.value, this.subscriptionsFound.bind(this), this.subscriptionSearchFailure.bind(this))
+		this.api.searchSubscriptions(this.$.query.value, this.subscriptionsFound.bind(this), this.subscriptionSearchFailure.bind(this));
 	},
 
 	subscriptionsFound: function(subscriptions) {
 		this.subscriptions = {items:[]};
 
-		this.$.smallSpinner.hide()
-		this.$.errorIcon.hide()
-		this.$.blankIcon.show()
+		this.$.smallSpinner.hide();
+		this.$.errorIcon.hide();
+		this.$.blankIcon.show();
 				
-		subscriptions.each(function(subscription) {
-			this.subscriptions.items.push(this.buildSubscription(subscription))
-		}.bind(this))
+		subscriptions.forEach(function(subscription) {
+			this.subscriptions.items.push(this.buildSubscription(subscription));
+		}.bind(this));
 
 		if(this.subscriptions.items.length === 0) {
-			this.$.smallSpinner.hide()
-			this.$.errorIcon.show()
-			this.$.blankIcon.hide()			
-			Feeder.notify($L("No subscriptions found"))
+			this.$.smallSpinner.hide();
+			this.$.errorIcon.show();
+			this.$.blankIcon.hide();
+			Feeder.notify($L("No subscriptions found"));
 		}
 		else {
 			this.$.list.setCount(this.subscriptions.items.length);
@@ -120,10 +120,10 @@ enyo.kind({
 	},
 
 	subscriptionSearchFailure: function() {
-		this.$.smallSpinner.hide()
-		this.$.blankIcon.hide()
-		this.$.errorIcon.show()
-		Feeder.notify($L("Unable to add subscription"))
+		this.$.smallSpinner.hide();
+		this.$.blankIcon.hide();
+		this.$.errorIcon.show();
+		Feeder.notify($L("Unable to add subscription"));
 	},
 
 	setupItem: function(inSender, inEvent) {
@@ -134,11 +134,11 @@ enyo.kind({
 		this.$.item.addRemoveClass("list-add-selected", inSender.isSelected(i));
 		if (inSender.isSelected(i))
 		{
-			this.$.addButton.show()
+			this.$.addButton.show();
 		}
 		else
 		{
-			this.$.addButton.hide()
+			this.$.addButton.hide();
 		}
 		return true;
 	},
@@ -148,17 +148,17 @@ enyo.kind({
 	},
 
 	buildSubscription: function(json) {
-		var subscription = {}
-		subscription.title = json.title
+		var subscription = {};
+		subscription.title = json.title;
 
 		if(json.content && json.content.content) {
-			subscription.content = json.content.content
+			subscription.content = json.content.content;
 		}
 
 		if(json.feed && json.feed.length && json.feed[0].href) {
-			subscription.url = json.feed[0].href
+			subscription.url = json.feed[0].href;
 		}
 
-		return subscription
+		return subscription;
 	}
-})
+});

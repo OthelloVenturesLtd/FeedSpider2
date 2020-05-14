@@ -7,35 +7,48 @@ enyo.kind({
   		unreadCountDisplay: ""
 	},
 	
+	bindings: [
+		{from: ".unreadCount", to: "unreadCountDisplay", transform: function(v){
+			if (v > 9999)
+			{
+				return "10000+";
+			}
+			else if (v <= 0)
+			{
+				return "";
+			}
+			else
+			{
+				return v;
+			}
+		}}
+	],
+
 	constructor: function() {
 		this.inherited(arguments);
-		this.unreadCount = 0;
 	},
 	
 	clearUnreadCount: function() {
-		this.setUnreadCount(0)
+		this.setUnreadCount(0);
 	},
 
 	setUnreadCount: function(count) {
-		this.unreadCount = count
+		this.set("unreadCount", count);
 
-		if(this.unreadCount < 0) {
-	  		this.unreadCount = 0
+		if(this.get("unreadCount") < 0) {
+	  		this.set("unreadCount", 0);
 		}
-
-		this.unreadCountDisplay = count > 9999 ? "10000+" : count
-		this.unreadCountDisplay = count <= 0 ? "" : this.unreadCountDisplay
 	},
 
 	incrementUnreadCountBy: function(count) {
-		this.setUnreadCount((this.getUnreadCount() || 0) + count)
+		this.setUnreadCount((this.getUnreadCount() || 0) + count);
 	},
 
 	decrementUnreadCountBy: function(count) {
-		this.incrementUnreadCountBy(-count)
+		this.incrementUnreadCountBy(-count);
 	},
 
 	getUnreadCount: function() {
-		return this.unreadCount
+		return this.get("unreadCount");
 	}
 });

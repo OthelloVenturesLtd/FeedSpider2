@@ -9,7 +9,8 @@ enyo.kind({
 	},
 	
 	handlers: {
-        onSelect: "sendTo"
+        onSelect: "sendTo",
+        onShowInstapaperDialog: "handleShowInstapaperDialog"
     },
 	
 	components:[
@@ -45,12 +46,12 @@ enyo.kind({
 			]},
 			{style: "width: 18%; text-align:center; margin-left: 0px; margin-right: 0px;", components: [
 				{name: "nextButton", kind: "onyx.IconButton", ontap: "nextArticle", src: "assets/next-article.png"},
-				{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
+				{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", showing: false},
 			]},
 		]},
 		{name: "installAppDialog", kind: FeedSpider2.ChoiceDialog, onAction: "openAppStore", onDismiss: "closeDialog"},
 		{name: "configureDialog", kind: FeedSpider2.ConfigureSharingDialog, onDismiss: "refreshSharingMenu"},
-		{name: "instapaperDialog", kind: FeedSpider2.InstapaperLoginDialog, onCredentialsSaved: "sendToInstapaper", onDismiss: "closeDialog"},
+		{kind: "FeedSpider2.Sharing"},
 		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
 	],
 	
@@ -61,14 +62,14 @@ enyo.kind({
 	catchLinkTap: function(inSender, inEvent)
 	{
 		//TODO: deal with for other OSes
-		if (inEvent.target.href != undefined) {
-			inEvent.target.target = "_blank"
+		if (inEvent.target.href !== undefined) {
+			inEvent.target.target = "_blank";
 		}
 		
 		//Catch images. These will be wrapped in an <a> tag.
-		if (inEvent.target.parentElement.href != undefined)
+		if (inEvent.target.parentElement.href !== undefined)
 		{
-			inEvent.target.parentElement.target = "_blank"
+			inEvent.target.parentElement.target = "_blank";
 		}
 	},
 	
@@ -166,7 +167,7 @@ enyo.kind({
 				if(success) {
 					self.setIcons();
 				}
-			}
+			};
 
 			this.article["turn" + state + (target.hasClass("on") ? "Off" : "On")](onComplete, function() {}, sticky);
 		}
@@ -225,13 +226,13 @@ enyo.kind({
 				});
 				request.go({id: "com.palm.app.browser", params: { target: this.article.url } }); //any params would go in here
 			}
-			if (!enyo.platform.webos && window.PalmSystem)
+			else if (!enyo.platform.webos && window.PalmSystem)
 			{
-				var request = new enyo.ServiceRequest({
+				var luneOSRequest = new enyo.ServiceRequest({
 					service: "palm://com.palm.applicationManager",
 					method: "open"
 				});
-				request.go({id: "org.webosports.app.browser", params: { target: this.article.url } }); //any params would go in here
+				luneOSRequest.go({id: "org.webosports.app.browser", params: { target: this.article.url } }); //any params would go in here
 			}
 			else if (enyo.platform.firefoxOS)
 			{
@@ -245,7 +246,7 @@ enyo.kind({
 			}
 			else if (enyo.platform.ie || enyo.platform.safari || enyo.platform.chrome || enyo.platform.firefox)
 			{
-				var ref = window.open(this.article.url, "_blank");
+				var browserRef = window.open(this.article.url, "_blank");
 			}
 			else
 			{
@@ -259,11 +260,11 @@ enyo.kind({
 				
 		if (inEvent.originator.command == "configure")
 		{
-			this.$.configureDialog.show(Sharing.webOSItems);
+			this.$.configureDialog.show(this.$.sharing.webOSItems);
 		}
 		else
 		{
-			Sharing.handleSelection(this.article, inEvent.originator.command, this);
+			this.$.sharing.handleSelection(this.article, inEvent.originator.command, this);
 		}
 		
 		//Refresh Sharing Menu (Unless running webOS)
@@ -275,15 +276,27 @@ enyo.kind({
 	
 	sendToInstapaper: function(inSender, inEvent) {
 		this.closeDialog();
-		Sharing.handleSelection(this.article, "send-to-instapaper", this);
+		this.$.sharing.handleSelection(this.article, "send-to-instapaper", this);
 	},
 	
+	handleShowInstapaperDialog: function(inSender, inEvent)
+	{
+		//Set this on a small timeout to make sure that the menu disappears before showing the dialog.
+		setTimeout(enyo.bind(this, function(){
+			if (this.$.instapaperDialog) this.$.instapaperDialog.hide();
+			if (this.$.instapaperDialog) this.$.instapaperDialog.destroy();		
+			this.createComponent({name: "instapaperDialog", kind: FeedSpider2.InstapaperLoginDialog, onCredentialsSaved: "sendToInstapaper", onDismiss: "closeDialog"}, {owner:this});
+			this.$.instapaperDialog.show();
+		}), 100);
+		return true;
+	},
+
 	openAppStore: function(inSender, inEvent)
 	{
 		var request = new enyo.ServiceRequest({
 			service: "palm://com.palm.applicationManager",
 			method: "open"
-		})
+		});
 	
 		request.go({target: "http://developer.palm.com/appredirect/?packageid=" + inEvent.data});
 		this.closeDialog();
@@ -291,10 +304,10 @@ enyo.kind({
 	
 	closeDialog: function(inSender, inEvent)
 	{
-		this.$.instapaperDialog.hide();
+		if (this.$.instapaperDialog) this.$.instapaperDialog.hide();
 		this.$.installAppDialog.hide();
 		this.$.configureDialog.hide();
-		this.resized();
+		this.resize();
 	},
 
 	refreshSharingMenu: function(inSender, inEvent)
@@ -302,12 +315,12 @@ enyo.kind({
 		var self = this;
 		this.closeDialog();
 		
-		this.$.sharingMenu.destroyClientControls()
+		this.$.sharingMenu.destroyClientControls();
 		
-		sharingMenu = Sharing.getPopupFor(this.article);
-		sharingMenu.each(function(item){
+		sharingMenu = this.$.sharing.getPopupFor(this.article);
+		sharingMenu.forEach(function(item){
 			item.setContainer(self.$.sharingMenu);
-		})
+		});
 		this.$.sharingMenu.render();
 	},
 

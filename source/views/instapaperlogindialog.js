@@ -7,7 +7,7 @@ enyo.kind({
 	centered: true,
 	scrim: true,
 	
-	style: "padding-top: 10px; padding-left: 20px; padding-right: 20px;  padding-bottom: 20px; width: 80%; max-width: 300px; ",
+	style: "padding-top: 10px; padding-left: 20px; padding-right: 20px; padding-bottom: 20px; width: 80%; max-width: 300px;",
 	
 	events: {
 		onCredentialsSaved: "",
@@ -29,7 +29,7 @@ enyo.kind({
 				]},
 				{tag: "div", style: "margin: 10px"},
 			]},
-			{name: "errorMessage", tag: "div", style: "color: red; font-size 14px; font-weight: bold; margin-bottom: 10px; display:none"},
+			{name: "errorMessage", tag: "div", style: "color: red; font-size 14px; font-weight: bold; margin-bottom: 10px;", showing: false},
 			{components: [ 
 				{name: "loginButton", kind: "onyx.Button", classes: "onyx-affirmative", style: "width: 38%", ontap: "checkCredentials"},
 				{name: "cancelButton", kind: "onyx.Button", style: "margin-left: 4%; width: 38%", ontap: "cancelLogin"}
@@ -49,7 +49,7 @@ enyo.kind({
 	
 	show: function() {
 		this.activate();
-		this.inherited(arguments);      
+		this.inherited(arguments);
 	},
 	
 	hide: function() {
@@ -59,7 +59,7 @@ enyo.kind({
 	},
 
 	activate: function() {
-		var username = Preferences.getInstapaperUsername()
+		var username = FeedSpider2.Preferences.getInstapaperUsername();
 		
 		if(username)
 		{
@@ -73,13 +73,13 @@ enyo.kind({
 	},
 	
 	checkCredentials: function() {
-		if (this.$.usernameInput.value == "" || this.$.passwordInput.value == "") 
+		if (this.$.usernameInput.value === "" || this.$.passwordInput.value === "")
 		{
 			return;
 		}
 					
-		Preferences.setInstapaperUsername(this.$.usernameInput.value);
-		Preferences.setInstapaperPassword(this.$.passwordInput.value);
+		FeedSpider2.Preferences.setInstapaperUsername(this.$.usernameInput.value);
+		FeedSpider2.Preferences.setInstapaperPassword(this.$.passwordInput.value);
 				
 		this.doCredentialsSaved();
 	},

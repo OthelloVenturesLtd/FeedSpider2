@@ -2,56 +2,55 @@ enyo.kind({
 	name: "FeedSpider2.SubscriptionContainer",
 	kind: "FeedSpider2.Countable",
 	
-	constructor: function(api) {
-		this.inherited(arguments);
-		this.items = [];
-    	this.api = api;
+	published: {
+		api: null,
+		items: [],
+		subscriptionOrderingStream: null
 	},
 	
 	remove: function(subscription) {
-		var self = this
-
-		self.items.each(function(item, index) {
-			if(item.id == subscription.id) {
-				self.items.splice(index, 1)
-				self.api.unsubscribe(subscription)
-				throw $break
-			}
-		})
+		for (var i = 0; i < this.get("items").length; i++)
+		{
+			if(this.get("items")[i].get("id") == subscription.get("id")) {
+				this.get("items").splice(i, 1);
+				this.get("api").unsubscribe(subscription);
+				break;
+			}			
+		}
 	},
 
 	move: function(subscription, beforeSubscription) {
-		if (this.api.supportsManualSort())
+		if (this.get("api").supportsManualSort())
 		{
-			var self = this
-
-			self.items.each(function(item, index) {
-				if(item.id == subscription.id) {
-					Log.debug("removing " + subscription.id + " at index " + index)
-					self.items.splice(index, 1)
-					throw $break
+			for (var i = 0; i < this.get("items").length; i++)
+			{
+				if(this.get("items")[i].get("id") == subscription.get("id")) {
+					Log.debug("removing " + subscription.get("id") + " at index " + i);
+					this.get("items").splice(i, 1);
+					break;
 				}
-			})
+			}
 			
 			if(beforeSubscription) {
-				self.items.each(function(item, index) {
-					if(item.id == beforeSubscription.id) {
-						Log.debug("inserting " + subscription.id + " at index " + index)
-						self.items.splice(index, 0, subscription)
-						throw $break
+				for (var j = 0; j < this.get("items").length; j++)
+				{
+					if(this.get("items")[j].get("id") == beforeSubscription.get("id")) {
+						Log.debug("inserting " + subscription.get("id") + " at index " + j);
+						this.get("items").splice(j, 0, subscription);
+						break;
 					}
-				})
+				}
 			}
 			else {
-				self.items.push(subscription)
+				this.get("items").push(subscription);
 			}
-			var sortOrder = self.items.map(function(subscription) {return subscription.sortId}).join("")
-			this.api.setSortOrder(sortOrder, this.subscriptionOrderingStream)
+			var sortOrder = this.get("items").map(function(subscription) {return subscription.sortId;}).join("");
+			this.get("api").setSortOrder(sortOrder, this.get("subscriptionOrderingStream"));
 		}
 		else
 		{
-			Feeder.notify($L("Manual Sort Not Available"))
-			Preferences.setManualFeedSort(false)
+			Feeder.notify($L("Manual Sort Not Available"));
+			FeedSpider2.Preferences.setManualFeedSort(false);
 		}
 	}
 });

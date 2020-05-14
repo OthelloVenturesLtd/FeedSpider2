@@ -25,8 +25,8 @@ enyo.kind({
 			{kind: "onyx.IconButton", src: "assets/go-back.png", ontap: "handleGoBack"},
 			{name: "title", tag: "span", style:"font-weight: bold; text-align: center", fit: true, ontap: "scrollToTop"},
 			{kind: "onyx.Icon"}, //This is here to keep the header centered.
-			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", style: "display: none"},
-			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
+			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", showing: false},
+			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", showing: false},
 			{name: "refreshButton", kind: "onyx.IconButton"}
 		]},
 		
@@ -67,25 +67,25 @@ enyo.kind({
 	},
 
 	activate: function(changes) {
-		if (Preferences.isManualFeedSort())
+		if (FeedSpider2.Preferences.isManualFeedSort())
 		{
-			this.$.MainList.setReorderable(true)
+			this.$.MainList.setReorderable(true);
 		}
 		else
 		{
-			this.$.MainList.setReorderable(false)
+			this.$.MainList.setReorderable(false);
 		}
 		
-		if (Preferences.hideReadFeeds()){
-			this.$.showHideFeedsMenuItem.setContent($L("Show Read Feeds"))
+		if (FeedSpider2.Preferences.hideReadFeeds()){
+			this.$.showHideFeedsMenuItem.setContent($L("Show Read Feeds"));
 		}
 		else
 		{
-			this.$.showHideFeedsMenuItem.setContent($L("Hide Read Feeds"))
+			this.$.showHideFeedsMenuItem.setContent($L("Hide Read Feeds"));
 		}
 		
-		this.$.title.setContent(this.folder.title)
-		this.filterAndRefresh()
+		this.$.title.setContent(this.folder.title);
+		this.filterAndRefresh();
 	},
 
 	setupItem: function(inSender, inEvent) {
@@ -104,9 +104,9 @@ enyo.kind({
     		//this point, we can guarantee the presence of at least one source.
     		if (enyo.platform.firefoxOS || enyo.platform.firefox)
     		{
-    			var width = this.$.stickySources.controls[0].controls[0].controls[1].domStyles.width;
+    			var width = this.$.stickySources.controls[0].controls[0].controls[1].getBounds().width;
     			var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
-    			this.$.sourceName.setStyle("width:" + width + "; font-weight: bold");
+    			this.$.sourceName.setStyle("width:" + width + "px; font-weight: bold");
     			this.$.sourceUnreadCount.setStyle("width:" + remainder + "px; text-align: right; font-weight: bold");
     		}
     		else
@@ -146,9 +146,9 @@ enyo.kind({
     		//this point, we can guarantee the presence of at least one source.
     		if (enyo.platform.firefoxOS || enyo.platform.firefox)
     		{
-    			var width = this.$.stickySources.controls[0].controls[0].controls[1].domStyles.width;
+    			var width = this.$.stickySources.controls[0].controls[0].controls[1].getBounds().width;
     			var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
-    			this.$.reorderName.setStyle("width:" + width + "; font-weight: bold");
+    			this.$.reorderName.setStyle("width:" + width + "px; font-weight: bold");
     			this.$.reorderUnreadCount.setStyle("width:" + remainder + "px; text-align: right; font-weight: bold");
     		}
     		else
@@ -172,7 +172,7 @@ enyo.kind({
 	setupSwipeItem: function(inSender, inEvent) {
         // because setting it on the list itself fails:
         this.$.MainList.setPersistSwipeableItem(true);
-        this.$.MainList.setReorderable(false)
+        this.$.MainList.setReorderable(false);
         this.activeItem = inEvent.index;
         this.swiping = true;
     },
@@ -180,37 +180,37 @@ enyo.kind({
 	completeSwipeItem: function() {
         this.$.MainList.completeSwipe();
         this.swiping = false;
-        if (Preferences.isManualFeedSort())
+        if (FeedSpider2.Preferences.isManualFeedSort())
 		{
-			this.$.MainList.setReorderable(true)
+			this.$.MainList.setReorderable(true);
 		}
 		else
 		{
-			this.$.MainList.setReorderable(false)
+			this.$.MainList.setReorderable(false);
 		}
     },
 
 	filterAndRefresh: function() {
 		this.$.MainList.setCount(0);
-		this.filter()
-		this.refreshList(this.$.stickySources, this.folder.stickySubscriptions)
+		this.filter();
+		this.refreshList(this.$.stickySources, this.folder.stickySubscriptions);
 		this.$.MainList.setCount(this.subscriptions.items.length);
 		if(!this.subscriptions.items.length) {
-			this.handleGoBack()
+			this.handleGoBack();
 		}
 		this.$.stickySources.render();
 		this.$.MainList.refresh();
-		this.resized();
+		this.resize();
 	},
 
 	filter: function() {
-		this.subscriptions.items.clear()
+		this.get("subscriptions").items = [];
 
-		this.folder.subscriptions.items.each(function(subscription) {
-			if(subscription.unreadCount || !Preferences.hideReadFeeds()) {
-				this.subscriptions.items.push(subscription)
+		this.get("folder").get("subscriptions").get("items").forEach(function(subscription) {
+			if(subscription.unreadCount || !FeedSpider2.Preferences.hideReadFeeds()) {
+				this.get("subscriptions").items.push(subscription);
 			}
-		}.bind(this))
+		}.bind(this));
 	},
 
 	sourceTapped: function(inSender, inEvent) {
@@ -219,7 +219,7 @@ enyo.kind({
 			return true;
 		}
 		
-		this.doSwitchPanels({target: "feed", api: this.api, subscription: inEvent, previousPage: this})
+		this.doSwitchPanels({target: "feed", api: this.api, subscription: inEvent, previousPage: this});
 		return true;
 	},
 
@@ -231,8 +231,8 @@ enyo.kind({
 		
 		var i = inEvent.index;
 		var item = this.subscriptions.items[i];
-		this.doSwitchPanels({target: "feed", api: this.api, subscription: item, previousPage: this})
-		return true
+		this.doSwitchPanels({target: "feed", api: this.api, subscription: item, previousPage: this});
+		return true;
 	},
 
     deleteButtonTapped: function(inSender, inEvent) {
@@ -248,26 +248,26 @@ enyo.kind({
     },
 
 	sourcesReordered: function(inSender, inEvent) {
-		var beforeSubscription = null
+		var beforeSubscription = null;
 
 		if(inEvent.reorderTo < this.subscriptions.items.length - 1) {
-			var beforeIndex = inEvent.reorderTo
+			var beforeIndex = inEvent.reorderTo;
 
 			if(inEvent.reorderFrom < inEvent.reorderTo) {
-				beforeIndex += 1
+				beforeIndex += 1;
 			}
 
-			beforeSubscription = this.subscriptions.items[beforeIndex]
+			beforeSubscription = this.subscriptions.items[beforeIndex];
 		}
 
-		this.folder.subscriptions.move(this.subscriptions.items[inEvent.reorderFrom], beforeSubscription)
+		this.folder.subscriptions.move(this.subscriptions.items[inEvent.reorderFrom], beforeSubscription);
    		this.filterAndRefresh();
 	},
 
 	sourceDeleted: function(event) {
-		var unreadCount = (this.subscriptions.items[event].unreadCount)
-		this.folder.subscriptions.remove(this.subscriptions.items[event])
-		this.folder.recalculateUnreadCounts()
+		var unreadCount = (this.subscriptions.items[event].unreadCount);
+		this.folder.subscriptions.remove(this.subscriptions.items[event]);
+		this.folder.recalculateUnreadCounts();
 	},
 	
 	handleKeyUp: function(inSender, inEvent) {
@@ -284,6 +284,6 @@ enyo.kind({
     },
 	
 	handleGoBack: function() {
-		this.doGoBack({lastPage: this.previousPage})
+		this.doGoBack({lastPage: this.previousPage});
 	},	
 });

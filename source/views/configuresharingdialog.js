@@ -35,9 +35,9 @@ enyo.kind({
 	},
 	
 	closeDialog: function(){
-		this.sources.each(function(item) {
-      		Preferences.setSharingOptionEnabled(item.id, item.enabled)
-    	})
+		this.sources.forEach(function(item) {
+      		FeedSpider2.Preferences.setSharingOptionEnabled(item.id, item.enabled);
+    	});
 		
 		this.doDismiss();
 	},
@@ -45,9 +45,9 @@ enyo.kind({
 	show: function(sharingOptions){
     	this.sources = sharingOptions;
     	
-    	this.sources.each(function(item) {
-      		item.enabled = Preferences.isSharingOptionEnabled(item.id, item.defaultEnabled)
-    	})
+    	this.sources.forEach(function(item) {
+      		item.enabled = FeedSpider2.Preferences.isSharingOptionEnabled(item.id, item.defaultEnabled);
+    	});
     	
     	//Calculate list height
 		var windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);   	
@@ -88,6 +88,6 @@ enyo.kind({
 		
 		item.enabled = !item.enabled;
 		
-		this.$.SharingList.reset()
+		this.$.SharingList.reset();
 	}
 });

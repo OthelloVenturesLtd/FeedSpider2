@@ -2,16 +2,15 @@ enyo.kind({
 	name: "FeedSpider2.Archived",
 	kind: "FeedSpider2.ArticleContainer",
 	
-	constructor: function(api) {
-		this.inherited(arguments);	
-		this.id = "user/-/state/com.google/archived";
-		this.title = $L("Archived");
-		this.icon = "assets/archived.png";
-		this.sticky = true;
-		this.divideBy = "Home";
-		this.hideDivider = "hide-divider";
-		this.showOrigin = true;
-		this.canMarkAllRead = false;
+	published: {
+		id: "user/-/state/com.google/archived",
+		title: $L("Archived"),
+		icon: "assets/archived.png",
+		sticky: true,
+		divideBy: "Home",
+		hideDivider: "hide-divider",
+		showOrigin: true,
+		canMarkAllRead: false
 	},
 
 	rendered: function() {
@@ -20,7 +19,7 @@ enyo.kind({
 	},
 
 	makeApiCall: function(continuation, success, failure) {
-		this.api.getAllArchived(continuation, success, failure)
+		this.get("api").getAllArchived(continuation, success, failure);
 	},
 
 	articleRead: function(subscriptionId) {

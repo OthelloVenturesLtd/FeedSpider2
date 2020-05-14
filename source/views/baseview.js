@@ -26,12 +26,12 @@ enyo.kind({
 	},
 	
 	toggleFeeds: function() {
-		Preferences.setHideReadFeeds(!Preferences.hideReadFeeds());
+		FeedSpider2.Preferences.setHideReadFeeds(!FeedSpider2.Preferences.hideReadFeeds());
 		this.activate();
 	},
 
 	toggleArticles: function() {
-		Preferences.setHideReadArticles(!Preferences.hideReadArticles());
+		FeedSpider2.Preferences.setHideReadArticles(!FeedSpider2.Preferences.hideReadArticles());
 		this.activate({feedChanged: true});
 	},
 
@@ -46,21 +46,21 @@ enyo.kind({
   	refreshList: function(list, items) {
   	  	var listLength = list.controls.length;
   	  	for (var i = 0; i < listLength; i++) { 
-    		list.controls[0].last = false;
+    		list.controls[0].set("last", false);
     		list.controls[0].setContainer(null);
     	}
   	    
-  	    for (var i = 0; i < items.length; i++) { 
-    		if(i == items.length - 1)
+  	    for (var j = 0; j < items.length; j++) { 
+    		if(j == items.length - 1)
     		{
-    			items[i].last = true;
+    			items[j].set("last", true);
     		}
 
-    		items[i].setContainer(list);
+    		items[j].setContainer(list);
     	}
   	},
 
 	scrollToTop: function() {
 		this.$.MainList.scrollToStart();
 	}
-})
+});

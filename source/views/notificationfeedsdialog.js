@@ -34,13 +34,13 @@ enyo.kind({
 	},
 	
 	show: function(){
-    	var watchedFeeds = Preferences.getWatchedFeeds()
-		var self = this
+    	var watchedFeeds = FeedSpider2.Preferences.getWatchedFeeds();
+		var self = this;
 		
-		this.sources.subscriptions.items.each(function(subscription) {
-      		subscription.feedWatched = watchedFeeds.any(function(n) {return n == subscription.id})
-      		self.$.FeedsList.createComponent({kind: "FeedSpider2.NotificationFeed", checked: subscription.feedWatched, title: subscription.title, feedId: subscription.id})
-    	})
+		this.get("sources").get("subscriptions").get("items").forEach(function(subscription) {
+      		subscription.set("feedWatched", watchedFeeds.indexOf(subscription.id) !== -1);
+      		self.$.FeedsList.createComponent({kind: "FeedSpider2.NotificationFeed", checked: subscription.get("feedWatched"), title: subscription.get("title"), feedId: subscription.get("id")});
+    	});
 		
 		this.inherited(arguments);
 	},
@@ -67,18 +67,18 @@ enyo.kind({
 	create: function() {
 		this.inherited(arguments);
 		
-		this.$.notificationFeedCheckbox.checked = this.checked
-		this.$.notificationFeedTitle.content = this.title
+		this.$.notificationFeedCheckbox.checked = this.checked;
+		this.$.notificationFeedTitle.content = this.title;
 	},
 	
 	addRemoveFeed: function(inSender, inEvent) {
 		if (inEvent.originator.checked === true)
 		{
-			Preferences.addNotificationFeed(this.feedId)
+			FeedSpider2.Preferences.addNotificationFeed(this.feedId);
 		}
 		else
 		{
-			Preferences.removeNotificationFeed(this.feedId)
+			FeedSpider2.Preferences.removeNotificationFeed(this.feedId);
 		}
 	}
 });

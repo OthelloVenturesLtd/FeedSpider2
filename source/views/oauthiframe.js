@@ -74,94 +74,94 @@ enyo.kind({
 	
 	create: function() {
 		//Enyo does not listen for Firefox OS browser events by default, so we have to specify them manually in the constructor.
-		enyo.dispatcher.listen(document, "mozbrowserlocationchange")
+		enyo.dispatcher.listen(document, "mozbrowserlocationchange");
 		
-		this.inherited(arguments)
+		this.inherited(arguments);
 	},
 	
 	beginOAuth: function(settings){
 		// Set up the OAuth Session based on the settings object
-		this.method = null
-		this.logoutURL = undefined
-		this.requestTokenUrl = settings.requestTokenUrl
-		this.authorizeUrl = settings.authorizeUrl
-		this.accessTokenUrl = settings.accessTokenUrl
-		this.client_id = settings.client_id
-		this.client_secret = settings.client_secret
-		if (settings.redirect_uri != undefined) {
-			this.redirect_uri = settings.redirect_uri
+		this.method = null;
+		this.logoutURL = undefined;
+		this.requestTokenUrl = settings.requestTokenUrl;
+		this.authorizeUrl = settings.authorizeUrl;
+		this.accessTokenUrl = settings.accessTokenUrl;
+		this.client_id = settings.client_id;
+		this.client_secret = settings.client_secret;
+		if (settings.redirect_uri !== undefined) {
+			this.redirect_uri = settings.redirect_uri;
 		}
 		else {
-			this.redirect_uri = "oob"
+			this.redirect_uri = "oob";
 		}
-		this.response_type = settings.response_type
-		if (settings.accessTokenMethod != undefined) {
-			this.accessTokenMethod = settings.accessTokenMethod
-		}
-		else {
-			this.accessTokenMethod = "GET"
-		}
-		this.scope = settings.scope
-		this.url = ""
-		this.requested_token = ""
-		this.exchangingToken = false
-		if (settings.additionalParameters != undefined) {
-			this.additionalParameters = settings.additionalParameters
+		this.response_type = settings.response_type;
+		if (settings.accessTokenMethod !== undefined) {
+			this.accessTokenMethod = settings.accessTokenMethod;
 		}
 		else {
-			this.additionalParameters = null	
+			this.accessTokenMethod = "GET";
+		}
+		this.scope = settings.scope;
+		this.url = "";
+		this.requested_token = "";
+		this.exchangingToken = false;
+		if (settings.additionalParameters !== undefined) {
+			this.additionalParameters = settings.additionalParameters;
+		}
+		else {
+			this.additionalParameters = null;
 		}
 		
 		// Process the parameters and build the OAuth URL
-		var scope = ""
+		var scope = "";
 		for(var permission in this.scope) {
 			if(typeof(this.scope[permission]) == 'function')continue;
-			if(scope != "") scope = scope + "+"
-			scope = scope + this.scope[permission]
+			if(scope !== "") scope = scope + "+";
+			scope = scope + this.scope[permission];
 		}
 	
-		var url = this.authorizeUrl + "?client_id=" + this.client_id + "&redirect_uri=" + this.redirect_uri + "&response_type=" + this.response_type
-		if(scope != "") url = url + "&scope=" + scope
-		if(this.additionalParameters) url = url + "&" + this.additionalParameters
+		var url = this.authorizeUrl + "?client_id=" + this.client_id + "&redirect_uri=" + this.redirect_uri + "&response_type=" + this.response_type;
+		if(scope !== "") url = url + "&scope=" + scope;
+		if(this.additionalParameters) url = url + "&" + this.additionalParameters;
 		
 		//Begin OAuth process
-		this.setAttribute("src", url)
+		this.setAttribute("src", url);
 		//this.node.purgeHistory()
 	},
 	
 	locationChanged: function(inSender, inEvent) {
-    	var callbackURL = inEvent.detail
-		var responseVars = callbackURL.split("?")
+    	var callbackURL = inEvent.detail;
+		var responseVars = callbackURL.split("?");
 		if (!this.exchangingToken && (responseVars[0] == this.redirect_uri + "/" || responseVars[0] == this.redirect_uri)) {
-			var response_param = responseVars[1]
-			var result = response_param.match(/code=*/g)
-			if (result != null) {
+			var response_param = responseVars[1];
+			var result = response_param.match(/code=*/g);
+			if (result !== null) {
 				// Raise an event so that the UI handler can deal with the element visibility
-				this.doCodeGot()
+				this.doCodeGot();
 				
 				// Try and logout from the oauth provider. (See method for more details).
-				if (this.logoutURL != undefined)
+				if (this.logoutURL !== undefined)
 				{
-					this.setAttribute("src", this.logoutURL)
+					this.setAttribute("src", this.logoutURL);
 				} 
 				
-				var params = response_param.split("&")
-				var code = params[0].replace("code=", "")
+				var params = response_param.split("&");
+				var code = params[0].replace("code=", "");
 				
-				this.codeToToken(code)
+				this.codeToToken(code);
 			}
 		}
 		else
 		{
-			this.logoutURL = this.getLogoutURL(callbackURL)
+			this.logoutURL = this.getLogoutURL(callbackURL);
 		}
   	},
   	
   	codeToToken: function(code) {
-		this.exchangingToken = true
-		this.url = this.accessTokenUrl
-		this.code = code
-		this.method = this.accessTokenMethod
+		this.exchangingToken = true;
+		this.url = this.accessTokenUrl;
+		this.code = code;
+		this.method = this.accessTokenMethod;
 		
 		var postParams = {
 			client_id: this.client_id,
@@ -169,44 +169,44 @@ enyo.kind({
 			code: this.code,
 			grant_type: "authorization_code",
 			redirect_uri: this.redirect_uri
-		}
+		};
 		
-		var postBody = ""
+		var postBody = "";
 		for (var name in postParams) {
-			if (postBody == "") {
-				postBody = name + "=" + postParams[name]
+			if (postBody === "") {
+				postBody = name + "=" + postParams[name];
 			}
 			else {
-				postBody = postBody + "&" + name + "=" + postParams[name]
+				postBody = postBody + "&" + name + "=" + postParams[name];
 			}
 		}
 
-		var xhr = new XMLHttpRequest({mozSystem: true})
-		xhr.timeout = 30000
-		xhr.open(this.method, this.url, true)
-		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-		xhr.addEventListener("load", enyo.bind(this, this.processResponse), false)
-		xhr.addEventListener("error", enyo.bind(this, this.processFailure), false)
-		xhr.send(postBody)
+		var xhr = new XMLHttpRequest({mozSystem: true});
+		xhr.timeout = 30000;
+		xhr.open(this.method, this.url, true);
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.addEventListener("load", enyo.bind(this, this.processResponse), false);
+		xhr.addEventListener("error", enyo.bind(this, this.processFailure), false);
+		xhr.send(postBody);
 	},
 	
 	processResponse: function(inEvent) {
-		if (inEvent.target.status == 200 && inEvent.target.readyState == 4 && inEvent.target.responseText != "") {		
+		if (inEvent.target.status == 200 && inEvent.target.readyState == 4 && inEvent.target.responseText !== "") {		
 			try {
-				var responseJSON = JSON.parse(inEvent.target.responseText)
-				this.doOAuthSuccess(responseJSON)
+				var responseJSON = JSON.parse(inEvent.target.responseText);
+				this.doOAuthSuccess(responseJSON);
 			}
 			catch (e) {
-				this.doOAuthFailure()
+				this.doOAuthFailure();
 			}
 		}
 		else {
-			this.doOAuthFailure()
+			this.doOAuthFailure();
 		}
 	},
 	
 	processFailure: function(inEvent) {
-		this.doOAuthFailure()
+		this.doOAuthFailure();
 	},
 	
 	// Due to the way that Firefox OS browser sessions handle credentials, simply calling purgeHistory() on the
@@ -215,29 +215,29 @@ enyo.kind({
 	// account of the same type.
 	getLogoutURL: function(url) {
 		if (url.indexOf("accounts.google.com") !== -1){
-			return "https://accounts.google.com/logout"
+			return "https://accounts.google.com/logout";
 		}
 		else if (url.indexOf("public-api.wordpress.com") !== -1) {
-			return "https://wordpress.com/wp-login.php?action=logout"
+			return "https://wordpress.com/wp-login.php?action=logout";
 		}
 		else if (url.indexOf("twitter.com") !== -1) {
-			return "https://twitter.com/logout"
+			return "https://twitter.com/logout";
 		}
 		else if (url.indexOf("api.screenname.aol.com") !== -1) {
-			return "https://api.screenname.aol.com/auth/logout"
+			return "https://api.screenname.aol.com/auth/logout";
 		}
 		else if (url.indexOf("facebook.com") !== -1) {
 			// Facebook does not appear to define a global logout URL at this time.
-			return undefined
+			return undefined;
 		}
 		else if (url.indexOf("live.com") !== -1) {
-			return "https://login.live.com/logout.srf"
+			return "https://login.live.com/logout.srf";
 		}
 		else if (url.indexOf("evernote.com") !== -1) {
-			return "https://www.evernote.com/Logout.action"
+			return "https://www.evernote.com/Logout.action";
 		}
 		else {
-			return undefined
+			return undefined;
 		}
 	}
 });

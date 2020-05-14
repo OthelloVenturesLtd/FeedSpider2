@@ -7,7 +7,6 @@ Using the Enyo 2 Framework, FeedSpider has been ported to FireFox OS, and is cur
 
 Feedspider Supports:
 
-* AOL Reader
 * BazQux Reader
 * Feedly
 * InoReader

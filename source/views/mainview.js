@@ -18,9 +18,9 @@ enyo.kind({
     			]}
 			]},
 			{name: "viewTitle", tag: "span", style:"font-weight: bold; text-align: center", fit: true, ontap: "scrollToTop"},
-			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", style: "display: none", ontap: "reload"},
-			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", style: "display: none"},
-			{name: "refreshButton", kind: "onyx.IconButton", ontap: "switchPanels", src: "assets/refresh.png", ontap: "reload"}
+			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", showing: false, ontap: "reload"},
+			{name: "smallSpinner", kind: "onyx.Icon", src: "assets/small-spinner.gif", showing: false},
+			{name: "refreshButton", kind: "onyx.IconButton", src: "assets/refresh.png", ontap: "reload"}
 		]},
 		
 		{name: "MainList", kind: "AroundList", fit: true, count: 0, style:"width: 100%;", reorderable: true, centerReorderContainer: false, enableSwipe: true, percentageDraggedThreshold: 0.01, persistSwipeableItem: true, onSetupItem: "setupItem", onSetupReorderComponents: "setupReorderComponents", onSetupSwipeItem: "setupSwipeItem", onReorder: "sourcesReordered", aboveComponents: [
@@ -51,7 +51,7 @@ enyo.kind({
 	
   	create: function() {
     	this.inherited(arguments);
-    	this.credentials = new Credentials();
+    	this.credentials = new FeedSpider2.Credentials();
     	this.loaded = false;
     	this.reloading = false;
     	this.swiping = false;
@@ -70,36 +70,36 @@ enyo.kind({
 	},
 
 	activate: function(changes) {
-		if (Preferences.isManualFeedSort())
+		if (FeedSpider2.Preferences.isManualFeedSort())
 		{
-			this.$.MainList.setReorderable(true)
+			this.$.MainList.setReorderable(true);
 		}
 		else
 		{
-			this.$.MainList.setReorderable(false)
+			this.$.MainList.setReorderable(false);
 		}
 		
-		if (Preferences.hideReadFeeds()){
-			this.$.showHideFeedsMenuItem.setContent($L("Show Read Feeds"))
+		if (FeedSpider2.Preferences.hideReadFeeds()){
+			this.$.showHideFeedsMenuItem.setContent($L("Show Read Feeds"));
 		}
 		else
 		{
-			this.$.showHideFeedsMenuItem.setContent($L("Hide Read Feeds"))
+			this.$.showHideFeedsMenuItem.setContent($L("Hide Read Feeds"));
 		}
 
-		this.filterAndRefresh()
+		this.filterAndRefresh();
 	},
 	
 	loginSuccess: function(inSender, inEvent) {
     	this.$.LoginDialog.hide();
     	this.api = inEvent;
-    	this.sources = new AllSources(this.api);
-    	this.parent.sources = this.sources
+    	this.sources = new FeedSpider2.AllSources({api: this.api});
+    	this.parent.sources = this.sources;
     	this.loaded = false;
     	this.showAddSubscription = true;
     	
-    	this.reload()
-    	this.activate()
+    	this.reload();
+    	this.activate();
     	return true;
   	},
 
@@ -119,9 +119,9 @@ enyo.kind({
     		//this point, we can guarantee the presence of at least one source.
     		if (enyo.platform.firefoxOS || enyo.platform.firefox)
     		{
-    			var width = this.$.stickySources.controls[0].controls[0].controls[1].domStyles.width;
+    			var width = this.$.stickySources.controls[0].controls[0].controls[1].getBounds().width;
     			var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
-    			this.$.sourceName.setStyle("width:" + width + "; font-weight: bold");
+    			this.$.sourceName.setStyle("width:" + width + "px; font-weight: bold");
     			this.$.sourceUnreadCount.setStyle("width:" + remainder + "px; text-align: right; font-weight: bold");
     		}
     		else
@@ -161,9 +161,9 @@ enyo.kind({
     		//this point, we can guarantee the presence of at least one source.
     		if (enyo.platform.firefoxOS || enyo.platform.firefox)
     		{
-    			var width = this.$.stickySources.controls[0].controls[0].controls[1].domStyles.width;
+    			var width = this.$.stickySources.controls[0].controls[0].controls[1].getBounds().width;
     			var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
-    			this.$.reorderName.setStyle("width:" + width + "; font-weight: bold");
+    			this.$.reorderName.setStyle("width:" + width + "px; font-weight: bold");
     			this.$.reorderUnreadCount.setStyle("width:" + remainder + "px; text-align: right; font-weight: bold");
     		}
     		else
@@ -187,7 +187,7 @@ enyo.kind({
 	setupSwipeItem: function(inSender, inEvent) {
         // because setting it on the list itself fails:
         this.$.MainList.setPersistSwipeableItem(true);
-        this.$.MainList.setReorderable(false)
+        this.$.MainList.setReorderable(false);
         this.activeItem = inEvent.index;
         this.swiping = true;
     },
@@ -195,72 +195,72 @@ enyo.kind({
 	completeSwipeItem: function() {
         this.$.MainList.completeSwipe();
         this.swiping = false;
-        if (Preferences.isManualFeedSort())
+        if (FeedSpider2.Preferences.isManualFeedSort())
 		{
-			this.$.MainList.setReorderable(true)
+			this.$.MainList.setReorderable(true);
 		}
 		else
 		{
-			this.$.MainList.setReorderable(false)
+			this.$.MainList.setReorderable(false);
 		}
     },
 
 	reload: function() {
-		var self = this
+		var self = this;
 
 		if(!self.reloading) {
-			self.reloading = true
-			this.$.refreshButton.hide()
-			this.$.errorIcon.hide()
-			this.$.smallSpinner.show()
+			self.reloading = true;
+			this.$.refreshButton.hide();
+			this.$.errorIcon.hide();
+			this.$.smallSpinner.show();
 
 			self.sources.findAll(
 				function() {
-					self.reloading = false
-					self.loaded = true
-					self.filterAndRefresh()
+					self.reloading = false;
+					self.loaded = true;
+					self.filterAndRefresh();
 				}.bind(this),
 
 				function() {
-					this.showError()
+					this.showError();
 				}.bind(this)
-			)
+			);
 		}
 	},
 
 	filterAndRefresh: function() {
-		var self = this
+		var self = this;
 		if(self.loaded) {
 			self.sources.sortAndFilter(
 				function() {
 					self.$.MainList.setCount(0);
-					self.refreshList(self.$.stickySources, self.sources.stickySources.items)
-					self.$.stickySources.show()
-					self.$.subscriptionsDivider.show()
+					self.refreshList(self.$.stickySources, self.sources.stickySources.items);
+					self.$.stickySources.show();
+					self.$.subscriptionsDivider.show();
 					self.$.MainList.setCount(self.sources.subscriptionSources.items.length);
 					
 			   		self.$.stickySources.render();
 					self.$.MainList.refresh();
-					self.resized();
 					self.$.smallSpinner.hide();
 					self.$.refreshButton.show();
+					self.resize();
 				},
 
 				this.showError.bind(this)
-			)
+			);
 		}
 	},
 
 	showError: function() {
-		this.reloading = false
-		this.loaded = false
-		this.$.refreshButton.hide()
-		this.$.errorIcon.show()
-		this.$.smallSpinner.hide()
+		this.reloading = false;
+		this.loaded = false;
+		this.$.refreshButton.hide();
+		this.$.errorIcon.show();
+		this.$.smallSpinner.hide();
 	},
 	
 	switchPanels: function() {
-		this.doSwitchPanels(this)
+		this.doSwitchPanels(this);
 	},
 	
 	sourceTapped: function(inSender, inEvent) {
@@ -269,13 +269,13 @@ enyo.kind({
 			return true;
 		}
 		
-		if(inEvent.isFolder && !Preferences.combineFolders()) {
-			this.doSwitchPanels({target: "folder", api: this.api, folder: inEvent, previousPage: this})
+		if(inEvent.isFolder && !FeedSpider2.Preferences.combineFolders()) {
+			this.doSwitchPanels({target: "folder", api: this.api, folder: inEvent, previousPage: this});
 		}
 		else {
-			this.doSwitchPanels({target: "feed", api: this.api, subscription: inEvent, previousPage: this})
+			this.doSwitchPanels({target: "feed", api: this.api, subscription: inEvent, previousPage: this});
 		}
-		return true
+		return true;
 	},
 	
 	listSourceTapped: function(inSender, inEvent) {
@@ -286,13 +286,13 @@ enyo.kind({
 		
 		var i = inEvent.index;
 		var item = this.sources.subscriptionSources.items[i];
-		if(item.isFolder && !Preferences.combineFolders()) {
-			this.doSwitchPanels({target: "folder", api: this.api, folder: item, previousPage: this})
+		if(item.isFolder && !FeedSpider2.Preferences.combineFolders()) {
+			this.doSwitchPanels({target: "folder", api: this.api, folder: item, previousPage: this});
 		}
 		else {
-			this.doSwitchPanels({target: "feed", api: this.api, subscription: item, previousPage: this})
+			this.doSwitchPanels({target: "feed", api: this.api, subscription: item, previousPage: this});
 		}
-		return true
+		return true;
 	},
 
     deleteButtonTapped: function(inSender, inEvent) {
@@ -308,54 +308,54 @@ enyo.kind({
     },
 
 	sourceDeleted: function(event) {
-		var unreadCount = (this.sources.subscriptionSources.items[event].unreadCount)
-		this.sources.subscriptions.remove(this.sources.subscriptionSources.items[event])
-		this.sources.all.decrementUnreadCountBy(unreadCount)
+		var unreadCount = (this.sources.subscriptionSources.items[event].unreadCount);
+		this.sources.subscriptions.remove(this.sources.subscriptionSources.items[event]);
+		this.sources.all.decrementUnreadCountBy(unreadCount);
 	},
 
 	sourcesReordered: function(inSender, inEvent) {
-		var beforeSubscription = null
+		var beforeSubscription = null;
 
 		if(inEvent.reorderTo < this.sources.subscriptionSources.items.length - 1) {
-			var beforeIndex = inEvent.reorderTo
+			var beforeIndex = inEvent.reorderTo;
 
 			if(inEvent.reorderFrom < inEvent.reorderTo) {
-				beforeIndex += 1
+				beforeIndex += 1;
 			}
 
-			beforeSubscription = this.sources.subscriptionSources.items[beforeIndex]
+			beforeSubscription = this.sources.subscriptionSources.items[beforeIndex];
 		}
 
-		this.sources.subscriptions.move(this.sources.subscriptionSources.items[inEvent.reorderFrom], beforeSubscription)
+		this.sources.subscriptions.move(this.sources.subscriptionSources.items[inEvent.reorderFrom], beforeSubscription);
    		this.filterAndRefresh();
 	},
 
 	markedAllRead: function(event) {
-		Log.debug(event.count + " items marked read in " + event.id)
+		Log.debug(event.count + " items marked read in " + event.id);
 
 		if(event.id == "user/-/state/com.google/reading-list") {
-			this.sources.nukedEmAll()
+			this.sources.nukedEmAll();
 		}
 		else {
-			this.sources.markedAllRead(event.count)
+			this.sources.markedAllRead(event.count);
 		}
 
-		this.filterAndRefresh()
+		this.filterAndRefresh();
 	},
 
 	articleRead: function(event) {
-		Log.debug("1 item marked read in " + event.subscriptionId)
-		this.sources.articleRead(event.subscriptionId)
-		this.filterAndRefresh()
+		Log.debug("1 item marked read in " + event.subscriptionId);
+		this.sources.articleRead(event.subscriptionId);
+		this.filterAndRefresh();
 	},
 
 	articleNotRead: function(event) {
-		Log.debug("1 item marked not read in " + event.subscriptionId)
-		this.sources.articleNotRead(event.subscriptionId)
-		this.filterAndRefresh()
+		Log.debug("1 item marked not read in " + event.subscriptionId);
+		this.sources.articleNotRead(event.subscriptionId);
+		this.filterAndRefresh();
 	},
 
 	folderDeleted: function() {
-		this.reload()
+		this.reload();
 	}
 });

@@ -3,9 +3,10 @@ enyo.kind({
 	kind: "FeedSpider2.Countable",
 	
 	published: { 
-  		api: "",
-  		continuation: "",
+  		api: null,
+  		continuation: false,
   		icon: "",
+  		id: "",
   		items: [],
   		itemTap: "",
   		last: false,
@@ -23,36 +24,27 @@ enyo.kind({
 			{name: "sourceUnreadCount", classes: "subscription-count", tag: "span"}
 		]}
 	],
-	
-	constructor: function(api) {
-		this.inherited(arguments);		
-		this.api = api;
-		this.continuation = false;
-		this.items = [];
-	},
-	
-	create: function() {
-		this.inherited(arguments);
-		
-		this.$.sourceIcon.setSrc(this.icon);
-		this.$.sourceName.setContent(this.title);
-	},
+
+	bindings: [
+		{from: ".icon", to: ".$.sourceIcon.src"},
+		{from: ".title", to: ".$.sourceName.content"}
+	],
 	
 	rendered: function() {
-	    if (this.unreadCount > 0)
+	    if (this.get("unreadCount") > 0)
     	{
-    		this.$.sourceName.setStyle("font-weight: bold");
-    		this.$.sourceUnreadCount.setStyle("font-weight: bold");
-    		this.$.sourceUnreadCount.setContent(this.unreadCount); 		
+    		this.$.sourceName.set("style", "font-weight: bold");
+    		this.$.sourceUnreadCount.set("style", "font-weight: bold");
+    		this.$.sourceUnreadCount.set("content", this.get("unreadCount"));
     	} 
 		else
 		{
-    		this.$.sourceName.setStyle("");
-    		this.$.sourceUnreadCount.setStyle("");
+    		this.$.sourceName.set("style", "");
+    		this.$.sourceUnreadCount.set("style", "");
 			this.$.sourceUnreadCount.hide();
 		}
 		
-		if (this.last == false)
+		if (this.last === false)
     	{
     		this.$.source.addStyles("border-bottom-width: 1px; border-bottom-style: groove");
     	}
@@ -60,33 +52,36 @@ enyo.kind({
 	},
 	
 	reset: function() {
-		this.items.clear();
-		this.continuation = false;
+		this.set("items", []);
+		this.set("continuation", false);
 	},
 
 	findArticles: function(success, failure) {
 		var onSuccess = function(articles, id, continuation) {
 			Log.debug("continuation token is " + continuation);
 
-			this.continuation = continuation;
-			if(this.items.length && this.items[this.items.length - 1].load_more) {
-				this.items.pop();
+			this.set("continuation", continuation);
+			if(this.get("items").length && this.get("items")[this.get("items").length - 1].load_more) {
+				this.get("items").pop();
 			}
 
-			$A(articles).each(function(articleData) {
-				this.items.push(new FeedSpider2.Article(articleData, this));
-			}.bind(this))
+			if (articles && articles.length > 0)
+			{
+				articles.forEach(function(articleData) {
+					this.get("items").push(new FeedSpider2.Article({api: this.get("api"), data: articleData, subscription: this}));
+				}.bind(this));
+			}
 
 			success();
-		}.bind(this)
-		this.makeApiCall(this.continuation, onSuccess, failure);
+		}.bind(this);
+		this.makeApiCall(this.get("continuation"), onSuccess, failure);
 	},
 
 	highlight: function(node) {
 	},
 	
 	itemTapped: function() {
-		this.doSourceTap(this)
+		this.doSourceTap(this);
 	}
 	
 });

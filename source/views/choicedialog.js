@@ -25,8 +25,8 @@ enyo.kind({
 	],
 	
 	show: function(title, content, data) {
-		this.$.dialogTitle.setContent(title)
-		this.$.dialogContent.setContent(content)
+		this.$.dialogTitle.setContent(title);
+		this.$.dialogContent.setContent(content);
 		this.returnData = data;
 		
 		this.inherited(arguments);
@@ -39,4 +39,4 @@ enyo.kind({
 	chooseYes: function(){
 		this.doAction({data: this.returnData});
 	},
-})
+});

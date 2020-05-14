@@ -26,8 +26,8 @@ enyo.kind({
 			theme: "notification.Firefox",
 			stay: false,
 			duration: 1
-		})
-		return true
+		});
+		return true;
 	}	
 });
 
@@ -147,7 +147,7 @@ enyo.kind({
 	},
 	
 	logout: function() {
-		var creds = new Credentials();
+		var creds = new FeedSpider2.Credentials();
 		creds.password = null;
 		creds.server = null;
 		creds.id = null;
@@ -167,7 +167,7 @@ enyo.kind({
 	},
 	
 	handleThemeChanged: function() {
-		var theme = Preferences.getTheme();
+		var theme = FeedSpider2.Preferences.getTheme();
 		this.removeClass("theme-dark");
 		this.removeClass("theme-grey");
 		this.removeClass("theme-light");
@@ -179,18 +179,18 @@ enyo.kind({
 	},
 	
 	handleFontSizeChanged: function() {
-		this.$.article.setFontSize(Preferences.fontSize());
+		this.$.article.setFontSize(FeedSpider2.Preferences.fontSize());
 	},
 	
 	handleOrientationChanged: function() {
 		//Handle orientation for webOS Devices
 		if (window.PalmSystem) {
-			PalmSystem.setWindowOrientation(Preferences.allowLandscape() ? "free" : "up");
+			PalmSystem.setWindowOrientation(FeedSpider2.Preferences.allowLandscape() ? "free" : "up");
 		}
 
 		//Handle orientation for FirefoxOS Devices
 		if (enyo.platform.firefoxOS) {
-			if(Preferences.allowLandscape())
+			if(FeedSpider2.Preferences.allowLandscape())
 			{
 				result = screen.mozUnlockOrientation();
 			}

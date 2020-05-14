@@ -6,16 +6,7 @@ enyo.depends(
 	"folders.js",
 	"preferences.js",
 	"sort-order.js",
-	"data.js",
 	"credentials.js",
-	"api.js",
-	"aol-api.js",
-	"bq-api.js",
-	"feedly-api.js",
-	"ino-api.js",
-	"oc-api.js",
-	"tor-api.js",
-	"ttrss-api.js",
 	"all-sources.js",
 	"all-subscriptions.js",
 	"all-articles.js",
@@ -25,6 +16,5 @@ enyo.depends(
 	"starred.js",
 	"subscription.js",
 	"folder.js",
-	"folder-subscriptions.js",
 	"article.js"
 );

@@ -1,18 +1,30 @@
-var SortOrder = Class.create({
-  initialize: function(string) {
-    this.sortIds = string.toArray().inGroupsOf(8).map(function(key){return key.join("")})
-  },
+enyo.kind({
+	name: "FeedSpider2.SortOrder",
 
-  getSortNumberFor: function(id) {
-    var sortNumber = 0
+	published: {
+		sortIds: []
+	},
 
-    this.sortIds.each(function(sortId, index) {
-      if(sortId == id) {
-        sortNumber = index
-        throw $break
-      }
-    })
+	create: function(string) {
+		this.inherited(arguments);
+		var sortIds = [];
+		for(var i = 0; i < string.length; i = i + 8)
+		{
+			sortIds.push(string.substr(i, 8));
+		}
+		this.set("sortIds", sortIds);
+	},
 
-    return sortNumber
-  }
-})
+	getSortNumberFor: function(id) {
+		var sortNumber = 0;
+
+		for (var i = 0; i < this.get("sortIds").length; i++) {
+			if(this.get("sortIds")[i] == id) {
+				sortNumber = i;
+				break;
+			}
+		}
+
+		return sortNumber;
+	}
+});
