@@ -1,537 +1,606 @@
-var InoApi = Class.create({
-  login: function(credentials, success, failure) {
-    var authSuccess = function(response) {
-      var authMatch = response.responseText.match(/Auth\=(.*)/)
-      this.auth = authMatch ? authMatch[1] : ''
-      success(this.auth)
-    }.bind(this)
+/* eslint-disable no-var */
+enyo.kind({
+	name: "FeedSpider2.InoAPI",
+	kind: "FeedSpider2.API",
 
-    new Ajax.Request("https://www.inoreader.com/accounts/ClientLogin", {
-      method: "post",
-      requestHeaders: {AppId: InoApi.APP_ID, AppKey: InoApi.APP_KEY},
-      parameters: {Email: credentials.email, Passwd: credentials.password},
-      onSuccess: authSuccess,
-      onFailure: failure
-    })
-  },
+	published: {
+		auth: null,
+		baseURL: "https://www.inoreader.com/reader/api/0/",
+		appID: "1000001438",
+		appKey: "Hea9JkjSNEepktY0s9ss9TUaETgCoBzg",
+		editToken: null,
+		editTokenTime: null,
+		titles: null	
+	},
 
-  getTags: function(success, failure) {
-    new Ajax.Request(InoApi.BASE_URL + "tag/list", {
-      method: "get",
-      parameters: {output: "json"},
-      requestHeaders: this._requestHeaders(),
-      onFailure: failure,
-      onSuccess: function(response) {success(response.responseText.evalJSON().tags)}
-    })
-  },
+	login: function(credentials, success, failure) {
+		var authSuccess = function(inRequest, inResponse) {
+			var authMatch = inResponse.match(/Auth\=(.*)/);
+			this.set("auth", authMatch ? authMatch[1] : '');
+			success(this.get("auth"));
+		}.bind(this);
 
-  getSortOrder: function(success, failure) {
-    new Ajax.Request(InoApi.BASE_URL + "preference/stream/list", {
-      method: "get",
-      parameters: {output: "json"},
-      requestHeaders: this._requestHeaders(),
-      onFailure: failure,
-      onSuccess: function(response) {
-        var prefs = response.responseText.evalJSON()
-        var sortOrder = {}
+		var request = new enyo.Ajax({
+			url: "https://www.inoreader.com/accounts/ClientLogin",
+			method: "post",
+			xhrFields: {mozSystem: true},
+			postBody: {Email: credentials.email, Passwd: credentials.password},
+			headers: {AppId: this.get("appID"), AppKey: this.get("appKey")},
+			cacheBust: false
+		});
 
-        if(prefs && prefs.streamprefs) {
-          $H(prefs.streamprefs).each(function(pair) {
-            pair.key = pair.key.gsub(/user\/\d+\//, "user/-/")
+		request.error(failure);
+		request.response(authSuccess, this);
+		request.go();
+	},
 
-            $A(pair.value).each(function(pref) {
-              if("subscription-ordering" == pref.id) {
-                sortOrder[pair.key] = new SortOrder(pref.value)
-              }
-            })
-          })
-        }
+	getTags: function(success, failure) {
+		var request = new enyo.Ajax({
+			url: this.get("baseURL")+ "tag/list",
+			method: "get",
+			xhrFields: {mozSystem: true},
+			headers: this._requestHeaders(),
+			cacheBust: false
+		});
 
-        success(sortOrder)
-      }
-    })
-  },
+		request.error(failure);
+		request.response(function(inRequest, inResponse) {
+			success(inResponse.tags);
+		}, this);
+		request.go({output: "json"});
+	},
 
-  setSortOrder: function(sortOrder, stream) {
-    this._getEditToken(function(token) {
-      var parameters = {
-        T: token,
-        s: stream || "user/-/state/com.google/root",
-        k: "subscription-ordering",
-        v: sortOrder
-      }
+	getSortOrder: function(success, failure) {
+		var request = new enyo.Ajax({
+			url: this.get("baseURL")+ "preference/stream/list",
+			method: "get",
+			xhrFields: {mozSystem: true},
+			headers: this._requestHeaders(),
+			cacheBust: false
+		});
 
-      new Ajax.Request(InoApi.BASE_URL + "preference/stream/set", {
-        method: "post",
-        parameters: parameters,
-        requestHeaders: this._requestHeaders()
-      })
-    }.bind(this))
-  },
+		request.error(failure);
+		request.response(function(inRequest, inResponse) {
+			var prefs = inResponse;
+			var sortOrder = {};
 
-  unsubscribe: function(feed) {
-    if(feed.isFolder) {
-      this.removeLabel(feed)
-    }
-    else {
-      this._getEditToken(function(token) {
-        var parameters = {
-          T: token,
-          s: feed.id,
-          ac: "unsubscribe",
-          t: feed.title
-        }
+			if(prefs && prefs.streamprefs) {
+				var streamprefsKeys = Object.keys(prefs.streamprefs);
+				for (var i = 0; i < streamprefsKeys.length; i++)
+				{
+					var key = streamprefsKeys[i].replace(/user\/\d+\//g, "user/-/");
+					var valueArray = prefs.streamprefs[streamprefsKeys[i]];
 
-        new Ajax.Request(InoApi.BASE_URL + "subscription/edit", {
-          method: "post",
-          parameters: parameters,
-          requestHeaders: this._requestHeaders(),
-          onSuccess: function() {feedspider.handleApiStateChanged({state: "SubscriptionDeleted", id: feed.id, count: feed.unreadCount})}
-        })
-      }.bind(this))
-    }
-  },
-
-  removeLabel: function(folder) {
-    this._getEditToken(function(token) {
-      var parameters = {
-        T: token,
-        s: folder.id,
-        t: folder.title
-      }
-
-      new Ajax.Request(InoApi.BASE_URL + "disable-tag", {
-        method: "post",
-        parameters: parameters,
-        requestHeaders: this._requestHeaders(),
-        onSuccess: function() {feedspider.handleApiStateChanged({state: "FolderDeleted", id: folder.id})}
-      })
-    }.bind(this))
-  },
-
-  searchSubscriptions: function(query, success, failure) {
-    //Not supported by InoReader API. Auto-Fail
-    failure()
-    
-    /*var self = this
-
-    new Ajax.Request(InoApi.BASE_URL + "feed-finder", {
-      method: "get",
-      parameters: {q: query, output: "json"},
-      requestHeaders: this._requestHeaders(),
-      onFailure: failure,
-      onSuccess: function(response) {
-        var subscriptions = response.responseText.evalJSON().items
-        success(subscriptions)
-      }
-    })*/
-  },
-
-  addSubscription: function(url, success, failure) {
-    this._getEditToken(function(token) {
-      var parameters = {
-        T: token,
-        quickadd: url
-      }
-
-      new Ajax.Request(InoApi.BASE_URL + "subscription/quickadd", {
-        method: "post",
-        parameters: parameters,
-        requestHeaders: this._requestHeaders(),
-        onFailure: failure,
-        onSuccess: function(response) {
-          var json = response.responseText.evalJSON()
-
-          if(json.streamId) {
-            success()
-          }
-          else {
-            failure()
-          }
-        }
-      })
-    }.bind(this))
-  },
-
-  getAllSubscriptions: function(success, failure) {
-    var self = this
-
-    new Ajax.Request(InoApi.BASE_URL + "subscription/list", {
-      method: "get",
-      parameters: {output: "json"},
-      requestHeaders: this._requestHeaders(),
-      onFailure: failure,
-      onSuccess: function(response) {
-        var subscriptions = response.responseText.evalJSON().subscriptions
-        self.cacheTitles(subscriptions)
-        success(subscriptions)
-      }
-    })
-  },
-
-  cacheTitles: function(subscriptions) {
-    var self = this
-    self.titles = {}
-
-    subscriptions.each(function(subscription) {
-      self.titles[subscription.id] = subscription.title
-    })
-  },
-
-  titleFor: function(id) {
-    return this.titles[id]
-  },
-
-  getUnreadCounts: function(success, failure) {
-    new Ajax.Request(InoApi.BASE_URL + "unread-count", {
-      method: "get",
-      parameters: {output: "json"},
-      requestHeaders: this._requestHeaders(),
-      onFailure: failure,
-      onSuccess: function(response) {
-        var json = response.responseText.evalJSON()
-
-        if(json.denied) {
-          failure()
-        }
-        else {
-          success(json.unreadcounts)
-        }
-      }
-    })
-  },
-
-  getAllArticles: function(continuation, success, failure) {
-    this._getArticles(
-      "user/-/state/com.google/reading-list",
-      FeedSpider2.Preferences.hideReadArticles() ? "user/-/state/com.google/read" : null,
-      continuation,
-      success,
-      failure
-    )
-  },
-
-  getAllStarred: function(continuation, success, failure) {
-    this._getArticles(
-      "user/-/state/com.google/starred",
-      null,
-      continuation,
-      success,
-      failure
-    )
-  },
-
-  getAllShared: function(continuation, success, failure) {
-    this._getArticles(
-      "user/-/state/com.google/broadcast",
-      null,
-      continuation,
-      success,
-      failure
-    )
-  },
-
-  //UPDATED 1.2.0
-  getAllFresh: function(continuation, success, failure) {
-  	failure()    
-    /*this._getArticles(
-      -3,
-      "all_articles",
-      continuation,
-      success,
-      failure
-    )*/
-  },
-
-  //UPDATED 1.2.0
-  getAllArchived: function(continuation, success, failure) {
-  	failure()
-    /*this._getArticles(
-      -0,
-      "all_articles",
-      continuation,
-      success,
-      failure
-    )*/
-  },
-
-  getAllArticlesFor: function(id, continuation, success, failure) {
-    this._getArticles(
-      id,
-      FeedSpider2.Preferences.hideReadArticles() ? "user/-/state/com.google/read" : null,
-      continuation,
-      success,
-      failure
-    )
-  },
-
-  //UPDATED 2.0.0
-  _getArticles: function(id, exclude, continuation, success, failure) {
-    var parameters = {output: "json", n: 40}
-
-    if(id != "user/-/state/com.google/starred" &&
-       id != "user/-/state/com.google/broadcast" &&
-       FeedSpider2.Preferences.isOldestFirst()) {
-      parameters.r = "o"
-    }
-
-    if(continuation) {
-      parameters.c = continuation
-    }
-
-    if(exclude) {
-      parameters.xt = exclude
-    }
-
-    new Ajax.Request(InoApi.BASE_URL + "stream/contents/" + escape(id), {
-      method: "get",
-      parameters: parameters,
-      requestHeaders: this._requestHeaders(),
-      onFailure: failure,
-      onSuccess: function(response) {
-        if(response.responseJSON) {
-        	var	articles = response.responseJSON
-        }
-        else {
-			if (enyo.platform.firefoxOS)
-			{
-				var articles = JSON.parse(response.responseText)
+					for (var j = 0; j < valueArray.length; j++)
+					{
+						if("subscription-ordering" == valueArray[j].id) {
+							sortOrder[key] = new FeedSpider2.SortOrder(valueArray[j].value);
+						}
+					}
+				}
 			}
-			else
-			{
-        		var articles = JSON2.parse(response.responseText)
-        	}
-        }
-        success(articles.items, articles.id, articles.continuation)
-      }
-    })
-  },
 
-  markAllRead: function(id, success, failure) {
-    this._getEditToken(
-      function(token) {
-        var parameters = {
-          T: token,
-          s: id
-        }
+			success(sortOrder);
+		}, this);
 
-        new Ajax.Request(InoApi.BASE_URL + "mark-all-as-read", {
-          method: "post",
-          parameters: parameters,
-          requestHeaders: this._requestHeaders(),
-          onSuccess: success,
-          onFailure: failure
-        })
-      }.bind(this),
+		request.go({output: "json"});
+	},
 
-      failure
-    )
-  },
+	setSortOrder: function(sortOrder, stream) {
+		this._getEditToken(function(token) {
+			var parameters = {
+				T: token,
+				s: stream || "user/-/state/com.google/root",
+				k: "subscription-ordering",
+				v: sortOrder
+			};
 
-  search: function(query, id, success, failure) {
-    var parameters = {
-      q: query,
-      num: 50,
-      output: "json"
-    }
+			var request = new enyo.Ajax({
+				url: this.get("baseURL")+ "preference/stream/set", 
+				method: "post",
+				xhrFields: {mozSystem: true},
+				postBody: parameters,
+				headers: this._requestHeaders(),
+				cacheBust: false
+			});
 
-    if(id) {
-      parameters.s = id
-    }
+			request.go({output: "json"});
+		}.bind(this));
+	},
 
-    new Ajax.Request(InoApi.BASE_URL + "search/items/ids", {
-      method: "get",
-      parameters: parameters,
-      requestHeaders: this._requestHeaders(),
-      onSuccess: this.searchItemsFound.bind(this, success, failure),
-      onFailure: failure
-    })
-  },
+	unsubscribe: function(feed) {
+		if(feed.isFolder) {
+			this.removeLabel(feed);
+		}
+		else {
+			this._getEditToken(function(token) {
+				var parameters = {
+					T: token,
+					s: feed.id,
+					ac: "unsubscribe",
+					t: feed.title
+				};
 
-  searchItemsFound: function(success, failure, response) {
-    var self = this
-    var ids = response.responseText.evalJSON().results
+				var request = new enyo.Ajax({
+					url: this.get("baseURL")+ "subscription/edit",
+					method: "post",
+					xhrFields: {mozSystem: true},
+					postBody: parameters,
+					headers: this._requestHeaders(),
+					cacheBust: false
+				});
 
-    if(ids.length) {
-      self._getEditToken(
-        function(token) {
-          var parameters = {
-            T: token,
-            i: ids.map(function(n) {return n.id})
-          }
+				request.response(function(inRequest, inResponse) {
+					feedspider.handleApiStateChanged({state: "SubscriptionDeleted", id: feed.id, count: feed.unreadCount});
+				});
+				request.go({output: "json"});
+			}.bind(this));
+		}
+	},
 
-          new Ajax.Request(InoApi.BASE_URL + "stream/items/contents", {
-            method: "post",
-            parameters: parameters,
-            requestHeaders: self._requestHeaders(),
-            onFailure: failure,
-            onSuccess: function(response) {
-              var articles = response.responseText.evalJSON()
-              success(articles.items, articles.id, articles.continuation)
-            }
-          })
-        }
-      )
-    }
-    else {
-      success([], "", false)
-    }
-  },
+	removeLabel: function(folder) {
+		this._getEditToken(function(token) {
+			var parameters = {
+				T: token,
+				s: folder.id,
+				t: folder.title
+			};
 
-  mapSearchResults: function(response) {
-    console.log(response.responseText)
-  },
+			var request = new enyo.Ajax({
+				url: this.get("baseURL")+ "disable-tag",
+				method: "post",
+				xhrFields: {mozSystem: true},
+				postBody: parameters,
+				headers: this._requestHeaders(),
+				cacheBust: false
+			});
 
-  setArticleRead: function(articleId, subscriptionId, success, failure) {
-    this._editTag(
-      articleId,
-      subscriptionId,
-      "user/-/state/com.google/read",
-      null,
-      success,
-      failure
-    )
-  },
+			request.response(function(inRequest, inResponse) {
+				feedspider.handleApiStateChanged({state: "FolderDeleted", id: folder.id});
+			});
+			request.go({output: "json"});
+		}.bind(this));
+	},
 
-  setArticleNotRead: function(articleId, subscriptionId, success, failure, sticky) {
-     this._editTag(
-      articleId,
-      subscriptionId,
-      null,
-      "user/-/state/com.google/read",
-      success,
-      failure
-    )
-  },
+	searchSubscriptions: function(query, success, failure) {
+		//Not supported by InoReader API. Auto-Fail
+		failure();
+		
+		/*var self = this
 
-  setArticleShared: function(articleId, subscriptionId, success, failure) {
-    this._editTag(
-      articleId,
-      subscriptionId,
-      "user/-/state/com.google/broadcast",
-      null,
-      success,
-      failure
-    )
-  },
+		new Ajax.Request(this.get("baseURL")+ "feed-finder", {
+		method: "get",
+		parameters: {q: query, output: "json"},
+		requestHeaders: this._requestHeaders(),
+		onFailure: failure,
+		onSuccess: function(response) {
+			var subscriptions = response.responseText.evalJSON().items
+			success(subscriptions)
+		}
+		})*/
+	},
 
-  setArticleNotShared: function(articleId, subscriptionId, success, failure) {
-    this._editTag(
-      articleId,
-      subscriptionId,
-      null,
-      "user/-/state/com.google/broadcast",
-      success,
-      failure
-    )
-  },
+	addSubscription: function(url, success, failure) {
+		this._getEditToken(function(token) {
+			var parameters = {
+				T: token,
+				quickadd: url
+			};
 
-  setArticleStarred: function(articleId, subscriptionId, success, failure) {
-    this._editTag(
-      articleId,
-      subscriptionId,
-      "user/-/state/com.google/starred",
-      null,
-      success,
-      failure
-    )
-  },
+			var request = new enyo.Ajax({
+				url: this.get("baseURL")+ "subscription/quickadd",
+				method: "post",
+				xhrFields: {mozSystem: true},
+				postBody: parameters,
+				headers: this._requestHeaders(),
+				cacheBust: false
+			});
 
-  setArticleNotStarred: function(articleId, subscriptionId, success, failure) {
-    this._editTag(
-      articleId,
-      subscriptionId,
-      null,
-      "user/-/state/com.google/starred",
-      success,
-      failure
-    )
-  },
+			request.error(failure);
+			request.response(function(inRequest, inResponse) {
+				if(inResponse.streamId) 
+				{
+					success();
+				}
+				else 
+				{
+					failure();
+				}
+			}, this);
+			request.go({output: "json"});
+		}.bind(this))
+	},
 
-  _editTag: function(articleId, subscriptionId, addTag, removeTag, success, failure) {
-    Log.debug("editing tag for article id = " + articleId + " and subscription id = " + subscriptionId)
+	getAllSubscriptions: function(success, failure) {
+		var request = new enyo.Ajax({
+			url: this.get("baseURL")+ "subscription/list", 
+			method: "get",
+			xhrFields: {mozSystem: true},
+			headers: this._requestHeaders(),
+			cacheBust: false
+		});
 
-    this._getEditToken(
-      function(token) {
-        var parameters = {
-          T: token,
-          i: articleId,
-          s: subscriptionId
-        }
+		request.error(failure);
+		request.response(function(inRequest, inResponse) {
+			this.cacheTitles(inResponse.subscriptions);
+			success(inResponse.subscriptions);
+		}, this);
+		request.go({output: "json"});
+	},
 
-        if(addTag) parameters.a = addTag
-        if(removeTag) parameters.r = removeTag
+	cacheTitles: function(subscriptions) {
+		this.set("titles",{});
+		for (var i=0 ; i<subscriptions.length; i++)
+		{
+			this.get("titles")[subscriptions[i].id] = subscriptions[i].title;
+		}
+	},
 
-        new Ajax.Request(InoApi.BASE_URL + "edit-tag", {
-          method: "post",
-          parameters: parameters,
-          requestHeaders: this._requestHeaders(),
-          onSuccess: success,
-          onFailure: failure
-        })
-      }.bind(this),
+	titleFor: function(id) {
+		return this.get("titles")[id];
+	},
 
-      failure
-    )
-  },
+	getUnreadCounts: function(success, failure) {
+		var request = new enyo.Ajax({
+			url: this.get("baseURL")+ "unread-count", 
+			method: "get",
+			xhrFields: {mozSystem: true},
+			headers: this._requestHeaders(),
+			cacheBust: false
+		});
 
-  _requestHeaders: function() {
-    return {Authorization:"GoogleLogin auth=" + this.auth, AppId: InoApi.APP_ID, AppKey: InoApi.APP_KEY}
-  },
+		request.error(failure);
+		request.response(function(inRequest, inResponse) {
+			if(inResponse.denied) {
+				failure();
+			}
+			else {
+				success(inResponse.unreadcounts);
+			}
+		}, this);
+		request.go({output: "json"});
+	},
 
-  _getEditToken: function(success, failure) {
-    if(this.editToken && (new Date().getTime() - this.editTokenTime < 120000)) {
-      Log.debug("using last edit token - " + this.editToken)
-      success(this.editToken)
-    }
-    else {
-      new Ajax.Request(InoApi.BASE_URL + "token", {
-        method: "get",
-        requestHeaders: this._requestHeaders(),
-        onFailure: failure,
-        onSuccess: function(response) {
-          this.editToken = response.responseText
-          this.editTokenTime = new Date().getTime()
-          Log.debug("retrieved edit token - " + this.editToken)
-          success(this.editToken)
-        }.bind(this)
-      })
-    }
-  },
+	getAllArticles: function(continuation, success, failure) {
+		this._getArticles(
+			"user/-/state/com.google/reading-list",
+			FeedSpider2.Preferences.hideReadArticles() ? "user/-/state/com.google/read" : null,
+			continuation,
+			success,
+			failure
+		);
+	},
+
+	getAllStarred: function(continuation, success, failure) {
+		this._getArticles(
+			"user/-/state/com.google/starred",
+			null,
+			continuation,
+			success,
+			failure
+		);
+	},
+
+	getAllShared: function(continuation, success, failure) {
+		this._getArticles(
+			"user/-/state/com.google/broadcast",
+			null,
+			continuation,
+			success,
+			failure
+		);
+	},
+
+	//UPDATED 1.2.0
+	getAllFresh: function(continuation, success, failure) {
+		failure();  
+		/*this._getArticles(
+		-3,
+		"all_articles",
+		continuation,
+		success,
+		failure
+		)*/
+	},
+
+	//UPDATED 1.2.0
+	getAllArchived: function(continuation, success, failure) {
+		failure();
+		/*this._getArticles(
+		-0,
+		"all_articles",
+		continuation,
+		success,
+		failure
+		)*/
+	},
+
+	getAllArticlesFor: function(id, continuation, success, failure) {
+		this._getArticles(
+			id,
+			FeedSpider2.Preferences.hideReadArticles() ? "user/-/state/com.google/read" : null,
+			continuation,
+			success,
+			failure
+		);
+	},
+
+	//UPDATED 2.0.0
+	_getArticles: function(id, exclude, continuation, success, failure) {
+		var parameters = {output: "json", n: 40};
+
+		if(id != "user/-/state/com.google/starred" &&
+		id != "user/-/state/com.google/broadcast" &&
+		FeedSpider2.Preferences.isOldestFirst()) {
+			parameters.r = "o";
+		}
+
+		if(continuation) {
+			parameters.c = continuation;
+		}
+
+		if(exclude) {
+			parameters.xt = exclude;
+		}
+
+		var request = new enyo.Ajax({
+			url: this.get("baseURL")+ "stream/contents/" + escape(id),
+			method: "get",
+			xhrFields: {mozSystem: true},
+			headers: this._requestHeaders(),
+			cacheBust: false
+		});
+
+		request.error(failure);
+		request.response(function(inRequest, inResponse) {
+			success(inResponse.items, inResponse.id, inResponse.continuation);
+		}, this);
+		request.go(parameters);
+	},
+
+	markAllRead: function(id, success, failure) {
+		this._getEditToken(
+			function(token) {
+				var parameters = {
+					T: token,
+					s: id
+				};
+
+				var request = new enyo.Ajax({
+					url: this.get("baseURL")+ "mark-all-as-read",
+					method: "post",
+					xhrFields: {mozSystem: true},
+					postBody: parameters,
+					headers: this._requestHeaders(),
+					cacheBust: false
+				});
+
+				request.error(failure);
+				request.response(success);
+				request.go({output: "json"});
+			}.bind(this),
+
+			failure
+		);
+	},
+
+	search: function(query, id, success, failure) {
+		var parameters = {
+			q: query,
+			num: 50,
+			output: "json"
+		};
+
+		if(id) {
+			parameters.s = id;
+		}
+
+		var request = new enyo.Ajax({
+			url: this.get("baseURL")+ "search/items/ids",
+			method: "get",
+			xhrFields: {mozSystem: true},
+			headers: this._requestHeaders(),
+			cacheBust: false
+		});
+
+		request.error(failure);
+		request.response(this.searchItemsFound.bind(this, success, failure));
+		request.go(parameters);
+	},
+
+	searchItemsFound: function(success, failure, response) {
+		var ids = response.responseText.evalJSON().results;
+
+		if(ids.length) {
+			this._getEditToken(
+				function(token) {
+					var parameters = {
+						T: token,
+						i: ids.map(function(n) {return n.id;})
+					};
+
+					var request = new enyo.Ajax({
+						url: this.get("baseURL")+ "stream/items/contents",
+						method: "post",
+						xhrFields: {mozSystem: true},
+						postBody: parameters,
+						headers: this._requestHeaders(),
+						cacheBust: false
+					});
+
+					request.error(failure);
+					request.response(function(inRequest, inResponse) {
+						success(inResponse.items, inResponse.id, inResponse.continuation);
+					}, this);
+					request.go({output: "json"});
+				}
+			);
+		}
+		else {
+			success([], "", false);
+		}
+	},
+
+	mapSearchResults: function(response) {
+		console.log(response.responseText);
+	},
+
+	setArticleRead: function(articleId, subscriptionId, success, failure) {
+		this._editTag(
+			articleId,
+			subscriptionId,
+			"user/-/state/com.google/read",
+			null,
+			success,
+			failure
+		);
+	},
+
+	setArticleNotRead: function(articleId, subscriptionId, success, failure, sticky) {
+		this._editTag(
+			articleId,
+			subscriptionId,
+			null,
+			"user/-/state/com.google/read",
+			success,
+			failure
+		);
+	},
+
+	setArticleShared: function(articleId, subscriptionId, success, failure) {
+		this._editTag(
+			articleId,
+			subscriptionId,
+			"user/-/state/com.google/broadcast",
+			null,
+			success,
+			failure
+		);
+	},
+
+	setArticleNotShared: function(articleId, subscriptionId, success, failure) {
+		this._editTag(
+			articleId,
+			subscriptionId,
+			null,
+			"user/-/state/com.google/broadcast",
+			success,
+			failure
+		);
+	},
+
+	setArticleStarred: function(articleId, subscriptionId, success, failure) {
+		this._editTag(
+			articleId,
+			subscriptionId,
+			"user/-/state/com.google/starred",
+			null,
+			success,
+			failure
+		);
+	},
+
+	setArticleNotStarred: function(articleId, subscriptionId, success, failure) {
+		this._editTag(
+			articleId,
+			subscriptionId,
+			null,
+			"user/-/state/com.google/starred",
+			success,
+			failure
+		);
+	},
+
+	_editTag: function(articleId, subscriptionId, addTag, removeTag, success, failure) {
+		Log.debug("editing tag for article id = " + articleId + " and subscription id = " + subscriptionId);
+
+		this._getEditToken(
+			function(token) {
+				var parameters = {
+					T: token,
+					i: articleId,
+					s: subscriptionId
+				};
+
+				if(addTag) {parameters.a = addTag;}
+				if(removeTag) {parameters.r = removeTag;}
+
+				var request = new enyo.Ajax({
+					url: this.get("baseURL")+ "edit-tag",
+					method: "post",
+					xhrFields: {mozSystem: true},
+					postBody: parameters,
+					headers: this._requestHeaders(),
+					cacheBust: false
+				});
+
+				request.error(failure);
+				request.response(success);
+				request.go({output: "json"});
+			}.bind(this),
+
+			failure
+		);
+	},
+
+	_requestHeaders: function() {
+		return {Authorization:"GoogleLogin auth=" + this.auth, AppId: this.get("appID"), AppKey: this.get("appKey")};
+	},
+
+	_getEditToken: function(success, failure) {
+		if(this.get("editToken") && (new Date().getTime() - this.get("editTokenTime") < 120000)) {
+			Log.debug("using last edit token - " + this.get("editToken"));
+			success(this.get("editToken"));
+		}
+		else {
+			var request = new enyo.Ajax({
+				url: this.get("baseURL")+ "token",
+				method: "get",
+				xhrFields: {mozSystem: true},
+				headers: this._requestHeaders(),
+				cacheBust: false
+			});
+
+			request.error(failure);
+			request.response(function(inRequest, inResponse) {
+				this.set("editToken", inResponse);
+				this.set("editTokenTime", new Date().getTime());
+				Log.debug("retrieved edit token - " + this.get("editToken"));
+				success(this.get("editToken"));
+			}.bind(this));
+			request.go();
+		}
+	},
+	
+	supportsAllArticles: function() {
+		return true;
+	},
+	
+	//UPDATED 1.2.0  
+	supportsArchived: function() {
+		return false;
+	},
+	
+	//UPDATED 1.2.0  
+	supportsFresh: function() {
+		return false;
+	},
+	
+	supportsStarred: function() {
+		return true;
+	},
+	
+	supportsShared: function() {
+		return true;
+	},
+	
+	supportsSearch: function() {
+		return false;
+	},
+	
+	//UPDATED 0.9.5
+	supportsManualSort: function() {
+		return true;
+	}
   
-  supportsAllArticles: function() {
-	return true
-  },
-  
-  //UPDATED 1.2.0  
-  supportsArchived: function() {
-	return false
-  },
-  
-  //UPDATED 1.2.0  
-  supportsFresh: function() {
-	return false
-  },
-  
-  supportsStarred: function() {
-	return true
-  },
-  
-  supportsShared: function() {
-	return true
-  },
-  
-  supportsSearch: function() {
-	return false
-  },
-  
-  //UPDATED 0.9.5
-  supportsManualSort: function() {
-	return true
-  }
-  
-})
-
-InoApi.BASE_URL = "https://www.inoreader.com/reader/api/0/";
-InoApi.APP_ID = "1000001438";
-InoApi.APP_KEY = "Hea9JkjSNEepktY0s9ss9TUaETgCoBzg";
+});

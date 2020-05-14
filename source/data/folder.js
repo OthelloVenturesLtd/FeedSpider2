@@ -24,6 +24,30 @@ enyo.kind({
 		this.inherited(arguments);				
 	},
 
+	addSubscription: function(subscription)
+	{
+		var subscriptionItems = this.get("subscriptions").get("items");
+		//Check to make sure that the subscription doesn't already exist
+		var subscriptionIndex;
+		
+		//Explicitly shortcircuit this check, because we don't have access to array.findIndex in es5.
+		subscriptionItems.find(function(value, index, array){
+			if (value.id === subscription.id) {subscriptionIndex = index;}
+			return value.id === subscription.id;
+		});
+
+		if (subscriptionIndex >= 0)
+		{
+			//Assume that a fresh subscription contains updated data that should superscede what we already have.
+			subscriptionItems[subscriptionIndex] = subscription;
+		}
+		else
+		{
+			//Otherwise, add it to the end. The sort function will take care of sorting things.
+			subscriptionItems.push(subscription);
+		}
+	},
+
 	makeApiCall: function(continuation, success, failure) {
 		this.get("api").getAllArticlesFor(this.get("id"), continuation, success, failure);
 	},

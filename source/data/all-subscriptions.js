@@ -47,7 +47,7 @@ enyo.kind({
 		self.get("api").getUnreadCounts(
 			function(counts) {
 				counts.forEach(function(count) {
-					if(count.id.toString().startsWith("feed") || count.id > 0){       	
+					if(count.id.toString().indexOf("feed") === 0 || count.id > 0){       	
 						self.incrementUnreadCountBy(count.count);
 
 						self.get("items").forEach(function(item) {
@@ -145,7 +145,7 @@ enyo.kind({
 
 					self.get("items").forEach(function(item) {
 						item.set("sortNumber", rootSortOrder.getSortNumberFor(item.get("sortId")));
-						if(item.get("isFolder")) item.sortManually(sortOrders[item.get("id").gsub(/user\/\d+\//, "user/-/")]);
+						if(item.get("isFolder")) item.sortManually(sortOrders[item.get("id").replace(/user\/\d+\//g, "user/-/")]);
 					});
 
 					self.sortBy(function(itemA, itemB) {

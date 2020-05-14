@@ -208,7 +208,7 @@ FeedSpider2.Preferences = {
 
   wantsNotificationFor: function(id) {
     if(this.anyOrSelectedFeedsForNotifications() == "any") {
-      return id.startsWith("feed/");
+      return id.indexOf("feed/") === 0;
     }
     else {
       return this.getWatchedFeeds().any(function(n) {return n == id;});

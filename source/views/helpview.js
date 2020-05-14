@@ -18,7 +18,6 @@ enyo.kind({
 				{tag: "br"},
 				{tag: "div", content: "It currently supports:"},
 				{tag: "ul", components: [
-					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://reader.aol.com", "target": "_blank"}, content: "AOL Reader" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://bazqux.com", "target": "_blank"}, content: "BazQux Reader" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "http://feedly.com", "target": "_blank"}, content: "Feedly" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://www.inoreader.com", "target": "_blank"}, content: "InoReader" }]},

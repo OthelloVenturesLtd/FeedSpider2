@@ -24,7 +24,6 @@ enyo.kind({
 			{kind: "onyx.PickerDecorator", style: "width: 100%;", components: [
 				{classes: "onyx-dark", style: "width: 90%"},
 				{name: "servicePicker", onChange: "setService", kind: "onyx.Picker", components: [
-					{name: "aolPickerItem", value: "aol"},
 					{name: "bqPickerItem", value: "bq"},
 					{name: "feedlyPickerItem", value: "feedly"},
 					{name: "inoPickerItem", value: "ino"},
@@ -75,7 +74,6 @@ enyo.kind({
   	create: function() {
     	this.inherited(arguments);
 		this.$.dialogTitle.setContent($L("Login"));
-		this.$.aolPickerItem.setContent($L("AOL Reader"));
 		this.$.bqPickerItem.setContent($L("BazQux Reader"));
 		this.$.feedlyPickerItem.setContent($L("Feedly"));
 		this.$.inoPickerItem.setContent($L("InoReader"));
@@ -105,8 +103,7 @@ enyo.kind({
 		this.activate();
 		if(((this.get("credentials").get("service") !== "ttrss" || this.get("credentials").get("service") !== "oc") && this.get("credentials").get("email") && this.get("credentials").get("password")) || 
 			((this.get("credentials").get("service") === "ttrss" || this.get("credentials").get("service") === "oc") && this.get("credentials").get("email") && this.get("credentials").get("password") && this.get("credentials").get("server")) || 
-			this.get("credentials").get("service") === "feedly" || 
-			this.get("credentials").get("service") === "aol" ) {
+			this.get("credentials").get("service") === "feedly") {
 			this.tryLoginWithSavedCredentials();
 		}        
 	},
@@ -120,7 +117,7 @@ enyo.kind({
 		//This method is called like this since it is the onchange handler for the servicePicker, so is initially called before
 		//the groups are created - so we need to ignore it on the first run (ie. the groups don't yet exist)
 		if(this.$.usernameGroup !== undefined){
-			if (this.$.servicePicker.selected.value == "feedly" || this.$.servicePicker.selected.value == "aol")
+			if (this.$.servicePicker.selected.value == "feedly")
 			{
 				this.$.usernameGroup.hide();
 				this.$.passwordGroup.hide();
@@ -143,7 +140,7 @@ enyo.kind({
 	
 	checkCredentials: function() {
 		this.get("credentials").set("service", this.$.servicePicker.selected.value);
-		if (this.$.servicePicker.selected.value == "feedly" || this.$.servicePicker.selected.value == "aol")
+		if (this.$.servicePicker.selected.value == "feedly")
 		{
 			this.tryLogin();
 		}
@@ -180,7 +177,7 @@ enyo.kind({
 		
 		// Hide the window and put up the spinner
 		this.$.loginWindow.hide();
-		if (this.get("credentials").get("service") == "feedly" || this.get("credentials").get("service") == "aol")
+		if (this.get("credentials").get("service") == "feedly")
 		{
 			if(enyo.platform.firefoxOS)
 			{
@@ -336,32 +333,29 @@ enyo.kind({
 		var api;
 
 		switch(credentials.get("service"))
-    	{
-		  	case "tor":
+		{
+			case "tor":
 				api = new FeedSpider2.TorAPI();
 				break;
-		  	case "ino":
-		  		api = new FeedSpider2.InoAPI();
+			case "ino":
+				api = new FeedSpider2.InoAPI();
 				break;
 			case "bq":
-		  		api = new FeedSpider2.BQAPI();
+				api = new FeedSpider2.BQAPI();
 				break;
 			case "ttrss":
-		  		api = new FeedSpider2.TTRSSAPI();
+				api = new FeedSpider2.TTRSSAPI();
 				break;
 			case "feedly":
-		  		api = new FeedSpider2.FeedlyAPI();
-				break;
-			case "aol":
-		  		api = new FeedSpider2.AolAPI();
+				api = new FeedSpider2.FeedlyAPI();
 				break;
 			case "oc":
-		  		api = new FeedSpider2.OCAPI();
+				api = new FeedSpider2.OCAPI();
 				break;
 			default:
 				api = new FeedSpider2.API();  		
-    	}
+		}
 
-    	return api;
+		return api;
 	}
 });
