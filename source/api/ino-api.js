@@ -208,7 +208,7 @@ enyo.kind({
 				}
 			}, this);
 			request.go({output: "json"});
-		}.bind(this))
+		}.bind(this));
 	},
 
 	getAllSubscriptions: function(success, failure) {
@@ -602,5 +602,4 @@ enyo.kind({
 	supportsManualSort: function() {
 		return true;
 	}
-  
 });
