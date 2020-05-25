@@ -38,6 +38,12 @@ enyo.kind({
 			{name: "placeholderIcon", kind: "onyx.Icon", showing: false}
 		]},
 		
+		{name: "loadingSpinnerContainer", style: "width: 100%; margin-top: 15px; text-align: center;", showing: false, components: [
+			{style: "display: inline-block;", components: [
+				{name: "loadingSpinner", kind: "onyx.Spinner"},
+			]}
+		]},
+		
 		{name: "noArticles", style: "padding-top: 10px; padding-left: 10px; font-size 14px; font-weight: bold", showing: false},
 		
 		{name: "MainList", kind: "FeedSpider2.EventList", fit: true, count: 0, style:"width: 100%;", enableSwipe: true, percentageDraggedThreshold: 1.50, onSetupItem: "setupItem", onSetupSwipeItem: "setupSwipeItem", onSwipeAnimationComplete: "listItemRendered", onScroll: "scrollEvent", components: [
@@ -91,11 +97,14 @@ enyo.kind({
 			this.$.showHideArticlesMenuItem.setContent($L("Hide Read Articles"));
 		}
 
+		this.$.loadingSpinner.addRemoveClass("onyx-light", FeedSpider2.Preferences.getTheme() !== "dark");
+
 		this.$.title.setContent(this.subscription.title);
 		this.previousDate = "";
 		this.$.placeholderIcon.hide();
 		
 		if(changes_or_scroll && (changes_or_scroll.sortOrderChanged || changes_or_scroll.hideReadArticlesChanged || changes_or_scroll.feedChanged)) {
+			this.$.loadingSpinnerContainer.set("showing", true);
 			this.subscription.reset();
 			this.$.MainList.setCount(0);
 			this.findArticles(true);
@@ -152,6 +161,7 @@ enyo.kind({
 		}
 
 		this.loadingArticles = false;
+		this.$.loadingSpinnerContainer.set("showing", false);
 		this.$.smallSpinner.hide();
 		this.$.errorIcon.hide();
 		this.showMarkAllRead();
@@ -342,6 +352,7 @@ enyo.kind({
 	},
 
 	showError: function() {
+		this.$.loadingSpinnerContainer.set("showing", false);
 		this.$.markAllRead.hide();
 		this.$.smallSpinner.hide();
 		this.$.placeholderIcon.hide();
