@@ -6,7 +6,7 @@
     "version": "2.1.0",
     "name": "FeedSpider",
     "pkgName": "com.othelloventures.feedspider2",
-    "description": "An RSS Reader client that is lets you access your feeds from Feedly, The Old Reader, InoReader, BazQux Reader, Tiny Tiny RSS, and OwnCloud News.",
+    "description": "An RSS Reader client that is lets you access your feeds from Feedly, The Old Reader, InoReader, BazQux Reader, Tiny Tiny RSS, and NextCloud News.",
     "developer": {
         "name": "Brent Hunter",
         "url": "http://www.feedspider.net"
