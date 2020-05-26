@@ -8,7 +8,7 @@ enyo.kind({
 		clientID: "feedspider",
 		clientSecret: "FE01DA2G93CK87ZP8NW6T5WYG862",
 		credentials: null,
-		
+		titles: null
 	},
 
 	//UPDATED 1.2.0
@@ -261,8 +261,8 @@ enyo.kind({
 
 		request.error(failure);
 		request.response(function(inRequest, inResponse) {
-			this.cacheTitles(response);
-			success(subscriptions);
+			this.cacheTitles(inResponse);
+			success(inResponse);
 		}, this);
 		request.go({output: "json"});
 	},

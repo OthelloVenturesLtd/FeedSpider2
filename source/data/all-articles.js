@@ -32,9 +32,9 @@ enyo.kind({
 
 	markSourceRead: function(success) {
 		this.get("api").markAllRead(this.get("id"), function() {
-		  this.clearUnreadCount();
-		  this.get("items").forEach(function(item) {item.isRead = true;});
-		  success();
+			this.clearUnreadCount();
+			this.get("items").forEach(function(item) {item.isRead = true;});
+			success();
 		}.bind(this));
 	}
 });
