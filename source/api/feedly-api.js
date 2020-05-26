@@ -214,7 +214,9 @@ enyo.kind({
 		});
 
 		request.error(failure);
-		request.response(this._processSubscription.bind(this, success, failure));
+		request.response(function(inRequest, inResponse) {
+			this._processSubscription.bind(success, failure, inResponse);
+		}, this);
 		request.go({output: "json"});
 	},
   
@@ -491,7 +493,9 @@ enyo.kind({
 		});
 
 		request.error(failure);
-		request.response(this.searchItemsFound.bind(this, success, failure));
+		request.response(function(inRequest, inResponse) {
+			this.searchItemsFound(success, failure, inResponse);
+		}, this);
 		request.go(parameters);
 	},
 

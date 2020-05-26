@@ -417,7 +417,9 @@ enyo.kind({
 		});
 
 		request.error(failure);
-		request.response(this.searchItemsFound.bind(this, success, failure));
+		request.response(function(inRequest, inResponse) {
+			this.searchItemsFound(success, failure, inResponse);
+		}, this);
 		request.go(parameters);
 	},
 
