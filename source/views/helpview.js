@@ -21,7 +21,7 @@ enyo.kind({
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://bazqux.com", "target": "_blank"}, content: "BazQux Reader" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "http://feedly.com", "target": "_blank"}, content: "Feedly" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://www.inoreader.com", "target": "_blank"}, content: "InoReader" }]},
-					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://www.owncloud.org", "target": "_blank"}, content: "NextCloud News" }]},
+					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://nextcloud.com", "target": "_blank"}, content: "NextCloud News" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "http://tt-rss.org", "target": "_blank"}, content: "Tiny Tiny RSS" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "http://www.theoldreader.com", "target": "_blank"}, content: "The Old Reader" }]},
 				]}
