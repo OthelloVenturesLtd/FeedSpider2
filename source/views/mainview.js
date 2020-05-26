@@ -7,15 +7,15 @@ enyo.kind({
 		{kind: "onyx.Toolbar", layoutKind: "FittableColumnsLayout", noStretch: true, components: [
 			{kind: "onyx.MenuDecorator", components: [
 				{kind: "onyx.IconButton", src: "assets/menu-icon.png"},
-			    {kind: "onyx.Menu", floating: true, components: [
-        			{name: "addSubscriptionMenuItem", onSelect: "addSubscription"},
-        			{name: "showHideFeedsMenuItem", onSelect: "toggleFeeds"},
-        			{classes: "onyx-menu-divider"},
-        			{name: "preferencesMenuItem", onSelect: "openPreferences"},
-        			{name: "helpMenuItem", onSelect: "openHelp"},
-        			{classes: "onyx-menu-divider"},
-        			{name: "logoutMenuItem", onSelect: "handleLogout"},
-    			]}
+				{kind: "onyx.Menu", floating: true, components: [
+					{name: "addSubscriptionMenuItem", onSelect: "addSubscription"},
+					{name: "showHideFeedsMenuItem", onSelect: "toggleFeeds"},
+					{classes: "onyx-menu-divider"},
+					{name: "preferencesMenuItem", onSelect: "openPreferences"},
+					{name: "helpMenuItem", onSelect: "openHelp"},
+					{classes: "onyx-menu-divider"},
+					{name: "logoutMenuItem", onSelect: "handleLogout"},
+				]}
 			]},
 			{name: "viewTitle", tag: "span", style:"font-weight: bold; text-align: center", fit: true, ontap: "scrollToTop"},
 			{name: "errorIcon", kind: "onyx.Icon", src: "assets/error.png", showing: false, ontap: "reload"},
@@ -49,19 +49,19 @@ enyo.kind({
 		{name: "LoginDialog", kind: "FeedSpider2.LoginDialog", onLoginSuccess: "loginSuccess"},
 	],
 	
-  	create: function() {
-    	this.inherited(arguments);
-    	this.credentials = new FeedSpider2.Credentials();
-    	this.loaded = false;
-    	this.reloading = false;
-    	this.swiping = false;
-    	this.$.addSubscriptionMenuItem.setContent($L("Add Subscription"));
-    	this.$.preferencesMenuItem.setContent($L("Preferences"));
-    	this.$.helpMenuItem.setContent($L("Help"));
-    	this.$.logoutMenuItem.setContent($L("Logout"));
-    	this.$.swipeableDeleteButton.setContent($L("Delete"));
-    	this.$.swipeableCancelButton.setContent($L("Cancel"));
-    	this.$.viewTitle.setContent($L("FeedSpider"));
+	create: function() {
+		this.inherited(arguments);
+		this.credentials = new FeedSpider2.Credentials();
+		this.loaded = false;
+		this.reloading = false;
+		this.swiping = false;
+		this.$.addSubscriptionMenuItem.setContent($L("Add Subscription"));
+		this.$.preferencesMenuItem.setContent($L("Preferences"));
+		this.$.helpMenuItem.setContent($L("Help"));
+		this.$.logoutMenuItem.setContent($L("Logout"));
+		this.$.swipeableDeleteButton.setContent($L("Delete"));
+		this.$.swipeableCancelButton.setContent($L("Cancel"));
+		this.$.viewTitle.setContent($L("FeedSpider"));
 	},
 	
 	rendered: function() {
@@ -91,17 +91,17 @@ enyo.kind({
 	},
 	
 	loginSuccess: function(inSender, inEvent) {
-    	this.$.LoginDialog.hide();
-    	this.api = inEvent;
-    	this.sources = new FeedSpider2.AllSources({api: this.api});
-    	this.parent.sources = this.sources;
-    	this.loaded = false;
-    	this.showAddSubscription = true;
-    	
-    	this.reload();
-    	this.activate();
-    	return true;
-  	},
+		this.$.LoginDialog.hide();
+		this.api = inEvent;
+		this.sources = new FeedSpider2.AllSources({api: this.api});
+		this.parent.sources = this.sources;
+		this.loaded = false;
+		this.showAddSubscription = true;
+		
+		this.reload();
+		this.activate();
+		return true;
+	},
 
 	setupItem: function(inSender, inEvent) {
 		var i = inEvent.index;
@@ -113,28 +113,28 @@ enyo.kind({
 		this.$.sourceIcon.addRemoveClass("subscription-rss", !item.isFolder);
 
 		if (item.unreadCount > 0)
-    	{
-    		//The reason for this ugly hack on gecko-based browsers is because using float:right will cause the count to be displayed
-    		//on the next line of the list. We know that this will work because sticky sources is rendered first, and at 
-    		//this point, we can guarantee the presence of at least one source.
-    		if (enyo.platform.firefoxOS || enyo.platform.firefox)
-    		{
-    			var width = this.$.stickySources.controls[0].controls[0].controls[1].getBounds().width;
-    			var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
-    			this.$.sourceName.setStyle("width:" + width + "px; font-weight: bold");
-    			this.$.sourceUnreadCount.setStyle("width:" + remainder + "px; text-align: right; font-weight: bold");
-    		}
-    		else
-    		{
-    			this.$.sourceName.setStyle("font-weight: bold");
-    			this.$.sourceUnreadCount.setStyle("float: right; font-weight: bold");
-    		}
-    		this.$.sourceUnreadCount.setContent(item.unreadCount); 		
-    	} 
+		{
+			//The reason for this ugly hack on gecko-based browsers is because using float:right will cause the count to be displayed
+			//on the next line of the list. We know that this will work because sticky sources is rendered first, and at 
+			//this point, we can guarantee the presence of at least one source.
+			if (enyo.platform.firefoxOS || enyo.platform.firefox)
+			{
+				var width = this.$.stickySources.controls[0].controls[0].controls[1].getBounds().width;
+				var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
+				this.$.sourceName.setStyle("width:" + width + "px; font-weight: bold");
+				this.$.sourceUnreadCount.setStyle("width:" + remainder + "px; text-align: right; font-weight: bold");
+			}
+			else
+			{
+				this.$.sourceName.setStyle("font-weight: bold");
+				this.$.sourceUnreadCount.setStyle("float: right; font-weight: bold");
+			}
+			this.$.sourceUnreadCount.setContent(item.unreadCount); 		
+		} 
 		else
 		{
-    		this.$.sourceName.setStyle("");
-    		this.$.sourceUnreadCount.setStyle("");
+			this.$.sourceName.setStyle("");
+			this.$.sourceUnreadCount.setStyle("");
 			this.$.sourceUnreadCount.setContent("");
 			this.$.sourceUnreadCount.hide();
 		}
@@ -155,28 +155,28 @@ enyo.kind({
 		this.$.reorderIcon.addRemoveClass("subscription-rss", !item.isFolder);
 
 		if (item.unreadCount > 0)
-    	{
-    		//The reason for this ugly hack on gecko-based browsers is because using float:right will cause the count to be displayed
-    		//on the next line of the list. We know that this will work because sticky sources is rendered first, and at 
-    		//this point, we can guarantee the presence of at least one source.
-    		if (enyo.platform.firefoxOS || enyo.platform.firefox)
-    		{
-    			var width = this.$.stickySources.controls[0].controls[0].controls[1].getBounds().width;
-    			var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
-    			this.$.reorderName.setStyle("width:" + width + "px; font-weight: bold");
-    			this.$.reorderUnreadCount.setStyle("width:" + remainder + "px; text-align: right; font-weight: bold");
-    		}
-    		else
-    		{
-    			this.$.reorderName.setStyle("font-weight: bold");
-    			this.$.reorderUnreadCount.setStyle("float: right; font-weight: bold");
-    		}
-    		this.$.reorderUnreadCount.setContent(item.unreadCount); 		
-    	} 
+		{
+			//The reason for this ugly hack on gecko-based browsers is because using float:right will cause the count to be displayed
+			//on the next line of the list. We know that this will work because sticky sources is rendered first, and at 
+			//this point, we can guarantee the presence of at least one source.
+			if (enyo.platform.firefoxOS || enyo.platform.firefox)
+			{
+				var width = this.$.stickySources.controls[0].controls[0].controls[1].getBounds().width;
+				var remainder = window.innerWidth - parseInt(width) - 70; //This is calculated by taking window width less width of the all items title column, less 30px for the icon and 40px for the margins.
+				this.$.reorderName.setStyle("width:" + width + "px; font-weight: bold");
+				this.$.reorderUnreadCount.setStyle("width:" + remainder + "px; text-align: right; font-weight: bold");
+			}
+			else
+			{
+				this.$.reorderName.setStyle("font-weight: bold");
+				this.$.reorderUnreadCount.setStyle("float: right; font-weight: bold");
+			}
+			this.$.reorderUnreadCount.setContent(item.unreadCount); 		
+		} 
 		else
 		{
-    		this.$.reorderName.setStyle("");
-    		this.$.reorderUnreadCount.setStyle("");
+			this.$.reorderName.setStyle("");
+			this.$.reorderUnreadCount.setStyle("");
 			this.$.reorderUnreadCount.setContent("");
 			this.$.reorderUnreadCount.hide();
 		}
@@ -185,17 +185,17 @@ enyo.kind({
 	},
 
 	setupSwipeItem: function(inSender, inEvent) {
-        // because setting it on the list itself fails:
-        this.$.MainList.setPersistSwipeableItem(true);
-        this.$.MainList.setReorderable(false);
-        this.activeItem = inEvent.index;
-        this.swiping = true;
-    },
+		// because setting it on the list itself fails:
+		this.$.MainList.setPersistSwipeableItem(true);
+		this.$.MainList.setReorderable(false);
+		this.activeItem = inEvent.index;
+		this.swiping = true;
+	},
 
 	completeSwipeItem: function() {
-        this.$.MainList.completeSwipe();
-        this.swiping = false;
-        if (FeedSpider2.Preferences.isManualFeedSort())
+		this.$.MainList.completeSwipe();
+		this.swiping = false;
+		if (FeedSpider2.Preferences.isManualFeedSort())
 		{
 			this.$.MainList.setReorderable(true);
 		}
@@ -203,7 +203,7 @@ enyo.kind({
 		{
 			this.$.MainList.setReorderable(false);
 		}
-    },
+	},
 
 	reload: function() {
 		var self = this;
@@ -239,7 +239,7 @@ enyo.kind({
 					self.$.subscriptionsDivider.show();
 					self.$.MainList.setCount(self.sources.subscriptionSources.items.length);
 					
-			   		self.$.stickySources.render();
+					self.$.stickySources.render();
 					self.$.MainList.refresh();
 					self.$.smallSpinner.hide();
 					self.$.refreshButton.show();
@@ -295,17 +295,17 @@ enyo.kind({
 		return true;
 	},
 
-    deleteButtonTapped: function(inSender, inEvent) {
-        this.$.MainList.setPersistSwipeableItem(false);
-        this.sourceDeleted(this.activeItem); 
+	deleteButtonTapped: function(inSender, inEvent) {
+		this.$.MainList.setPersistSwipeableItem(false);
+		this.sourceDeleted(this.activeItem); 
 		this.completeSwipeItem();
-   		this.filterAndRefresh();
-    },
+		this.filterAndRefresh();
+	},
 
-    cancelButtonTapped: function(inSender, inEvent) {
-        this.$.MainList.setPersistSwipeableItem(false);
+	cancelButtonTapped: function(inSender, inEvent) {
+		this.$.MainList.setPersistSwipeableItem(false);
 		this.completeSwipeItem();
-    },
+	},
 
 	sourceDeleted: function(event) {
 		var unreadCount = (this.sources.subscriptionSources.items[event].unreadCount);
@@ -327,7 +327,7 @@ enyo.kind({
 		}
 
 		this.sources.subscriptions.move(this.sources.subscriptionSources.items[inEvent.reorderFrom], beforeSubscription);
-   		this.filterAndRefresh();
+		this.filterAndRefresh();
 	},
 
 	markedAllRead: function(event) {
