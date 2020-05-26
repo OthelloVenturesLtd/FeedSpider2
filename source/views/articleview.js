@@ -9,9 +9,9 @@ enyo.kind({
 	},
 	
 	handlers: {
-        onSelect: "sendTo",
-        onShowInstapaperDialog: "handleShowInstapaperDialog"
-    },
+		onSelect: "sendTo",
+		onShowInstapaperDialog: "handleShowInstapaperDialog"
+	},
 	
 	components:[
 		{name: "mainScroller", kind: "enyo.Scroller", fit: true, ondragfinish: "dragSwitchArticle", components: [
