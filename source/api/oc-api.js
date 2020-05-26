@@ -1,90 +1,111 @@
-var OCApi = Class.create({
-  //UPDATED 1.2.1
-  login: function(credentials, success, failure) {
-	//Clean Up Base URL (if necessary)
-	//Remove whitespace
-	credentials.server = credentials.server.replace(/^\s\s*/, '').replace(/\s\s*$/, '')
-	
-	//Remove trailing slash
-	credentials.server = credentials.server.replace(/\/$/, "");
-	
-  	OCApi.BASE_URL = credentials.server + "/index.php/apps/news/api/v1-2/"
-    this.auth = btoa(credentials.email + ":" + credentials.password)
-    
-    new Ajax.Request(OCApi.BASE_URL + "version", {
-      method: "get",
- 	  requestHeaders: this._requestHeaders(),
-      onSuccess: success(this.auth),
-      onFailure: failure
-    })
-  },
+/* eslint-disable no-var */
+enyo.kind({
+	name: "FeedSpider2.OCAPI",
+	kind: "FeedSpider2.API",
+
+	published: {
+		auth: null,
+		baseURL: "",
+		newestItemID: 0
+	},
+
+	//UPDATED 1.2.1
+	login: function(credentials, success, failure) {
+		//Clean Up Base URL (if necessary)
+		//Remove whitespace
+		credentials.server = credentials.server.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+		
+		//Remove trailing slash
+		credentials.server = credentials.server.replace(/\/$/, "");
+		
+		this.set("baseURL", credentials.server + "/index.php/apps/news/api/v1-2/");
+		this.set("auth", btoa(credentials.email + ":" + credentials.password));
+		
+		var request = new enyo.Ajax({
+			url: this.get("baseURL") + "version",
+			method: "GET",
+			xhrFields: {mozSystem: true},
+			headers: this._requestHeaders(),
+			cacheBust: false
+		});
+
+		request.error(failure);
+		request.response(success(this.auth));
+		request.go({output: "json"});
+	},
   
-  //UPDATED 1.2.1
-  getTags: function(success, failure) {
-	new Ajax.Request(OCApi.BASE_URL + "folders", {
-		method: "get",
-        requestHeaders: this._requestHeaders(),	
-		onSuccess: function(response){
+	//UPDATED 1.2.1
+	getTags: function(success, failure) {
+		var request = new enyo.Ajax({
+			url: this.get("baseURL") + "folders",
+			method: "GET",
+			xhrFields: {mozSystem: true},
+			headers: this._requestHeaders(),
+			cacheBust: false
+		});
+
+		request.error(failure);
+		request.response(function(inRequest, inResponse) {
 			//Post-Processing
-			var tags = response.responseText.evalJSON().folders
-			var i = 1
-			tags.each(function(tag) {
-				tag.sortid = i
-				i++			
-			})
+			var tags = inResponse.folders;
+			var sortID = 1;
+			for (var i = 0; i < tags.length; i++)
+			{
+				tags[i].sortid = sortID;l
+				sortID++;			
+			};
 			
-			success(tags)
-		},
+			success(tags);
+		}, this);
+		request.go({output: "json"});
+	},
+
+	//NOT SUPPORTED BY API
+	getSortOrder: function(success, failure) {
+		/*new Ajax.Request(this.get("baseURL") + "preference/stream/list", {
+		method: "get",
+		parameters: {output: "json"},
+		requestHeaders: this._requestHeaders(),
 		onFailure: failure,
-	})
-  },
+		onSuccess: function(response) {
+			var prefs = response.responseText.evalJSON()
+			var sortOrder = {}
 
-  //NOT SUPPORTED BY API
-  getSortOrder: function(success, failure) {
-    /*new Ajax.Request(OCApi.BASE_URL + "preference/stream/list", {
-      method: "get",
-      parameters: {output: "json"},
-      requestHeaders: this._requestHeaders(),
-      onFailure: failure,
-      onSuccess: function(response) {
-        var prefs = response.responseText.evalJSON()
-        var sortOrder = {}
+			if(prefs && prefs.streamprefs) {
+			$H(prefs.streamprefs).each(function(pair) {
+				pair.key = pair.key.gsub(/user\/\d+\//, "user/-/")
 
-        if(prefs && prefs.streamprefs) {
-          $H(prefs.streamprefs).each(function(pair) {
-            pair.key = pair.key.gsub(/user\/\d+\//, "user/-/")
+				$A(pair.value).each(function(pref) {
+				if("subscription-ordering" == pref.id) {
+					sortOrder[pair.key] = new SortOrder(pref.value)
+				}
+				})
+			})
+			}
 
-            $A(pair.value).each(function(pref) {
-              if("subscription-ordering" == pref.id) {
-                sortOrder[pair.key] = new SortOrder(pref.value)
-              }
-            })
-          })
-        }
+			success(sortOrder)
+		}
+		})*/
+		failure();
+	},
 
-        success(sortOrder)
-      }
-    })*/
-    failure()
-  },
+	//NOT SUPPORTED BY API
+	setSortOrder: function(sortOrder, stream) {
+		/*this._getEditToken(function(token) {
+		var parameters = {
+			T: token,
+			s: stream || "user/-/state/com.google/root",
+			k: "subscription-ordering",
+			v: sortOrder
+		}
 
-  //NOT SUPPORTED BY API
-  setSortOrder: function(sortOrder, stream) {
-    /*this._getEditToken(function(token) {
-      var parameters = {
-        T: token,
-        s: stream || "user/-/state/com.google/root",
-        k: "subscription-ordering",
-        v: sortOrder
-      }
-
-      new Ajax.Request(OCApi.BASE_URL + "preference/stream/set", {
-        method: "post",
-        parameters: parameters,
-        requestHeaders: this._requestHeaders()
-      })
-    }.bind(this))*/
-  },
+		new Ajax.Request(this.get("baseURL") + "preference/stream/set", {
+			method: "post",
+			parameters: parameters,
+			requestHeaders: this._requestHeaders()
+		})
+		}.bind(this))*/
+	},
   
   //UPDATED 1.2.1
   unsubscribe: function(feed) {
@@ -93,31 +114,31 @@ var OCApi = Class.create({
       this.removeLabel(feed)
     }
     else {
-    	this._ajaxDelete(OCApi.BASE_URL + "feeds/" + feed.id,function() {feedspider.handleApiStateChanged({state: "SubscriptionDeleted", id: feed.id, count: feed.unreadCount})},function() {})
+    	this._ajaxDelete(this.get("baseURL") + "feeds/" + feed.id,function() {feedspider.handleApiStateChanged({state: "SubscriptionDeleted", id: feed.id, count: feed.unreadCount})},function() {})
     }
   },
 
   //UPDATED 1.2.1
   removeLabel: function(folder) {
-    this._ajaxDelete(OCApi.BASE_URL + "folders/" + folder.id.substr(7),function() {feedspider.handleApiStateChanged({state: "FolderDeleted", id: folder.id})},function() {})
+    this._ajaxDelete(this.get("baseURL") + "folders/" + folder.id.substr(7),function() {feedspider.handleApiStateChanged({state: "FolderDeleted", id: folder.id})},function() {})
   },
   
-  //NOT SUPPORTED BY API
-  searchSubscriptions: function(query, success, failure) {
-    failure()
-    /*var self = this
+	//NOT SUPPORTED BY API
+	searchSubscriptions: function(query, success, failure) {
+		failure();
+		/*var self = this
 
-    new Ajax.Request(OCApi.BASE_URL + "feed-finder", {
-      method: "get",
-      parameters: {q: query, output: "json"},
-      requestHeaders: this._requestHeaders(),
-      onFailure: failure,
-      onSuccess: function(response) {
-        var subscriptions = response.responseText.evalJSON().items
-        success(subscriptions)
-      }
-    })*/
-  },
+		new Ajax.Request(this.get("baseURL") + "feed-finder", {
+		method: "get",
+		parameters: {q: query, output: "json"},
+		requestHeaders: this._requestHeaders(),
+		onFailure: failure,
+		onSuccess: function(response) {
+			var subscriptions = response.responseText.evalJSON().items
+			success(subscriptions)
+		}
+		})*/
+	},
 
   //UPDATED 1.2.1
   addSubscription: function(url, success, failure) {
@@ -126,7 +147,7 @@ var OCApi = Class.create({
 	  folderId: 0
 	}
 	
-    new Ajax.Request(OCApi.BASE_URL + "feeds", {
+    new Ajax.Request(this.get("baseURL") + "feeds", {
 		method: "post",
         requestHeaders: this._requestHeaders(),	
 		postBody: JSON.stringify(parameters),
@@ -139,7 +160,7 @@ var OCApi = Class.create({
   getAllSubscriptions: function(success, failure) {
 	var self = this
 	    
-	new Ajax.Request(OCApi.BASE_URL + "feeds", {
+	new Ajax.Request(this.get("baseURL") + "feeds", {
 		method: "get",
         requestHeaders: this._requestHeaders(),		
 		onSuccess: this._processFeeds.bind(this, success, failure),
@@ -153,7 +174,7 @@ var OCApi = Class.create({
 	var feeds = response.responseText.evalJSON().feeds
 	var subscriptions = []
 
-	new Ajax.Request(OCApi.BASE_URL + "folders", {
+	new Ajax.Request(this.get("baseURL") + "folders", {
 		method: "get",
 		asynchronous: false,
 		requestHeaders: this._requestHeaders(),	
@@ -229,7 +250,7 @@ var OCApi = Class.create({
 
   //UPDATED 1.2.1
   getUnreadCounts: function(success, failure) { 
-    new Ajax.Request(OCApi.BASE_URL + "feeds", {
+    new Ajax.Request(this.get("baseURL") + "feeds", {
 		method: "get",
         requestHeaders: this._requestHeaders(),
 		onSuccess: function(response){
@@ -330,7 +351,7 @@ var OCApi = Class.create({
       parameters.offset = continuation
     }    
     
-    new Ajax.Request(OCApi.BASE_URL + "items", {
+    new Ajax.Request(this.get("baseURL") + "items", {
 		method: "get",
 		parameters: parameters,
 		requestHeaders: this._requestHeaders(),
@@ -349,11 +370,11 @@ var OCApi = Class.create({
 				}
 			}
 			var lastArticleId = 0
-			OCApi.NEWESTITEMID = 0
+			this.set("newestItemID", 0);
 			
 			if(!continuation && articles.items[0] != undefined)
 			{
-				OCApi.NEWESTITEMID = articles.items[0].id
+				this.set("newestItemID", articles.items[0].id);
 			}
 			
 			//Do post-processing to conform articles to FeedSpider spec
@@ -419,20 +440,20 @@ var OCApi = Class.create({
   //UPDATED 1.2.1
   markAllRead: function(id, success, failure) { 
     var parameters = {
-    	newestItemId: OCApi.NEWESTITEMID
+    	newestItemId: this.get("newestItemID")
     }
     
     if (id === "user/-/state/com.google/reading-list")
     {
-    	this._ajaxPut(parameters, OCApi.BASE_URL + "items/read", success, failure)
+    	this._ajaxPut(parameters, this.get("baseURL") + "items/read", success, failure)
     }
     else if (id.toString().substr(0,7) === "folder/")
     {
-		this._ajaxPut(parameters, OCApi.BASE_URL + "folders/" + id.substr(7) + "/read", success, failure)
+		this._ajaxPut(parameters, this.get("baseURL") + "folders/" + id.substr(7) + "/read", success, failure)
     }
     else
     {
-		this._ajaxPut(parameters, OCApi.BASE_URL + "feeds/" + id + "/read", success, failure)
+		this._ajaxPut(parameters, this.get("baseURL") + "feeds/" + id + "/read", success, failure)
     }
   },
 
@@ -448,7 +469,7 @@ var OCApi = Class.create({
       parameters.s = id
     }
 
-    new Ajax.Request(OCApi.BASE_URL + "search/items/ids", {
+    new Ajax.Request(this.get("baseURL") + "search/items/ids", {
       method: "get",
       parameters: parameters,
       requestHeaders: this._requestHeaders(),
@@ -471,7 +492,7 @@ var OCApi = Class.create({
             i: ids.map(function(n) {return n.id})
           }
 
-          new Ajax.Request(OCApi.BASE_URL + "stream/items/contents", {
+          new Ajax.Request(this.get("baseURL") + "stream/items/contents", {
             method: "post",
             parameters: parameters,
             requestHeaders: self._requestHeaders(),
@@ -497,12 +518,12 @@ var OCApi = Class.create({
 
   //UPDATED 1.2.1
   setArticleRead: function(articleId, subscriptionId, success, failure) {
-    this._ajaxPut({}, OCApi.BASE_URL + "items/" + articleId + "/read", success, failure)
+    this._ajaxPut({}, this.get("baseURL") + "items/" + articleId + "/read", success, failure)
   },
 
   //UPDATED 1.2.1
   setArticleNotRead: function(articleId, subscriptionId, success, failure, sticky) {
-	this._ajaxPut({}, OCApi.BASE_URL + "items/" + articleId + "/unread", success, failure)
+	this._ajaxPut({}, this.get("baseURL") + "items/" + articleId + "/unread", success, failure)
   },
 
   //NOT SUPPORTED BY API
@@ -534,13 +555,13 @@ var OCApi = Class.create({
   //UPDATED 1.2.1
   setArticleStarred: function(articleId, subscriptionId, success, failure) {
     var articleGuid = this._hashForArticle(articleId)
-    this._ajaxPut({}, OCApi.BASE_URL + "items/" + subscriptionId + "/" + articleGuid + "/star", success, failure)
+    this._ajaxPut({}, this.get("baseURL") + "items/" + subscriptionId + "/" + articleGuid + "/star", success, failure)
   },
 
   //UPDATED 1.2.1
   setArticleNotStarred: function(articleId, subscriptionId, success, failure) {
     var articleGuid = this._hashForArticle(articleId)    
-    this._ajaxPut({}, OCApi.BASE_URL + "items/" + subscriptionId + "/" + articleGuid + "/unstar", success, failure)
+    this._ajaxPut({}, this.get("baseURL") + "items/" + subscriptionId + "/" + articleGuid + "/unstar", success, failure)
   },
   
   //UPDATED 1.2.1
@@ -635,7 +656,4 @@ var OCApi = Class.create({
   supportsManualSort: function() {
 	return false
   }
-})
-
-OCApi.BASE_URL = ""
-OCApi.NEWESTITEMID = 0
+});
