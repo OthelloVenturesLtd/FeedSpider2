@@ -11,7 +11,7 @@ enyo.kind({
 		]},
 		{kind: "enyo.Scroller", fit: true, style: "padding: 10px", components: [
 			{tag: "div", content: "FeedSpider 2", style: "font-size: 24px; font-weight: bold"},
-			{tag: "div", content: "Version 2.0.8 by Othello Ventures Ltd."},
+			{tag: "div", content: "Version 2.1.0 by Othello Ventures Ltd."},
 			{tag: "br"},
 			{tag: "div", components: [
 				{tag: "div", content: "FeedSpider 2 is a cross-platform port of the original FeedSpider RSS Reader for webOS, designed to work with Google Reader compatible applications."},
@@ -21,7 +21,7 @@ enyo.kind({
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://bazqux.com", "target": "_blank"}, content: "BazQux Reader" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "http://feedly.com", "target": "_blank"}, content: "Feedly" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://www.inoreader.com", "target": "_blank"}, content: "InoReader" }]},
-					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://www.owncloud.org", "target": "_blank"}, content: "OwnCloud News" }]},
+					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://www.owncloud.org", "target": "_blank"}, content: "NextCloud News" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "http://tt-rss.org", "target": "_blank"}, content: "Tiny Tiny RSS" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "http://www.theoldreader.com", "target": "_blank"}, content: "The Old Reader" }]},
 				]}
@@ -37,6 +37,15 @@ enyo.kind({
 			]},
 			{tag: "br"},
 			{tag: "div", content: "History", style: "font-size: 20px; font-weight: bold"},
+			{tag: "div", components: [
+				{tag: "div", content: "2.1.0", style: "font-weight: bold" },
+				{tag: "ul", components: [
+					{tag: "li", content: "Upgrade to Enyo 2.5."},
+					{tag: "li", content: "Remove support for AOL Reader (RIP)."},
+					{tag: "li", content: "Switch support from OwnCloud News (no longer developed) to NextCloud News."},
+					{tag: "li", content: "Add support for shared feeds in The Old Reader."},
+				]}
+			]},
 			{tag: "div", components: [
 				{tag: "div", content: "2.0.8", style: "font-weight: bold" },
 				{tag: "ul", components: [
