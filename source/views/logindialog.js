@@ -77,7 +77,7 @@ enyo.kind({
 		this.$.bqPickerItem.setContent($L("BazQux Reader"));
 		this.$.feedlyPickerItem.setContent($L("Feedly"));
 		this.$.inoPickerItem.setContent($L("InoReader"));
-		this.$.ocPickerItem.setContent($L("OwnCloud News"));
+		this.$.ocPickerItem.setContent($L("NextCloud News"));
 		this.$.torPickerItem.setContent($L("The Old Reader"));
 		this.$.ttrssPickerItem.setContent($L("Tiny Tiny RSS"));
 		this.$.errorMessage.setContent($L("Login Failed"));
@@ -91,7 +91,6 @@ enyo.kind({
 		//system in the future.
 		if (!enyo.platform.webos && window.PalmSystem)
 		{
-			this.$.aolPickerItem.hide();
 			this.$.feedlyPickerItem.hide();
 		}
 		

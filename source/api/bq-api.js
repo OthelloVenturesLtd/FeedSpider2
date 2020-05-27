@@ -13,8 +13,8 @@ enyo.kind({
 
 	//UPDATED 1.0.1
 	login: function(credentials, success, failure) {
-		var authSuccess = function(response) {
-			var authMatch = response.responseText.match(/Auth\=(.*)/);
+		var authSuccess = function(inRequest, inResponse) {
+			var authMatch = inResponse.match(/Auth\=(.*)/);
 			this.set("auth", authMatch ? authMatch[1] : '');
 			success(this.get("auth"));
 		}.bind(this);
@@ -28,7 +28,7 @@ enyo.kind({
 		});
 
 		request.error(failure);
-		request.response(authSuccess, this);
+		request.response(authSuccess);
 		request.go();
 	},
 
