@@ -3,7 +3,12 @@ enyo.kind({
 
 	published: {
 		api: null,
-		items: []
+		items: null
+	},
+
+	create: function() {
+		this.set("items", []);
+		this.inherited(arguments);
 	},
 
 	clear: function() {

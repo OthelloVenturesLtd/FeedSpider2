@@ -10,7 +10,7 @@ Feedspider Supports:
 * BazQux Reader
 * Feedly
 * InoReader
-* OwnCloud News
+* NextCloud News
 * Tiny Tiny RSS
 * The Old Reader
 

@@ -2,22 +2,22 @@ enyo.kind({
 	name: "FeedSpider2.Folder",
 	kind: "FeedSpider2.ArticleContainer",
 	
-    published: {
-    	icon: "assets/folder-grey.png",
-    	divideBy: $L("Subscriptions"),
-    	feedWatched: false,
-    	stickySubscriptions: [],
-    	subscriptions: null,
-    	showOrigin: true,
-    	canMarkAllRead: true,
-    	isFolder: true
-    },
+	published: {
+		icon: "assets/folder-grey.png",
+		divideBy: $L("Subscriptions"),
+		feedWatched: false,
+		stickySubscriptions: [],
+		subscriptions: null,
+		showOrigin: true,
+		canMarkAllRead: true,
+		isFolder: true
+	},
 
-    create: function() {
-    	this.inherited(arguments);
-    	this.set("subscriptions", new FeedSpider2.SubscriptionContainer({api: this.get("api"), items: [], subscriptionOrderingStream: this.get("id")}));
-    	this.set("stickySubscriptions", [this]);
-    },
+	create: function() {
+		this.inherited(arguments);
+		this.set("subscriptions", new FeedSpider2.SubscriptionContainer({api: this.get("api"), items: [], subscriptionOrderingStream: this.get("id")}));
+		this.set("stickySubscriptions", [this]);
+	},
 
 	rendered: function() {
 		this.$.sourceIcon.addClass("subscription-folder");

@@ -22,7 +22,7 @@ enyo.kind({
 
 		var request = new enyo.Ajax({
 			url: "https://www.inoreader.com/accounts/ClientLogin",
-			method: "post",
+			method: "POST",
 			xhrFields: {mozSystem: true},
 			postBody: {Email: credentials.email, Passwd: credentials.password},
 			headers: {AppId: this.get("appID"), AppKey: this.get("appKey")},
@@ -37,7 +37,7 @@ enyo.kind({
 	getTags: function(success, failure) {
 		var request = new enyo.Ajax({
 			url: this.get("baseURL")+ "tag/list",
-			method: "get",
+			method: "GET",
 			xhrFields: {mozSystem: true},
 			headers: this._requestHeaders(),
 			cacheBust: false
@@ -53,7 +53,7 @@ enyo.kind({
 	getSortOrder: function(success, failure) {
 		var request = new enyo.Ajax({
 			url: this.get("baseURL")+ "preference/stream/list",
-			method: "get",
+			method: "GET",
 			xhrFields: {mozSystem: true},
 			headers: this._requestHeaders(),
 			cacheBust: false
@@ -97,7 +97,7 @@ enyo.kind({
 
 			var request = new enyo.Ajax({
 				url: this.get("baseURL")+ "preference/stream/set", 
-				method: "post",
+				method: "POST",
 				xhrFields: {mozSystem: true},
 				postBody: parameters,
 				headers: this._requestHeaders(),
@@ -123,7 +123,7 @@ enyo.kind({
 
 				var request = new enyo.Ajax({
 					url: this.get("baseURL")+ "subscription/edit",
-					method: "post",
+					method: "POST",
 					xhrFields: {mozSystem: true},
 					postBody: parameters,
 					headers: this._requestHeaders(),
@@ -148,7 +148,7 @@ enyo.kind({
 
 			var request = new enyo.Ajax({
 				url: this.get("baseURL")+ "disable-tag",
-				method: "post",
+				method: "POST",
 				xhrFields: {mozSystem: true},
 				postBody: parameters,
 				headers: this._requestHeaders(),
@@ -169,7 +169,7 @@ enyo.kind({
 		/*var self = this
 
 		new Ajax.Request(this.get("baseURL")+ "feed-finder", {
-		method: "get",
+		method: "GET",
 		parameters: {q: query, output: "json"},
 		requestHeaders: this._requestHeaders(),
 		onFailure: failure,
@@ -189,7 +189,7 @@ enyo.kind({
 
 			var request = new enyo.Ajax({
 				url: this.get("baseURL")+ "subscription/quickadd",
-				method: "post",
+				method: "POST",
 				xhrFields: {mozSystem: true},
 				postBody: parameters,
 				headers: this._requestHeaders(),
@@ -208,13 +208,13 @@ enyo.kind({
 				}
 			}, this);
 			request.go({output: "json"});
-		}.bind(this))
+		}.bind(this));
 	},
 
 	getAllSubscriptions: function(success, failure) {
 		var request = new enyo.Ajax({
 			url: this.get("baseURL")+ "subscription/list", 
-			method: "get",
+			method: "GET",
 			xhrFields: {mozSystem: true},
 			headers: this._requestHeaders(),
 			cacheBust: false
@@ -229,7 +229,7 @@ enyo.kind({
 	},
 
 	cacheTitles: function(subscriptions) {
-		this.set("titles",{});
+		this.set("titles", {});
 		for (var i=0 ; i<subscriptions.length; i++)
 		{
 			this.get("titles")[subscriptions[i].id] = subscriptions[i].title;
@@ -243,7 +243,7 @@ enyo.kind({
 	getUnreadCounts: function(success, failure) {
 		var request = new enyo.Ajax({
 			url: this.get("baseURL")+ "unread-count", 
-			method: "get",
+			method: "GET",
 			xhrFields: {mozSystem: true},
 			headers: this._requestHeaders(),
 			cacheBust: false
@@ -345,7 +345,7 @@ enyo.kind({
 
 		var request = new enyo.Ajax({
 			url: this.get("baseURL")+ "stream/contents/" + escape(id),
-			method: "get",
+			method: "GET",
 			xhrFields: {mozSystem: true},
 			headers: this._requestHeaders(),
 			cacheBust: false
@@ -368,7 +368,7 @@ enyo.kind({
 
 				var request = new enyo.Ajax({
 					url: this.get("baseURL")+ "mark-all-as-read",
-					method: "post",
+					method: "POST",
 					xhrFields: {mozSystem: true},
 					postBody: parameters,
 					headers: this._requestHeaders(),
@@ -397,19 +397,21 @@ enyo.kind({
 
 		var request = new enyo.Ajax({
 			url: this.get("baseURL")+ "search/items/ids",
-			method: "get",
+			method: "GET",
 			xhrFields: {mozSystem: true},
 			headers: this._requestHeaders(),
 			cacheBust: false
 		});
 
 		request.error(failure);
-		request.response(this.searchItemsFound.bind(this, success, failure));
+		request.response(function(inRequest, inResponse) {
+			this.searchItemsFound(success, failure, inResponse);
+		}, this);
 		request.go(parameters);
 	},
 
 	searchItemsFound: function(success, failure, response) {
-		var ids = response.responseText.evalJSON().results;
+		var ids = response.results;
 
 		if(ids.length) {
 			this._getEditToken(
@@ -421,7 +423,7 @@ enyo.kind({
 
 					var request = new enyo.Ajax({
 						url: this.get("baseURL")+ "stream/items/contents",
-						method: "post",
+						method: "POST",
 						xhrFields: {mozSystem: true},
 						postBody: parameters,
 						headers: this._requestHeaders(),
@@ -442,7 +444,7 @@ enyo.kind({
 	},
 
 	mapSearchResults: function(response) {
-		console.log(response.responseText);
+		console.log(response);
 	},
 
 	setArticleRead: function(articleId, subscriptionId, success, failure) {
@@ -527,7 +529,7 @@ enyo.kind({
 
 				var request = new enyo.Ajax({
 					url: this.get("baseURL")+ "edit-tag",
-					method: "post",
+					method: "POST",
 					xhrFields: {mozSystem: true},
 					postBody: parameters,
 					headers: this._requestHeaders(),
@@ -555,7 +557,7 @@ enyo.kind({
 		else {
 			var request = new enyo.Ajax({
 				url: this.get("baseURL")+ "token",
-				method: "get",
+				method: "GET",
 				xhrFields: {mozSystem: true},
 				headers: this._requestHeaders(),
 				cacheBust: false
@@ -602,5 +604,4 @@ enyo.kind({
 	supportsManualSort: function() {
 		return true;
 	}
-  
 });
