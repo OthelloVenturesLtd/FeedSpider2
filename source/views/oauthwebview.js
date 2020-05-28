@@ -145,30 +145,19 @@ enyo.kind({
 			}
 		}
 
-		new Ajax.Request(this.accessTokenUrl, {
+		var request = new enyo.Ajax({
+			url: this.accessTokenUrl,
 			method: this.method,
-			encoding: 'UTF-8',
+			xhrFields: {mozSystem: true},
 			postBody: postBody,
-			onComplete: function(response) {
-				var response_text = response.responseText;
-				//Log.debug(this.TAG + ': accesstoken: ' + response.status + response_text);
-
-				if (response.status == 200)
-				{
-					try {
-						var responseJSON = JSON.parse(response_text);
-						this.doOAuthSuccess(responseJSON);
-					}
-					catch (e) {
-						this.doOAuthFailure();
-					}
-				}
-				else
-				{
-					this.doOAuthFailure();
-				}
-			}.bind(this)
+			cacheBust: false
 		});
+
+		request.error(this.doOAuthFailure());
+		request.response(function(inRequest, inResponse){
+			this.doOAuthSuccess(inResponse);
+		}, this);
+		request.go({output: "json"});
 	},
 	
 	// Due to a bug in the way that webOS 3.0.4+ handles clearing webView cookies, simply calling clearCookies() on the
