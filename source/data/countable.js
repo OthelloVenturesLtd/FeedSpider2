@@ -3,8 +3,8 @@ enyo.kind({
 	kind: "enyo.Control",
 	
 	published: { 
-  		unreadCount: 0,
-  		unreadCountDisplay: ""
+		unreadCount: 0,
+		unreadCountDisplay: ""
 	},
 	
 	bindings: [
@@ -36,7 +36,7 @@ enyo.kind({
 		this.set("unreadCount", count);
 
 		if(this.get("unreadCount") < 0) {
-	  		this.set("unreadCount", 0);
+			this.set("unreadCount", 0);
 		}
 	},
 

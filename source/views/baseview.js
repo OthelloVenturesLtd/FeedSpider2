@@ -3,6 +3,8 @@ enyo.kind({
 	kind: "FittableRows",
 	fit: true,
 
+	style: "width: 100%;",
+
 	published: {
 		previousPage: "",
 	},
@@ -43,22 +45,22 @@ enyo.kind({
 		this.doLogout();
 	},
 
-  	refreshList: function(list, items) {
-  	  	var listLength = list.controls.length;
-  	  	for (var i = 0; i < listLength; i++) { 
-    		list.controls[0].set("last", false);
-    		list.controls[0].setContainer(null);
-    	}
-  	    
-  	    for (var j = 0; j < items.length; j++) { 
-    		if(j == items.length - 1)
-    		{
-    			items[j].set("last", true);
-    		}
+	refreshList: function(list, items) {
+		var listLength = list.controls.length;
+		for (var i = 0; i < listLength; i++) { 
+			list.controls[0].set("last", false);
+			list.controls[0].setContainer(null);
+		}
+		
+		for (var j = 0; j < items.length; j++) { 
+			if(j == items.length - 1)
+			{
+				items[j].set("last", true);
+			}
 
-    		items[j].setContainer(list);
-    	}
-  	},
+			items[j].setContainer(list);
+		}
+	},
 
 	scrollToTop: function() {
 		this.$.MainList.scrollToStart();

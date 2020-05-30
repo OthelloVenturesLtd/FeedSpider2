@@ -4,23 +4,23 @@ enyo.kind({
 	index: 0,
 	
 	published: {
-  		api: null,
-  		author: "",
-  		continuation: "",
-  		data: null,
-  		displayDate: "",
-  		id: null,
-  		isRead: false,
-  		isShared: false,
-  		isStarred: false,
-  		last: false,
-  		origin: "",
-  		readLocked: null,
-  		sortDate: "",
-  		subscription: null,
-  		subscriptionId: null,
-  		summary: "",
-  		title: ""
+		api: null,
+		author: "",
+		continuation: "",
+		data: null,
+		displayDate: "",
+		id: null,
+		isRead: false,
+		isShared: false,
+		isStarred: false,
+		last: false,
+		origin: "",
+		readLocked: null,
+		sortDate: "",
+		subscription: null,
+		subscriptionId: null,
+		summary: "",
+		title: ""
 	},
 	
 	events: {
@@ -65,27 +65,27 @@ enyo.kind({
 	},
 	
 	rendered: function() {
-	    if (!this.get("isRead"))
-    	{
-    		this.$.articleName.addStyles("font-weight: bold");
-    		this.$.articleOrigin.addStyles("font-weight: bold");		
-    	}
-    	
-    	if (this.get("isStarred"))
-    	{
-    		this.$.starredIcon.show();
-    	}
+		if (!this.get("isRead"))
+		{
+			this.$.articleName.addStyles("font-weight: bold");
+			this.$.articleOrigin.addStyles("font-weight: bold");		
+		}
+		
+		if (this.get("isStarred"))
+		{
+			this.$.starredIcon.show();
+		}
 		
 		if (this.get("subscription").showOrigin)
-    	{
-    		this.$.articleOrigin.show();
-    	}
+		{
+			this.$.articleOrigin.show();
+		}
 		
 		if (!this.get("last"))
-    	{
-    		this.$.borderContainer.addStyles("border-bottom-width: 1px; border-bottom-style: groove");
-    	}
-    	this.inherited(arguments);
+		{
+			this.$.borderContainer.addStyles("border-bottom-width: 1px; border-bottom-style: groove");
+		}
+		this.inherited(arguments);
 	},
 	
 	itemTapped: function() {
