@@ -1,0 +1,35 @@
+/* Radio Item */
+.moon-radio-item {
+	display: inline-block;
+	max-width: 250px;
+	margin: 0 @moon-radio-item-gap 0 0;
+	padding: 10px @moon-spotlight-outset 10px @moon-item-indent + @moon-spotlight-outset;
+
+	&:before {
+		content: '';
+		position: absolute;
+		left: @moon-spotlight-outset;
+		top: 17px;
+		width: @moon-selectable-item-indicator-width - 2 * @moon-radio-item-indicator-border;
+		height: @moon-selectable-item-indicator-height - 2 * @moon-radio-item-indicator-border;
+		border: solid @moon-radio-item-indicator-border @moon-spotlight-text-color;
+		border-radius: @moon-selectable-item-indicator-width / 2;
+		background-color: @moon-button-disabled-text-color;
+	}
+
+	&.selected {
+		&:before {
+			background-color: @moon-accent;
+		}
+	}
+}
+
+.enyo-locale-right-to-left .moon-radio-item {
+	margin: 0 0 0 @moon-radio-item-gap;
+	padding: 10px @moon-item-indent + @moon-spotlight-outset 10px @moon-spotlight-outset;
+
+	&:before {
+		left: auto;
+		right: @moon-spotlight-outset;
+	}
+}

@@ -1,0 +1,17 @@
+/* Checkbox.css */
+.moon-checkbox {
+	cursor: pointer;
+	height: @moon-checkbox-icon-height;
+	.moon-icon {
+		visibility: hidden;
+		margin: 0;
+		padding: 0;
+	}
+	&[checked]  .moon-icon {
+		visibility: visible;
+	}
+}
+
+.spotlight .moon-checkbox[checked]:after {
+	color: @moon-white;
+}
