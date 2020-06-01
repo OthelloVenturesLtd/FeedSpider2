@@ -67,5 +67,5 @@ enyo.kind({
 	name: "FeedSpider2.ArticleCollection",
 	kind: "enyo.Collection",
 	options: { parse: true },
-	model: "quantum.SubscriptionModel",
+	model: "FeedSpider2.ArticleModel",
 });
