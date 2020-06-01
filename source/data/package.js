@@ -1,3 +1,6 @@
 enyo.depends(
-	"articlemodel.js"
+	"allsourcesmodel.js",
+	"articlemodel.js",
+	"credentials.js",
+	"preferences.js"
 );
