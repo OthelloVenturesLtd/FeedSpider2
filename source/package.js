@@ -21,6 +21,7 @@ enyo.depends(
 	// APIs
 	"api",
 	// Model and data definitions
+	"data2",
 	"data",
 	// View kind definitions
 	"views",
