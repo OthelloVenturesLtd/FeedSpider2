@@ -71,8 +71,8 @@ enyo.kind({
 		]}
 	],
 	
-  	create: function() {
-    	this.inherited(arguments);
+	create: function() {
+		this.inherited(arguments);
 		this.$.dialogTitle.setContent($L("Login"));
 		this.$.bqPickerItem.setContent($L("BazQux Reader"));
 		this.$.feedlyPickerItem.setContent($L("Feedly"));
