@@ -5,15 +5,10 @@ enyo.kind({
 	layoutKind: "enyo.FittableColumnsLayout",
 	noStretch: true,
 
-	published: { 
-		api: null,
-		continuation: false,
-		icon: "",
-		id: "",
-		items: null,
+	published: {
+		model: "",
 		itemTap: "",
-		last: false,
-		title: ""
+		last: false
 	},
 	
 	events: {
@@ -31,12 +26,12 @@ enyo.kind({
 	],
 
 	bindings: [
-		{from: ".icon", to: ".$.sourceIcon.src"},
-		{from: ".title", to: ".$.sourceName.content"},
-		{from: ".unreadCount", to: ".$.sourceUnreadCount.content"},
-		{from: ".unreadCount", to: ".$.sourceUnreadCount.showing"},
-		{from: ".unreadCount", to: ".$.sourceName.style", transform: function(v){return v ? "font-weight: bold" : "";}},
-		{from: ".unreadCount", to: ".$.sourceUnreadCount.style", transform: function(v){return v ? "font-weight: bold" : "";}},
+		{from: ".model.iconClass", to: ".$.sourceIcon.classes"},
+		{from: ".model.title", to: ".$.sourceName.content"},
+		{from: ".model.unreadCount", to: ".$.sourceUnreadCount.content"},
+		{from: ".model.unreadCount", to: ".$.sourceUnreadCount.showing"},
+		{from: ".model.unreadCount", to: ".$.sourceName.style", transform: function(v){return v ? "font-weight: bold" : "";}},
+		{from: ".model.unreadCount", to: ".$.sourceUnreadCount.style", transform: function(v){return v ? "font-weight: bold" : "";}},
 	],
 	
 	rendered: function() {
@@ -48,36 +43,11 @@ enyo.kind({
 	},
 	
 	reset: function() {
-		this.set("items", []);
-		this.set("continuation", false);
-	},
-
-	findArticles: function(success, failure) {
-		var onSuccess = function(articles, id, continuation) {
-			Log.debug("continuation token is " + continuation);
-
-			this.set("continuation", continuation);
-			if(this.get("items").length && this.get("items")[this.get("items").length - 1].load_more) {
-				this.get("items").pop();
-			}
-
-			if (articles && articles.length > 0)
-			{
-				articles.forEach(function(articleData) {
-					this.get("items").push(new FeedSpider2.Article({api: this.get("api"), data: articleData, subscription: this}));
-				}.bind(this));
-			}
-
-			success();
-		}.bind(this);
-		this.makeApiCall(this.get("continuation"), onSuccess, failure);
-	},
-
-	highlight: function(node) {
+		// this.set("items", []);
+		// this.set("continuation", false);
 	},
 	
 	itemTapped: function() {
 		this.doSourceTap(this);
 	}
-	
 });

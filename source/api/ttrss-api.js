@@ -157,7 +157,7 @@ enyo.kind({
 	//UPDATED 1.1.0
 	unsubscribe: function(feed) {
 		if(feed.isFolder) {
-			Feeder.notify($L("Folder Delete Not Supported"));
+			FeedSpider2.Notifications.notify($L("Folder Delete Not Supported"));
 			feedspider.handleApiStateChanged({state: "FolderDeleted", id: feed.id});
 			//this.removeLabel(feed)
 		}

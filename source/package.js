@@ -18,6 +18,8 @@ enyo.depends(
 	"style",
 	// Libraries
 	"lib",
+	// Supporting Tools
+	"support",
 	// APIs
 	"api",
 	// Model and data definitions

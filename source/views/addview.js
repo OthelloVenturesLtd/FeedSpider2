@@ -88,7 +88,7 @@ enyo.kind({
 		this.$.smallSpinner.hide();
 		this.$.errorIcon.hide();
 		this.$.blankIcon.show();
-		Feeder.notify($L("Subscription added"));
+		FeedSpider2.Notifications.notify($L("Subscription added"));
 		this.handleGoBack();
 	},
 
@@ -111,7 +111,7 @@ enyo.kind({
 			this.$.smallSpinner.hide();
 			this.$.errorIcon.show();
 			this.$.blankIcon.hide();
-			Feeder.notify($L("No subscriptions found"));
+			FeedSpider2.Notifications.notify($L("No subscriptions found"));
 		}
 		else {
 			this.$.list.setCount(this.subscriptions.items.length);
@@ -123,7 +123,7 @@ enyo.kind({
 		this.$.smallSpinner.hide();
 		this.$.blankIcon.hide();
 		this.$.errorIcon.show();
-		Feeder.notify($L("Unable to add subscription"));
+		FeedSpider2.Notifications.notify($L("Unable to add subscription"));
 	},
 
 	setupItem: function(inSender, inEvent) {

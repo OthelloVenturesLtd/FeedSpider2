@@ -49,7 +49,7 @@ enyo.kind({
 		}
 		else
 		{
-			Feeder.notify($L("Manual Sort Not Available"));
+			FeedSpider2.Notifications.notify($L("Manual Sort Not Available"));
 			FeedSpider2.Preferences.setManualFeedSort(false);
 		}
 	}

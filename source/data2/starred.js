@@ -5,10 +5,6 @@ enyo.kind({
 	published: {
 		id: "user/-/state/com.google/starred",
 		title: $L("Starred"),
-		icon: "assets/starred-grey.png",
-		sticky: true,
-		divideBy: "Home",
-		hideDivider: "hide-divider",
 		showOrigin: true,
 		canMarkAllRead: false
 	},

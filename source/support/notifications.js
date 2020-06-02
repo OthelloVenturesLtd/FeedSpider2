@@ -1,5 +1,5 @@
-var Feeder = new enyo.Component({
-	name: "Feeder",
+enyo.singleton({
+	name: "FeedSpider2.Notifications",
 
 	notify: function(message)
 	{

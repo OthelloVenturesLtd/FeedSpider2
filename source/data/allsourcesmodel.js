@@ -21,33 +21,33 @@ enyo.kind({
 
 		if (data.api.supportsAllArticles())
 		{
-			data.all = new FeedSpider2.AllArticles({api: data.api});
-			data.stickySources.items.push(data.all);
+			data.all = new FeedSpider2.AllArticlesModel({api: data.api});
+			data.stickySources.items.push(new FeedSpider2.ArticleContainer({model: data.all}));
 		}
 		
-		if (data.api.supportsFresh())
-		{
-			data.fresh = new FeedSpider2.Fresh({api: data.api});
-			data.stickySources.items.push(data.fresh);
-		}
+		// if (data.api.supportsFresh())
+		// {
+		// 	data.fresh = new FeedSpider2.Fresh({api: data.api});
+		// 	data.stickySources.items.push(data.fresh);
+		// }
 	
-		if (data.api.supportsStarred())
-		{
-			data.starred = new FeedSpider2.Starred({api: data.api});
-			data.stickySources.items.push(data.starred);
-		}
+		// if (data.api.supportsStarred())
+		// {
+		// 	data.starred = new FeedSpider2.Starred({api: data.api});
+		// 	data.stickySources.items.push(data.starred);
+		// }
 	
-		if (data.api.supportsShared())
-		{
-			data.shared = new FeedSpider2.Shared({api: data.api});
-			data.stickySources.items.push(data.shared);
-		}
+		// if (data.api.supportsShared())
+		// {
+		// 	data.shared = new FeedSpider2.Shared({api: data.api});
+		// 	data.stickySources.items.push(data.shared);
+		// }
 		
-		if (data.api.supportsArchived())
-		{
-			data.archived = new FeedSpider2.Archived({api: data.api});
-			data.stickySources.items.push(data.archived);
-		}
+		// if (data.api.supportsArchived())
+		// {
+		// 	data.archived = new FeedSpider2.Archived({api: data.api});
+		// 	data.stickySources.items.push(data.archived);
+		// }
 		
 		data.subscriptions = new FeedSpider2.AllSubscriptions({api: data.api});
 		return data;

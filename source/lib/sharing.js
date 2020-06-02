@@ -206,13 +206,13 @@ enyo.kind({
 
 	shareWithGoogle: function(article) {
 		article.turnShareOn(function() {
-			Feeder.notify($L("Article shared"));
+			FeedSpider2.Notifications.notify($L("Article shared"));
 		});
 	},
 
 	unshareWithGoogle: function(article) {
 		article.turnShareOff(function() {
-			Feeder.notify($L("Article unshared"));
+			FeedSpider2.Notifications.notify($L("Article unshared"));
 		});
 	},
 
@@ -275,7 +275,7 @@ enyo.kind({
 		var self = this;
 		
 		var success = function() {
-			Feeder.notify($L("Article saved to Instapaper"));
+			FeedSpider2.Notifications.notify($L("Article saved to Instapaper"));
 		};
 
 		var credentials = function() {
@@ -283,7 +283,7 @@ enyo.kind({
 		};
 
 		var failure = function() {
-			Feeder.notify($L("Unable to save article"));
+			FeedSpider2.Notifications.notify($L("Unable to save article"));
 		};
 
 		var instapaper = new FeedSpider2.InstapaperAPI();
@@ -342,7 +342,7 @@ enyo.kind({
 	sendToClipboard: function(article) {
 		//TODO: Figure out how to make this work in enyo2
 		controller.stageController.setClipboard(article.url);
-		Feeder.notify($L("URL Copied"));
+		FeedSpider2.Notifications.notify($L("URL Copied"));
 	},
   
 	sendToBrowser: function(article, shorturl) {

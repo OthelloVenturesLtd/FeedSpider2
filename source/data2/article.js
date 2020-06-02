@@ -194,7 +194,7 @@ enyo.kind({
 		}
 		else
 		{
-			Feeder.notify($L("Sharing Not Available"));
+			FeedSpider2.Notifications.notify($L("Sharing Not Available"));
 		}
 	},
 
@@ -205,7 +205,7 @@ enyo.kind({
 		}
 		else
 		{
-			Feeder.notify($L("Sharing Not Available"));
+			FeedSpider2.Notifications.notify($L("Sharing Not Available"));
 		}
 	},
 
@@ -216,7 +216,7 @@ enyo.kind({
 		}
 		else
 		{
-			Feeder.notify($L("Starring Not Available"));
+			FeedSpider2.Notifications.notify($L("Starring Not Available"));
 		}
 	},
 
@@ -227,7 +227,7 @@ enyo.kind({
 		}
 		else
 		{
-			Feeder.notify($L("Starring Not Available"));
+			FeedSpider2.Notifications.Notifications.notify($L("Starring Not Available"));
 		}
 	},
 
@@ -235,7 +235,7 @@ enyo.kind({
 		Log.debug("setting article state - " + apiState);
 
 		if(apiState.match(/Read/) && this.get("readLocked")) {
-			Feeder.notify($L("Read state has been locked by the service"));
+			FeedSpider2.Notifications.notify($L("Read state has been locked by the service"));
 			success(false);
 		}
 		else {

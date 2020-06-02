@@ -478,7 +478,7 @@ enyo.kind({
 		FeedSpider2.Preferences.setInstapaperUsername(null);
 		FeedSpider2.Preferences.setInstapaperPassword(null);
 		this.$.clearInstapaperCredentialsButton.setDisabled(true);
-		Feeder.notify($L("Instapaper Credentials Cleared"));
+		FeedSpider2.Notifications.notify($L("Instapaper Credentials Cleared"));
 	},
 	
 	handleKeyUp: function(inSender, inEvent) {
