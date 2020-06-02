@@ -93,7 +93,7 @@ enyo.kind({
 	loginSuccess: function(inSender, inEvent) {
 		this.$.LoginDialog.hide();
 		this.api = inEvent;
-		this.sources = new FeedSpider2.AllSources({api: this.api});
+		this.sources = new FeedSpider2.AllSourcesModel({api: this.api});
 		this.parent.sources = this.sources;
 		this.loaded = false;
 		this.showAddSubscription = true;
@@ -105,7 +105,7 @@ enyo.kind({
 
 	setupItem: function(inSender, inEvent) {
 		var i = inEvent.index;
-		var item = this.sources.subscriptionSources.items[i];
+		var item = this.sources.get("subscriptionSources").items[i];
 		
 		this.$.sourceName.setContent(item.title);
 		
@@ -144,11 +144,11 @@ enyo.kind({
 
 	setupReorderComponents: function(inSender, inEvent) {
 		var i = inEvent.index;
-		if(!this.sources.subscriptionSources.items[i]) {
+		if(!this.sources.get("subscriptionSources").items[i]) {
 			return;
 		}
 
-		var item = this.sources.subscriptionSources.items[i];
+		var item = this.sources.get("subscriptionSources").items[i];
 		this.$.reorderName.setContent(item.title);
 		
 		this.$.reorderIcon.addRemoveClass("subscription-folder", item.isFolder);
@@ -234,10 +234,10 @@ enyo.kind({
 			self.sources.sortAndFilter(
 				function() {
 					self.$.MainList.setCount(0);
-					self.refreshList(self.$.stickySources, self.sources.stickySources.items);
+					self.refreshList(self.$.stickySources, self.sources.get("stickySources").items);
 					self.$.stickySources.show();
 					self.$.subscriptionsDivider.show();
-					self.$.MainList.setCount(self.sources.subscriptionSources.items.length);
+					self.$.MainList.setCount(self.sources.get("subscriptionSources").items.length);
 					
 					self.$.stickySources.render();
 					self.$.MainList.refresh();
@@ -285,7 +285,7 @@ enyo.kind({
 		}
 		
 		var i = inEvent.index;
-		var item = this.sources.subscriptionSources.items[i];
+		var item = this.sources.get("subscriptionSources").items[i];
 		if(item.isFolder && !FeedSpider2.Preferences.combineFolders()) {
 			this.doSwitchPanels({target: "folder", api: this.api, folder: item, previousPage: this});
 		}
@@ -308,25 +308,25 @@ enyo.kind({
 	},
 
 	sourceDeleted: function(event) {
-		var unreadCount = (this.sources.subscriptionSources.items[event].unreadCount);
-		this.sources.subscriptions.remove(this.sources.subscriptionSources.items[event]);
-		this.sources.all.decrementUnreadCountBy(unreadCount);
+		var unreadCount = (this.sources.get("subscriptionSources").items[event].unreadCount);
+		this.sources.get("subscriptions").remove(this.sources.get("subscriptionSources").items[event]);
+		this.sources.get("all").decrementUnreadCountBy(unreadCount);
 	},
 
 	sourcesReordered: function(inSender, inEvent) {
 		var beforeSubscription = null;
 
-		if(inEvent.reorderTo < this.sources.subscriptionSources.items.length - 1) {
+		if(inEvent.reorderTo < this.sources.get("subscriptionSources").items.length - 1) {
 			var beforeIndex = inEvent.reorderTo;
 
 			if(inEvent.reorderFrom < inEvent.reorderTo) {
 				beforeIndex += 1;
 			}
 
-			beforeSubscription = this.sources.subscriptionSources.items[beforeIndex];
+			beforeSubscription = this.sources.get("subscriptionSources").items[beforeIndex];
 		}
 
-		this.sources.subscriptions.move(this.sources.subscriptionSources.items[inEvent.reorderFrom], beforeSubscription);
+		this.sources.get("subscriptions").move(this.sources.get("subscriptionSources").items[inEvent.reorderFrom], beforeSubscription);
 		this.filterAndRefresh();
 	},
 

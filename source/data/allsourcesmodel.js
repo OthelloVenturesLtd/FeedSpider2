@@ -2,70 +2,119 @@ enyo.kind({
 	name: "FeedSpider2.AllSourcesModel",
 	kind: "enyo.Model",
 	options: { parse: true },
-	primaryKey: "id",
+
 	attributes: {
-		alternate: null,
-		annotations: null,
-		author: "",
-		categories: null,
-		comments: null,
-		commentsNum: 0,
-		crawlTimeMsec: "",
-		id: "",
-		likingUsers: null,
-		origin: null,
-		published: 0,
-		summary: null,
-		timestampUsec: "",
-		title: "",
-		updated: 0
+		all: null,
+		api: null,
+		archived: null,
+		fresh: null,
+		shared: null,
+		starred: null,
+		stickySources: null,
+		subscriptions: null,
+		subscriptionSources: null
 	},
 
 	parse: function(data) {
-		// All objects and arrays need to be initialized here because initializing them in attributes
-		// will cause the same object to be shared across all instances of this model.
-		if (!Array.isArray(data.alternate))
-		{
-			data.alternate = [];
-		}
+		data.stickySources = {items: []};
+		data.subscriptionSources = {items: []};
 
-		if (!Array.isArray(data.annotations))
+		if (data.api.supportsAllArticles())
 		{
-			data.annotations = [];
+			data.all = new FeedSpider2.AllArticles({api: data.api});
+			data.stickySources.items.push(data.all);
 		}
-
-		if (!Array.isArray(data.categories))
+		
+		if (data.api.supportsFresh())
 		{
-			data.categories = [];
+			data.fresh = new FeedSpider2.Fresh({api: data.api});
+			data.stickySources.items.push(data.fresh);
 		}
-
-		if (!Array.isArray(data.comments))
+	
+		if (data.api.supportsStarred())
 		{
-			data.comments = [];
+			data.starred = new FeedSpider2.Starred({api: data.api});
+			data.stickySources.items.push(data.starred);
 		}
-
-		if (!Array.isArray(data.likingUsers))
+	
+		if (data.api.supportsShared())
 		{
-			data.likingUsers = [];
+			data.shared = new FeedSpider2.Shared({api: data.api});
+			data.stickySources.items.push(data.shared);
 		}
-
-		if (!data.origin)
+		
+		if (data.api.supportsArchived())
 		{
-			data.origin = {};
+			data.archived = new FeedSpider2.Archived({api: data.api});
+			data.stickySources.items.push(data.archived);
 		}
-
-		if (!data.summary)
-		{
-			data.summary = {};
-		}
-
+		
+		data.subscriptions = new FeedSpider2.AllSubscriptions({api: data.api});
 		return data;
-	}
-});
+	},
 
-enyo.kind({
-	name: "FeedSpider2.AllSourcesCollection",
-	kind: "enyo.Collection",
-	options: { parse: true },
-	model: "FeedSpider2.AllSourcesModel",
+	findAll: function(success, failure) {
+		var self = this;
+
+		self.get("subscriptions").findAll(
+			function() {
+				self.get("all").setUnreadCount(self.get("subscriptions").getUnreadCount());
+				success();
+			}, failure
+		);
+	},
+
+	sortAndFilter: function(success, failure) {
+		var self = this;
+		self.get("subscriptionSources").items = [];
+
+		self.get("subscriptions").sort(
+			function() {
+				var hideReadFeeds = FeedSpider2.Preferences.hideReadFeeds();
+				
+				self.get("subscriptions").items.forEach(function(subscription) {
+					if(!hideReadFeeds || (hideReadFeeds && subscription.get("unreadCount"))) {
+						self.get("subscriptionSources").items.push(subscription);
+					}
+				});
+				success();
+			}, failure
+		);
+	},
+
+	articleRead: function(subscriptionId) {
+		this.get("all").decrementUnreadCountBy(1);
+		this.get("subscriptions").articleRead(subscriptionId);
+	},
+
+	articleNotRead: function(subscriptionId) {
+		this.get("all").incrementUnreadCountBy(1);
+		this.get("subscriptions").articleNotRead(subscriptionId);
+	},
+
+	markedAllRead: function(count) {
+		this.get("all").decrementUnreadCountBy(count);
+		this.get("subscriptions").recalculateFolderCounts();
+	},
+
+	nukedEmAll: function() {
+		this.get("all").clearUnreadCount();
+
+		Log.debug("Marked EVERYTHING read");
+
+		this.get("subscriptions").items.forEach(function(item) {
+			Log.debug("Marking " + item.id + " read");
+
+			if(item.get("isFolder")) {
+				item.get("subscriptions").items.forEach(function(subscription) {
+					subscription.clearUnreadCount();
+				});
+
+				item.recalculateUnreadCounts();
+			}
+			else {
+				item.clearUnreadCount();
+			}
+		});
+	}
 });
