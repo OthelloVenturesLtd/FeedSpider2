@@ -4,7 +4,6 @@ enyo.kind({
 	kind: "FeedSpider2.Countable",
 	layoutKind: "enyo.FittableColumnsLayout",
 	noStretch: true,
-	spotlight: true,
 
 	published: { 
 		api: null,
@@ -24,11 +23,7 @@ enyo.kind({
 	handlers: {
 		ontap: "itemTapped"
 	},
-	// {name: "source", style: "width: 100%; border-bottom-width: 1px; border-bottom-style: groove", spotlight: true, ontap: "listSourceTapped" , layoutKind: "enyo.FittableColumnsLayout", components: [
-	// 	{name: "sourceIcon", style: "height: 50px; width: 30px;"},
-	// 	{name: "sourceName", classes: "subscription-title", tag: "span", fit: true},
-	// 	{name: "sourceUnreadCount", classes: "subscription-count", tag: "span"}
-	// ]}
+
 	components: [
 		{name: "sourceIcon", style: "height: 50px; width: 30px;"},
 		{name: "sourceName", classes: "subscription-title", tag: "span", fit: true},
@@ -69,7 +64,6 @@ enyo.kind({
 			if (articles && articles.length > 0)
 			{
 				articles.forEach(function(articleData) {
-					console.log(new FeedSpider2.ArticleModel(articleData));
 					this.get("items").push(new FeedSpider2.Article({api: this.get("api"), data: articleData, subscription: this}));
 				}.bind(this));
 			}
