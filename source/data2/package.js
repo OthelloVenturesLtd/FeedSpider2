@@ -4,7 +4,6 @@ enyo.depends(
 	"article-container.js",
 	"subscription-container.js",
 	"folders.js",
-	"preferences.js",
 	"sort-order.js",
 	"all-sources.js",
 	"all-subscriptions.js",

@@ -1,4 +1,6 @@
-FeedSpider2.Preferences = {
+enyo.singleton({
+	name: "FeedSpider2.Preferences",
+
 	OLDEST_FIRST: "oldest-first",
 	HIDE_READ_FEEDS: "hide-read-feeds",
 	HIDE_READ_ARTICLES: "hide-read-articles",
@@ -242,4 +244,4 @@ FeedSpider2.Preferences = {
 		Log.debug("setting " + name + " to " + value);
 		localStorage.setItem(name, JSON.stringify(value));
 	},
-};
+});
