@@ -39,6 +39,7 @@ enyo.kind({
 		{
 			this.addStyles("border-bottom-width: 1px; border-bottom-style: groove");
 		}
+
 		this.inherited(arguments);
 	},
 	

@@ -5,10 +5,6 @@ enyo.depends(
 	"folders.js",
 	"sort-order.js",
 	"all-subscriptions.js",
-	"archived.js",
-	"fresh.js",
-	"shared.js",
-	"starred.js",
 	"subscription.js",
 	"folder.js",
 	"article.js"

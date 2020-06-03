@@ -48,6 +48,15 @@ enyo.kind({
 		this.makeApiCall(this.get("continuation"), onSuccess, failure);
 	},
 
+	makeApiCall: function(continuation, success, failure) {
+	},
+
+	articleRead: function(subscriptionId) {
+	},
+
+	articleNotRead: function(subscriptionId) {
+	},
+
 	clearUnreadCount: function() {
 		this.setUnreadCount(0);
 	},
@@ -70,6 +79,9 @@ enyo.kind({
 
 	getUnreadCount: function() {
 		return this.get("unreadCount");
+	},
+
+	markSourceRead: function(success) {
 	}
 });
 

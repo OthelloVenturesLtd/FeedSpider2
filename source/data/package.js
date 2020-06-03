@@ -1,8 +1,12 @@
 enyo.depends(
 	"allarticlesmodel.js",
+	"archivedarticlesmodel.js",
 	"allsourcesmodel.js",
 	"articlemodel.js",
 	"credentials.js",
 	"feedmodel.js",
-	"preferences.js"
+	"fresharticlesmodel.js",
+	"preferences.js",
+	"sharedarticlesmodel.js",
+	"starredarticlesmodel.js"
 );
