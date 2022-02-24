@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.othelloventures.feedspider2" version="2.2.0" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>FeedSpider</name>
-    <description>FeedSpider 2</description>
+    <description>RSS Feed Reader</description>
     <author email="feedspider@feedspider.net" href="http://www.feedspider.net">
-        Othello Ventures
+        webOS Archive
     </author>
     <icon src="www/iconff-256.png" />
     <content src="index.html" />

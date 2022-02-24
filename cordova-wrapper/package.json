@@ -1,8 +1,8 @@
 {
-  "name": "com.enyo2.cordova.app",
-  "displayName": "Enyo2App",
-  "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "name": "com.othelloventures.feedspider2",
+  "displayName": "FeedSpider",
+  "version": "2.2.0",
+  "description": "RSS Feed Reader",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,5 +14,10 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "cordova-android": "^10.1.1"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ]
   }
 }
