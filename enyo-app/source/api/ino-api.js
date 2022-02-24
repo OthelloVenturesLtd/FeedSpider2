@@ -5,7 +5,8 @@ enyo.kind({
 
 	published: {
 		auth: null,
-		baseURL: "https://www.inoreader.com/reader/api/0/",
+		//baseURL: "https://www.inoreader.com/reader/api/0/",
+		baseURL: "https://inoreader.jonandnic.com/reader/api/0/",	//Use CORS proxy
 		appID: "1000001438",
 		appKey: "Hea9JkjSNEepktY0s9ss9TUaETgCoBzg",
 		editToken: null,
@@ -21,11 +22,13 @@ enyo.kind({
 		}.bind(this);
 
 		var request = new enyo.Ajax({
-			url: "https://www.inoreader.com/accounts/ClientLogin",
+			//Avoid CORS pre-flight failures by passes in URL string (per https://www.inoreader.com/developers/auth)
+			//Use CORS proxy
+			url: "https://inoreader.jonandnic.com/accounts/ClientLogin?AppId=" + this.get("appID") + "&AppKey=" + this.get("appKey"),
 			method: "POST",
 			xhrFields: {mozSystem: true},
 			postBody: {Email: credentials.email, Passwd: credentials.password},
-			headers: {AppId: this.get("appID"), AppKey: this.get("appKey")},
+			//headers: {AppId: this.get("appID"), AppKey: this.get("appKey")},
 			cacheBust: false
 		});
 
@@ -344,7 +347,9 @@ enyo.kind({
 		}
 
 		var request = new enyo.Ajax({
-			url: this.get("baseURL")+ "stream/contents/" + escape(id),
+			//url: this.get("baseURL")+ "stream/contents/" + escape(id),
+			// escape is deprecated, do this instead
+			url: this.get("baseURL")+ "stream/contents/?" + encodeURIComponent(id),
 			method: "GET",
 			xhrFields: {mozSystem: true},
 			headers: this._requestHeaders(),
