@@ -32,6 +32,7 @@
     "url": "http://github.com/enyojs/enyo"
   },
   "dependencies": {
+    "clean": "^4.0.2",
     "less": "1.7.0",
     "nopt": "2.1.2",
     "shelljs": "0.2.6",
