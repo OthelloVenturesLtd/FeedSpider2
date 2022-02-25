@@ -345,11 +345,9 @@ enyo.kind({
 		if(exclude) {
 			parameters.xt = exclude;
 		}
-
+		
 		var request = new enyo.Ajax({
-			//url: this.get("baseURL")+ "stream/contents/" + escape(id),
-			// escape is deprecated, do this instead
-			url: this.get("baseURL")+ "stream/contents/?" + encodeURIComponent(id),
+			url: this.get("baseURL")+ "stream/contents/" + escape(id),
 			method: "GET",
 			xhrFields: {mozSystem: true},
 			headers: this._requestHeaders(),
