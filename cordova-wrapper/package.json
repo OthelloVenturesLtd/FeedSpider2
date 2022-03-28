@@ -1,0 +1,23 @@
+{
+  "name": "com.othelloventures.feedspider2",
+  "displayName": "FeedSpider",
+  "version": "2.2.0",
+  "description": "RSS Feed Reader",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cordova-android": "^10.1.1"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ]
+  }
+}
