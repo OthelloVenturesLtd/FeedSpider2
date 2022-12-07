@@ -182,6 +182,7 @@ enyo.kind({
 			}
 			else
 			{
+				//TODO: webOS has some lifecycle state where this doesn't work, fix it
 				webos.activate(this.appWindow);
 			}
 		}

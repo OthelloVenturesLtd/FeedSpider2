@@ -23,7 +23,7 @@
 		<meta name="msapplication-TileColor" content="#000000">
 		<meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
 		<meta name='viewport' content='height=device-height'>
-		<!-- set header color for iOS-->
+		<!-- set header color for iOS, also need to set page background color to match -->
 		<meta name="theme-color" content="#000000">
 		<meta name="apple-mobile-web-app-capable" content="yes"/>
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -43,10 +43,8 @@
 			if ('serviceWorker' in navigator) {
 				window.addEventListener('load', function() {
 					navigator.serviceWorker.register('serviceworker.js').then(function(registration) {
-					  // Registration was successful
 					  //console.log('ServiceWorker registration successful with scope: ', registration.scope);
 					}, function(err) {
-					  // registration failed :(
 					  //console.log('ServiceWorker registration failed: ', err);
 					});
 				});
@@ -87,6 +85,6 @@
 			document.addEventListener("touchmove", onTouchMove, { passive: false });
 		</script>
 	</head>
-	<body class="enyo-unselectable" style="background-color: black;" bgcolor="black">
+	<body class="enyo-unselectable">
 	</body>
 </html>
