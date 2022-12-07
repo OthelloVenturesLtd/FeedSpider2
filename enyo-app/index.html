@@ -43,40 +43,48 @@
 			if ('serviceWorker' in navigator) {
 				window.addEventListener('load', function() {
 					navigator.serviceWorker.register('serviceworker.js').then(function(registration) {
-					// Registration was successful
-					console.log('ServiceWorker registration successful with scope: ', registration.scope);
+					  // Registration was successful
+					  //console.log('ServiceWorker registration successful with scope: ', registration.scope);
 					}, function(err) {
-					// registration failed :(
-					console.log('ServiceWorker registration failed: ', err);
+					  // registration failed :(
+					  //console.log('ServiceWorker registration failed: ', err);
 					});
 				});
 			}
 
 			//Stop iOS bouncy overscroll
+			function iOS() {
+				return [
+				  'iPad Simulator',
+				  'iPhone Simulator',
+				  'iPod Simulator',
+				  'iPad',
+				  'iPhone',
+				  'iPod'
+				].includes(navigator.platform)
+				// iPad on iOS 13 detection
+				|| (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+			}
+			
 			function onTouchStart(e) {
 				// Save position of touch
-				console.log("touchstart");
 				const touch = e.touches[0] || e.changedTouches[0];
 				window.lastY = touch.pageY;
 			}
 
 			function onTouchMove(e) {
-				console.log("touchmove");
 				// Check user isn't scrolling past content. If so, cancel move to prevent ios bouncing
 				const touch = e.touches[0] || e.changedTouches[0];
 				y = touch.pageY;
-				if (y < window.lastY && e.srcElement.scrollTop == (e.srcElement.scrollHeight - e.srcElement.clientHeight)) {
-					console.log("user is trying to scroll down without anywhere to scroll to. Canceling propagation.");
+				if (iOS() && y < window.lastY && e.srcElement.scrollTop == (e.srcElement.scrollHeight - e.srcElement.clientHeight)) {
 					e.preventDefault();
-				} else if (y > window.lastY && e.srcElement.scrollTop == 0) {
-					console.log("user is trying to scroll up without anywhere to scroll to. Canceling propagation.");
+				} else if (iOS() && y > window.lastY && e.srcElement.scrollTop == 0) {
 					e.preventDefault();
 				}
 			};
 
 			document.addEventListener("touchstart", onTouchStart, { passive: false });
 			document.addEventListener("touchmove", onTouchMove, { passive: false });
-			
 		</script>
 	</head>
 	<body class="enyo-unselectable" style="background-color: black;" bgcolor="black">
