@@ -9,5 +9,6 @@
 	"miniicon": "iconff-48.png",
 	"splashicon": "iconff-256.png",
 	"noWindow": "true",
-	"uiRevision": 2
+	"uiRevision": 2,
+	"requiredPermissions": ["appmanager.management", "powerd.management"]
 }
