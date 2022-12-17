@@ -10,5 +10,5 @@
 	"splashicon": "iconff-256.png",
 	"noWindow": "true",
 	"uiRevision": 2,
-	"requiredPermissions": ["appmanager.management", "powerd.management"]
+	"requiredPermissions": ["appmanager.management", "luna-sysmgr.operation", "networkconnection.query", "powerd.management", "preferences.system"]
 }
