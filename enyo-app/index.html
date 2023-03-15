@@ -83,6 +83,7 @@
 
 			document.addEventListener("touchstart", onTouchStart, { passive: false });
 			document.addEventListener("touchmove", onTouchMove, { passive: false });
+			document.addEventListener("mousewheel", function(e) { e.preventDefault(); });
 		</script>
 	</head>
 	<body class="enyo-unselectable">
