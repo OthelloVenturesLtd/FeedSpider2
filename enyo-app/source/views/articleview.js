@@ -1,7 +1,6 @@
 enyo.kind({
 	name: "FeedSpider2.ArticleView",
 	kind: "FeedSpider2.BaseView",
-
 	published: {
 		article: "",
 		scrollingIndex: "",
@@ -10,11 +9,11 @@ enyo.kind({
 	
 	handlers: {
 		onSelect: "sendTo",
-		onShowInstapaperDialog: "handleShowInstapaperDialog"
+		onShowInstapaperDialog: "handleShowInstapaperDialog",
 	},
 	
 	components:[
-		{name: "mainScroller", kind: "enyo.Scroller", fit: true, ondragfinish: "dragSwitchArticle", components: [
+		{name: "mainScroller", kind: "enyo.Scroller", fit: true, vertical:"scroll", touchOverscroll: true, touch: true, strategyKind:"TouchScrollStrategy", ondragfinish: "dragSwitchArticle", components: [
 			{name: "articleHeader", kind: "FittableColumns", classes: "article-header", components: [
 				{fit: true, components: [
 					{name: "title", classes: "article-title", style: "font-weight: bold;"},
@@ -54,34 +53,44 @@ enyo.kind({
 		{kind: "FeedSpider2.Sharing"},
 		{kind: enyo.Signals, onkeyup: "handleKeyUp"}
 	],
-	
 	rendered: function() {
 		this.inherited(arguments);
 	},
-
 	catchLinkTap: function(inSender, inEvent)
 	{
-		//TODO: deal with for other OSes
-		if (inEvent.target.href !== undefined) {
-			inEvent.target.target = "_blank";
-		}
-		
-		//Catch images. These will be wrapped in an <a> tag.
-		if (inEvent.target.parentElement.href !== undefined)
+		inEvent.preventDefault();
+		inEvent = inEvent || window.event;
+		var el = inEvent.target || inEvent.srcElement;
+		var href = "";
+		if (el instanceof HTMLImageElement)
 		{
-			inEvent.target.parentElement.target = "_blank";
+			href = el.parentNode.getAttribute('href');
+			el.parentNode.setAttribute('rel', 'external');
+			el.parentNode.setAttribute('target', '_system');
 		}
+		else if (el instanceof HTMLAnchorElement)
+		{
+			href = el.getAttribute('href');
+			el.setAttribute('rel', 'external');
+			el.setAttribute('target', '_system');
+		}
+		if (href != "") {
+			window.open(href, '_system');
+		}
+		return false;
 	},
 	
 	dragSwitchArticle: function(inSender, inEvent) {
-		if(inEvent.horizontal) {
-			if (inEvent.xDirection == -1)
-			{
-				this.nextArticle();
-			}
-			if (inEvent.xDirection == 1)
-			{
-				this.previousArticle();
+		if (this.allowSwipeNav) {
+			if(inEvent.horizontal) {
+				if (inEvent.xDirection == -1)
+				{
+					this.nextArticle();
+				}
+				if (inEvent.xDirection == 1)
+				{
+					this.previousArticle();
+				}
 			}
 		}
 	},
@@ -111,6 +120,7 @@ enyo.kind({
 		}
 
 		this.refreshSharingMenu();
+		this.allowSwipeNav = FeedSpider2.Preferences.allowSwipeNav();
 	},
 
 	setFontSize: function(fontSize) {

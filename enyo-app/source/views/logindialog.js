@@ -26,9 +26,9 @@ enyo.kind({
 				{name: "servicePicker", onChange: "setService", kind: "onyx.Picker", components: [
 					{name: "bqPickerItem", value: "bq"},
 					{name: "feedlyPickerItem", value: "feedly"},
-					{name: "inoPickerItem", value: "ino"},
+					{name: "inoPickerItem", value: "ino", active: true},
 					{name: "ocPickerItem", value: "oc"},
-					{name: "torPickerItem", value: "tor", active: true},
+					{name: "torPickerItem", value: "tor"},
 					{name: "ttrssPickerItem", value: "ttrss"}
 				]}
 			]},
@@ -93,6 +93,16 @@ enyo.kind({
 		{
 			this.$.feedlyPickerItem.hide();
 		}
+		//Modern OSes need a work-around for CORS for each service
+		//	Hide the ones that don't currently have a work-around
+		if (!enyo.platform.webos && !enyo.platform.firefoxOS) {
+			this.$.feedlyPickerItem.hide();
+			this.$.bqPickerItem.hide();
+			this.$.ocPickerItem.hide();
+			this.$.torPickerItem.hide();
+			this.$.ttrssPickerItem.hide();	
+		}
+		enyo.log("Starting on platform: " + JSON.stringify(enyo.platform));
 		
 		this.setService();
 	},

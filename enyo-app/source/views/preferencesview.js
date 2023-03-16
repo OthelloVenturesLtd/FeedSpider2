@@ -26,6 +26,10 @@ enyo.kind({
 						{name: "allowLandscapeTitle", tag: "span", fit: true, classes: "feedspider-preference-title"},
 						{name: "allowLandscape", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setAllowLandscape"}
 					]},
+					{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
+						{name: "allowSwipeNavTitle", tag: "span", fit: true, classes: "feedspider-preference-title"},
+						{name: "allowSwipeNav", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setAllowSwipeNav"}
+					]},
 					//Nothing that we support right now supports a Palm-style gesture area
 					/*{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
 						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Landscape gesture scrolling"},
@@ -198,6 +202,7 @@ enyo.kind({
     	this.$.viewTitle.setContent($L("Preferences"));
     	this.$.generalHeader.setContent($L("General"));
     	this.$.allowLandscapeTitle.setContent($L("Allow Landscape"));
+		this.$.allowSwipeNavTitle.setContent($L("Allow Swipe Nav"));
     	this.$.greyThemePickerItem.setContent($L("Grey Theme"));
     	this.$.lightThemePickerItem.setContent($L("Light Theme"));
     	this.$.darkThemePickerItem.setContent($L("Dark Theme"));
@@ -264,6 +269,7 @@ enyo.kind({
 	{
 		//Cache Existing Values
 		this.originalAllowLandscape = FeedSpider2.Preferences.allowLandscape();
+		this.originalAllowSwipeNav = FeedSpider2.Preferences.allowSwipeNav();
 		this.originalSortOrder = FeedSpider2.Preferences.isOldestFirst();
 		this.originalHideReadFeeds = FeedSpider2.Preferences.hideReadFeeds();
 		this.originalHideReadArticles = FeedSpider2.Preferences.hideReadArticles();
@@ -275,6 +281,7 @@ enyo.kind({
 		
 		//Setup checkboxes
 		this.$.allowLandscape.checked = FeedSpider2.Preferences.allowLandscape();
+		this.$.allowSwipeNav.checked = FeedSpider2.Preferences.allowSwipeNav();
 		//this.$.gestureScrolling.checked = FeedSpider2.Preferences.gestureScrolling();
 		this.$.hideReadFeeds.checked = FeedSpider2.Preferences.hideReadFeeds();
 		this.$.hideReadArticles.checked = FeedSpider2.Preferences.hideReadArticles();
@@ -377,6 +384,10 @@ enyo.kind({
 
 	setAllowLandscape: function() {
 		FeedSpider2.Preferences.setAllowLandscape(this.$.allowLandscape.checked);
+	},
+
+	setAllowSwipeNav: function() {
+		FeedSpider2.Preferences.setAllowSwipeNav(this.$.allowSwipeNav.checked);
 	},
 
 	setGestureScrolling: function() {
@@ -508,6 +519,7 @@ enyo.kind({
 			changes = {};
 
 			if (this.originalAllowLandscape != FeedSpider2.Preferences.allowLandscape()) changes.allowLandscapeChanged = true;
+			if (this.originalAllowSwipeNav != FeedSpider2.Preferences.allowSwipeNav()) changes.allowSwipeNavChanged = true;
 			if (this.originalSortOrder != FeedSpider2.Preferences.isOldestFirst()) changes.sortOrderChanged = true;
 			if (this.originalHideReadFeeds != FeedSpider2.Preferences.hideReadFeeds()) changes.hideReadFeedsChanged = true;
 			if (this.originalHideReadArticles != FeedSpider2.Preferences.hideReadArticles()) changes.hideReadArticlesChanged = true;

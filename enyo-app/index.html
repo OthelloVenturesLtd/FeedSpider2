@@ -29,7 +29,7 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 		<meta http-equiv="Content-Type" content="text/html; charset=utf8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		
 		<!-- css -->
 		<link href="build/enyo.css" rel="stylesheet"/>
 		<link href="build/app.css" rel="stylesheet"/>
@@ -63,13 +63,11 @@
 				// iPad on iOS 13 detection
 				|| (navigator.userAgent.includes("Mac") && "ontouchend" in document)
 			}
-			
 			function onTouchStart(e) {
 				// Save position of touch
 				const touch = e.touches[0] || e.changedTouches[0];
 				window.lastY = touch.pageY;
 			}
-
 			function onTouchMove(e) {
 				// Check user isn't scrolling past content. If so, cancel move to prevent ios bouncing
 				const touch = e.touches[0] || e.changedTouches[0];
@@ -79,11 +77,27 @@
 				} else if (iOS() && y > window.lastY && e.srcElement.scrollTop == 0) {
 					e.preventDefault();
 				}
-			};
-
-			document.addEventListener("touchstart", onTouchStart, { passive: false });
-			document.addEventListener("touchmove", onTouchMove, { passive: false });
-			document.addEventListener("mousewheel", function(e) { e.preventDefault(); });
+			}
+			if (iOS()) {
+				document.addEventListener("touchstart", onTouchStart, { passive: false });
+				document.addEventListener("touchmove", onTouchMove, { passive: false });
+			}
+			
+			//Each View in this app includes a Signal handler for the escape key (27), use that to map to the Android back button
+			function handleBackButton() {
+				try {
+					document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 27}));
+				} catch (ex) {
+					enyo.warn("could not dispatch key event: " + ex);
+				}
+			}
+			document.addEventListener("backbutton", handleBackButton, false);
+			
+			//Add the InAppBrowser plugin, so links open properly on Android
+			function onDeviceReady() {
+				window.open = cordova.InAppBrowser.open;
+			}
+			document.addEventListener("deviceready", onDeviceReady, false);
 		</script>
 	</head>
 	<body class="enyo-unselectable">

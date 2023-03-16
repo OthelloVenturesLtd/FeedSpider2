@@ -13,6 +13,7 @@ $L.setStrings("en", {
 	"All Accounts": "All Accounts",
 	"All Items": "All Items",
 	"Allow Landscape": "Allow Landscape",
+	"Allow Swipe Nav": "Allow Swipe Nav",
 	"Any feed": "Any feed",
 	"Archived": "Archived",
 	"Article shared": "Article shared",
