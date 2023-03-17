@@ -18,7 +18,7 @@ enyo.kind({
 			{name: "viewTitle", tag: "span", style:"font-weight: bold; text-align: center", fit: true},
 			{kind: "onyx.Icon"}, //This is here to keep the header centered.
 		]},
-		{kind: "enyo.Scroller", fit: true, style: "padding: 10px", components: [
+		{kind: "enyo.Scroller", fit: true, style: "padding: 10px", touchOverscroll: true, touch: true, strategyKind:"TouchScrollStrategy", components: [
 			{tag: "div", classes: "feedspider-groupbox", components: [
 				{name: "generalHeader", tag: "div", classes: "feedspider-groupbox-header"},
 				{name: "generalGroupbox", tag: "div", classes: "feedspider-groupbox-body", style: "width: 100%", components:[

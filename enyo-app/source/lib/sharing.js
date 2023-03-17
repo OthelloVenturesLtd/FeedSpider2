@@ -14,7 +14,7 @@ enyo.kind({
 	//variables in use up to ax
 	webOSItems: [
 		//TODO: Add SimpleChat and ShareSpace
-		{id: "sharing-aa", label: $L("Reader"), defaultEnabled: true},
+		//{id: "sharing-aa", label: $L("Reader"), defaultEnabled: true},
 		//{id: "sharing-ab", label: $L("Share"), command: "share-with-google", defaultEnabled: false},
 		//{id: "sharing-at", label: $L("Clipboard"), defaultEnabled: true},
 		//{id: "sharing-au", label: $L("Copy URL"), command: "send-to-clipboard", defaultEnabled: true},
@@ -31,6 +31,7 @@ enyo.kind({
 		//{id: "sharing-ag", label: $L("Facebook"), command: "send-to-facebook", defaultEnabled: true},
 		{id: "sharing-ah", label: $L("Email"), command: "send-to-email", defaultEnabled: true},
 		{id: "sharing-ai", label: $L("SMS"), command: "send-to-sms", defaultEnabled: true},
+		{id: "sharing-ss", label: $L("Share Space"), command: "send-to-sharespace", defaultEnabled: true},
 		//{id: "sharing-ap", label: $L("neato!"), command: "send-to-neato", defaultEnabled: false},
 		//{id: "sharing-aj", label: $L("Read Later"), defaultEnabled: true},
 		//{id: "sharing-ak", label: $L("Relego"), command: "send-to-relego", defaultEnabled: true},
@@ -48,8 +49,8 @@ enyo.kind({
 	],
 	
 	luneOSItems: [
-		{id: "sharing-aa", label: $L("Reader"), defaultEnabled: true},
-		{id: "sharing-ab", label: $L("Share"), command: "share-with-google", defaultEnabled: true},
+		//{id: "sharing-aa", label: $L("Reader"), defaultEnabled: true},
+		//{id: "sharing-ab", label: $L("Share"), command: "share-with-google", defaultEnabled: true},
 		//{id: "sharing-ac", label: $L("Twitter"), defaultEnabled: true},
 		{id: "sharing-ad", label: $L("Project Macaw"), command: "send-to-project-macaw", defaultEnabled: true},
 		//{id: "sharing-aw", label: $L("Spaz HD"), command: "send-to-spaz-hd", defaultEnabled: true},
@@ -68,6 +69,10 @@ enyo.kind({
 		//{id: "sharing-am", label: $L("Instapaper"), command: "send-to-instapaper", defaultEnabled: true},
 		//{id: "sharing-an", label: $L("ReadOnTouch PHONE"), command: "send-to-readontouch-phone", defaultEnabled: true},
 		//{id: "sharing-ao", label: $L("ReadOnTouch PRO"), command: "send-to-readontouch-pro", defaultEnabled: true}
+	],
+
+	pwaItems: [
+		{id: "sharing-mt", label: $L("Email"), command: "send-to-mailto", defaultEnabled: true},
 	],
 
 	idToNameMapping: {
@@ -100,6 +105,11 @@ enyo.kind({
 		{
 			this.set("items", this.luneOSItems);
 		}
+		else 
+		{
+			this.set("items", this.pwaItems);
+		}
+		enyo.log("using items: " + JSON.stringify(this.get("items")));
     
 		var sortOrder = FeedSpider2.Preferences.getSharingOptionsSortOrder();
 
@@ -174,7 +184,8 @@ enyo.kind({
 		}
 
 		if (enyo.platform.webos) {
-			popupItems.push(new onyx.MenuItem({content: "Configure...", command: "configure"}));
+			//TODO: this dialog has all sorts of problems -- but there are so few working options that it might not be needed
+			//popupItems.push(new onyx.MenuItem({content: "Configure...", command: "configure"}));
 		}
 
 		return popupItems;
@@ -202,6 +213,8 @@ enyo.kind({
 			case "send-to-browser":     this.sendToBrowser(article); break;
 			case "send-to-spaz-hd":     this.sendToSpazHD(article); break;
 			case "send-to-spaz-beta":   this.sendToSpazBeta(article); break;
+			case "send-to-sharespace":  this.sendToShareSpace(article); break;
+			case "send-to-mailto":		this.sendToMailto(article); break;
 		}
 	},
 
@@ -386,6 +399,31 @@ enyo.kind({
 		
 		var url = shorturl ? shorturl : article.url;
 		this.sendToApp("Spaz Beta", "com.funkatron.app.spaz-beta", {action: "prepPost", tweet: article.title + "\n\n" + url});
+	},
+
+	sendToShareSpace: function(article, shorturl) {
+		if(FeedSpider2.Preferences.isShortenURLs() && !shorturl)
+		{
+			this.getShortURL(article, article.url, "sendToSms");
+			return;
+		}
+		
+		var url = shorturl ? shorturl : article.url;
+		this.sendToApp("ShareSpace", "com.palm.webos.sharespace", {newshare: article.title + "\n\n" + url});
+	},
+
+	sendToMailto: function(article, shorturl) {
+		if(FeedSpider2.Preferences.isShortenURLs() && !shorturl)
+		{
+			this.getShortURL(article, article.url, "sendToEmail");
+			return;
+		}
+		
+		var url = shorturl ? shorturl : article.url;
+		var mailBody = encodeURIComponent(article.title + "\n\n") + encodeURI(url);
+		document.location.href = "mailto:?subject="
+			+ encodeURIComponent(article.title)
+			+ "&body=" + mailBody;
 	},
   
 	getShortURL: function(article, url, method)
