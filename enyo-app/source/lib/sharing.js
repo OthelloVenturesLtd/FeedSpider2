@@ -368,14 +368,14 @@ enyo.kind({
 		
 		var url = shorturl ? shorturl : article.url;
 		if (enyo.platform.webos) {
-			this.sendToApp("Browser", "com.palm.app.browser", {target: "https://twitter.com/intent/tweet?text=" + encodeURIComponent(article.title) + "&url=" + encodeURI(url)});
+			this.sendToApp("Browser", "com.palm.app.browser", {target: url});
 		}
 		else if (!enyo.platform.webos && window.PalmSystem) {
-			this.sendToApp("Browser", "org.webosports.app.browser", {target: "https://twitter.com/intent/tweet?text=" + encodeURIComponent(article.title) + "&url=" + encodeURI(url)});
+			this.sendToApp("Browser", "org.webosports.app.browser", {target: url});
 		}
 		else if (enyo.platform.firefoxOS)
 		{
-			this.sendToApp("Browser", "view", {type: "url", url: "https://twitter.com/intent/tweet?text=" + encodeURIComponent(article.title) + "&url=" + encodeURI(url)});
+			this.sendToApp("Browser", "view", {type: "url", url: url});
 		}
 	},
   
