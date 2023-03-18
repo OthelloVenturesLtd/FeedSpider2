@@ -12,6 +12,7 @@ $L.setStrings("bnIN", {
     "All Accounts": "সমস্ত অ্যাকাউন্ট",
     "All Items": "সমস্ত আইটেম",
     "Allow Landscape": "ল্যান্ডস্কেপ অনুমতি দিন",
+    "Allow Swipe Nav": "Allow Swipe Nav",
     "Any feed": "কোনো ফিড",
     "Archived": "আর্কাইভ",
     "Article shared": "ধারা ভাগ",

@@ -102,7 +102,7 @@ enyo.kind({
 			this.$.torPickerItem.hide();
 			this.$.ttrssPickerItem.hide();	
 		}
-		enyo.log("Starting on platform: " + JSON.stringify(enyo.platform));
+		//enyo.log("Starting on platform: " + JSON.stringify(enyo.platform));
 		
 		this.setService();
 	},

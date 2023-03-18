@@ -12,6 +12,7 @@ $L.setStrings("bnBD", {
     "All Accounts": "সব একাউন্ট",
     "All Items": "সব আইটেম",
     "Allow Landscape": "ল্যান্ডস্কেপের অনুমতি দিন ",
+    "Allow Swipe Nav": "Allow Swipe Nav",
     "Any feed": "যেকোন ফিড",
     "Archived": "আর্কাইভড",
     "Article shared": "শেয়ারকৃত নিবন্ধ",

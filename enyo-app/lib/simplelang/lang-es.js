@@ -12,6 +12,7 @@ $L.setStrings("es", {
     "All Accounts": "Todas las cuentas",
     "All Items": "Todos los artículos",
     "Allow Landscape": "Permitir horizontal",
+    "Allow Swipe Nav": "Permitir navegación por gestos",
     "Any feed": "Cualquier fuente",
     "Archived": "Archivado",
     "Article shared": "Artículo compartido",

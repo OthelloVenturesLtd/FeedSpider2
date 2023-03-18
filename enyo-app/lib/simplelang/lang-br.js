@@ -12,6 +12,7 @@ $L.setStrings("br", {
     "All Accounts": "An holl gontoù",
     "All Items": "An holl elfennoù",
     "Allow Landscape": "Aotreañ ar gweledva ",
+    "Allow Swipe Nav": "Allow Swipe Nav",
     "Any feed": "N'eus forzh lanv",
     "Archived": "Diellaouet",
     "Article shared": "Pennad rannet",

@@ -12,6 +12,7 @@ $L.setStrings("ml", {
     "All Accounts": "എല്ലാ അക്കൗണ്ടുകൾ",
     "All Items": "എല്ലാ ഇനങ്ങൾ",
     "Allow Landscape": "ലാൻഡ്‌സ്കേപ് അനുവദിക്കുക ",
+    "Allow Swipe Nav": "Allow Swipe Nav",
     "Any feed": "ഏതെങ്കിലും ഫീഡ് ",
     "Archived": "ചരിത്രരേഖകള്‍",
     "Article shared": "ഷെയർ ചെയ്ത ലേഖനങ്ങൾ",

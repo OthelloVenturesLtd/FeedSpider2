@@ -84,7 +84,6 @@ enyo.kind({
 	},
 	
 	addRemoveSource: function(inSender, inEvent) {
-		enyo.log("title: " + inSender.getTitle);
 		var i = inEvent.index;
 		var item = this.sources[i];
 		

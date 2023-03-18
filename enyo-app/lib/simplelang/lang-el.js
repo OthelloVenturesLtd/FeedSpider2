@@ -12,6 +12,7 @@ $L.setStrings("el", {
     "All Accounts": "Όλοι οι Λογαριασμοί",
     "All Items": "Όλα τα Αντικείμενα",
     "Allow Landscape": "Να επιτρέπεται η επιλογή Landscape",
+    "Allow Swipe Nav": "Allow Swipe Nav",
     "Any feed": "Οποιαδήποτε ροή",
     "Archived": "Αρχειοθετημένες",
     "Article shared": "Άρθρο κοινοποιήθηκε",

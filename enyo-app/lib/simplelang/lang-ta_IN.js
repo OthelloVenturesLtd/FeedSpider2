@@ -12,6 +12,7 @@ $L.setStrings("taIN", {
     "All Accounts": "எல்லா கணக்குகள்",
     "All Items": "எல்லா உருப்படிகள்",
     "Allow Landscape": "கிடைவாட்ட முகப்பை அனுமதி",
+    "Allow Swipe Nav": "Allow Swipe Nav",
     "Any feed": "ஏதாவதொரு ஃபீட்",
     "Archived": "காப்பிடப்பட்டது",
     "Article shared": "பகிரப்பட்ட கட்டுரைகள்",
