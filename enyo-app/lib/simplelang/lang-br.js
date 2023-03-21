@@ -115,5 +115,6 @@ $L.setStrings("br", {
     "URL Copied": "URL kopiet",
     "Yes": "Ya",
     "You have {unread} articles to read": "Chom a ra deoc'h {unread} pennadoù da lenn",
-    "Website": "Lec'hienn kenrouedad"
+    "Website": "Lec'hienn kenrouedad",
+	"Share Space": "Share Space"
 });

@@ -115,5 +115,6 @@ $L.setStrings("bnIN", {
     "URL Copied": "URL টি কপি",
     "Yes": "হাঁ",
     "You have {unread} articles to read": "আপনি পড়তে {অপঠিত} নিবন্ধ আছে",
-    "Website": "ওয়েবসাইট"
+    "Website": "ওয়েবসাইট",
+	"Share Space": "Share Space"
 });

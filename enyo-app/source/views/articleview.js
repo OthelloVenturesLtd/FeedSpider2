@@ -74,7 +74,7 @@ enyo.kind({
 			el.setAttribute('rel', 'external');
 			el.setAttribute('target', '_system');
 		}
-		if (href != "" && !platform.webos) {
+		if (href != "" && (!enyo.platform || !enyo.platform.webos)) {
 			window.open(href, '_system');
 		}
 		return false;

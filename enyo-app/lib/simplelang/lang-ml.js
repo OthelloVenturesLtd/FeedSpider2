@@ -115,5 +115,6 @@ $L.setStrings("ml", {
     "URL Copied": "URL കോപ്പി ചെയ്തു ",
     "Yes": "ഉവ്വ്",
     "You have {unread} articles to read": "നിങ്ങള്ക്ക് {unread} ലേഖനങ്ങൾ വായിക്കാനുണ്ട് ",
-    "Website": "വെബ്സൈറ്റ് "
+    "Website": "വെബ്സൈറ്റ് ",
+	"Share Space": "Share Space"
 });

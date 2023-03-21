@@ -115,5 +115,6 @@ $L.setStrings("bnBD", {
     "URL Copied": "ইউআরএল কপি করা হয়েছে",
     "Yes": "হ্যাঁ",
     "You have {unread} articles to read": "আপনার  {unread}  নিবন্ধ পড়তে বাকী আছে",
-    "Website": "ওয়েবসাইট"
+    "Website": "ওয়েবসাইট",
+	"Share Space": "Share Space"
 });

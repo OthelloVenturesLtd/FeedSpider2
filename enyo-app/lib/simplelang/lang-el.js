@@ -115,5 +115,6 @@ $L.setStrings("el", {
     "URL Copied": "URL Αντιγράφηκε",
     "Yes": "Ναι",
     "You have {unread} articles to read": "Έχετε {unread} άρθρα για διάβασμα",
-    "Website": "Ιστοσελίδα"
+    "Website": "Ιστοσελίδα",
+	"Share Space": "Share Space"
 });

@@ -115,5 +115,6 @@ $L.setStrings("fr", {
     "URL Copied": "URL copiée",
     "Yes": "Oui",
     "You have {unread} articles to read": "Vous avez {unread} articles à lire",
-    "Website": "Site internet"
+    "Website": "Site internet",
+	"Share Space": "Share Space"
 });

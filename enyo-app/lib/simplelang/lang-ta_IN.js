@@ -115,5 +115,6 @@ $L.setStrings("taIN", {
     "URL Copied": "URL நகலெடுக்கப்பட்டது",
     "Yes": "ஆம்",
     "You have {unread} articles to read": "நீங்கள் படிப்பதற்கு {unread} கட்டுரைகள் உள்ளன",
-    "Website": "வலைதளம்"
+    "Website": "வலைதளம்",
+	"Share Space": "Share Space"
 });
