@@ -5,7 +5,7 @@ enyo.kind({
 
 	published: {
 		auth: null,
-		baseURL: "https://feedspider.online/inoreader/api/0/",	//Use CORS proxy
+		baseURL: "https://feedspider.wosa.link/inoreader/api/0/",	//Use CORS proxy
 		//baseURL: "https://www.inoreader.com/reader/api/0/",
 		appID: "1000001438",
 		appKey: "Hea9JkjSNEepktY0s9ss9TUaETgCoBzg",
@@ -24,7 +24,7 @@ enyo.kind({
 		var request = new enyo.Ajax({
 			//Avoid CORS pre-flight failures by passes in URL string (per https://www.inoreader.com/developers/auth)
 			//Use CORS proxy
-			url: "https://feedspider.online/inoreader/accounts/ClientLogin?AppId=" + this.get("appID") + "&AppKey=" + this.get("appKey"),
+			url: "https://feedspider.wosa.link/inoreader/accounts/ClientLogin?AppId=" + this.get("appID") + "&AppKey=" + this.get("appKey"),
 			method: "POST",
 			xhrFields: {mozSystem: true},
 			postBody: {Email: credentials.email, Passwd: credentials.password},
