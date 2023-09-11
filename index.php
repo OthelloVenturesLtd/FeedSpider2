@@ -12,7 +12,7 @@ $appTitle = "FeedSpider";
 echo file_get_contents("https://www.webosarchive.org/app-template/header.php?docRoot=" . $docRoot . "&appTitle=" . $appTitle . "&protocol=" . $PROTOCOL);
 ?>
     <div style="font-family:arial,helvetica,sans-serif;margin:15px;" align="center">
-    <p>FeedSpider is a cross platform news reader web app created by <a href="https://www.othelloventures.com">Othello Ventures</a>.<br>It is distributed by <a href="http://www.webosarchive.org">webOS Archive</a> with permission.</p>
+    <p>FeedSpider is a cross platform news reader web app created by <a href="https://www.othelloventures.com">Othello Ventures</a>.<br>Distributed by <a href="http://www.webosarchive.org">webOS Archive</a> with permission.</p>
     &nbsp;<br/>
     <table style="margin-left:20%;margin-right:20%;">
         <tr><td width="20%" align="right"><b><a href="https://feedspider.net/">FeedSpider Home</a></b></td><td style="padding-left:18px">Visit FeedSpider on the web, and download for FirefoxOS.</td></tr>
