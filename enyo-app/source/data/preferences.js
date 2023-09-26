@@ -4,6 +4,7 @@ FeedSpider2.Preferences = {
   HIDE_READ_ARTICLES: "hide-read-articles",
   BACK_AFTER_MARK_AS_READ: "back-after-mark-as-read",
   ALLOW_LANDSCAPE: "allow-landscape",
+  ALLOW_SWIPENAV: "allow-swipe-nav",
   FONT_SIZE: "font-size",
   COMBINE_FOLDERS: "combine-folders",
   MANUAL_FEED_SORT: "manual-feed-sort",
@@ -116,6 +117,14 @@ FeedSpider2.Preferences = {
 
   setAllowLandscape: function(allowLandscape) {
     this.setCookie(this.ALLOW_LANDSCAPE, allowLandscape);
+  },
+
+  allowSwipeNav: function() {
+    return this.getCookie(this.ALLOW_SWIPENAV, false);
+  },
+
+  setAllowSwipeNav: function(allowSwipeNav) {
+    this.setCookie(this.ALLOW_SWIPENAV, allowSwipeNav);
   },
 
   gestureScrolling: function() {

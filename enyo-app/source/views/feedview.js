@@ -351,6 +351,8 @@ enyo.kind({
 		
 		this.tappedIndex = i;
 		this.doSwitchPanels({target: "article", article: item, scrollingIndex: 0, articleContainer: this.subscription, previousPage: this});
+		inEvent.preventDefault();
+		return false;
 	},
 
 	showError: function() {

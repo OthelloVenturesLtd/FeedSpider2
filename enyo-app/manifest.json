@@ -1,0 +1,33 @@
+{
+    "name": "FeedSpider 2",
+    "short_name": "FeedSpider",
+    "start_url": "/app/index.html",
+    "id": "/app/manifest.json",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "iconff-16.png",
+            "sizes": "16x16"
+        },
+        {
+            "src": "iconff-32.png",
+            "sizes": "32x32"
+        },
+        {
+            "src": "iconff-64.png",
+            "sizes": "64x64"
+        },
+        {
+            "src": "iconff-128.png",
+            "sizes": "128x128"
+        },
+        {
+            "src": "iconff-256.png",
+            "sizes": "256x256"
+        },
+        {
+            "src": "iconff-512.png",
+            "sizes": "512x512"
+        }
+    ]
+}

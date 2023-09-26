@@ -12,6 +12,7 @@ $L.setStrings("taIN", {
     "All Accounts": "எல்லா கணக்குகள்",
     "All Items": "எல்லா உருப்படிகள்",
     "Allow Landscape": "கிடைவாட்ட முகப்பை அனுமதி",
+    "Allow Swipe Nav": "Allow Swipe Nav",
     "Any feed": "ஏதாவதொரு ஃபீட்",
     "Archived": "காப்பிடப்பட்டது",
     "Article shared": "பகிரப்பட்ட கட்டுரைகள்",
@@ -114,5 +115,6 @@ $L.setStrings("taIN", {
     "URL Copied": "URL நகலெடுக்கப்பட்டது",
     "Yes": "ஆம்",
     "You have {unread} articles to read": "நீங்கள் படிப்பதற்கு {unread} கட்டுரைகள் உள்ளன",
-    "Website": "வலைதளம்"
+    "Website": "வலைதளம்",
+	"Share Space": "Share Space"
 });

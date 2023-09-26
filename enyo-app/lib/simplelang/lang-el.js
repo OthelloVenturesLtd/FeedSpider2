@@ -12,6 +12,7 @@ $L.setStrings("el", {
     "All Accounts": "Όλοι οι Λογαριασμοί",
     "All Items": "Όλα τα Αντικείμενα",
     "Allow Landscape": "Να επιτρέπεται η επιλογή Landscape",
+    "Allow Swipe Nav": "Allow Swipe Nav",
     "Any feed": "Οποιαδήποτε ροή",
     "Archived": "Αρχειοθετημένες",
     "Article shared": "Άρθρο κοινοποιήθηκε",
@@ -114,5 +115,6 @@ $L.setStrings("el", {
     "URL Copied": "URL Αντιγράφηκε",
     "Yes": "Ναι",
     "You have {unread} articles to read": "Έχετε {unread} άρθρα για διάβασμα",
-    "Website": "Ιστοσελίδα"
+    "Website": "Ιστοσελίδα",
+	"Share Space": "Share Space"
 });

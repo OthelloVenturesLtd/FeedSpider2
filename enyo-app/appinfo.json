@@ -1,6 +1,6 @@
 {
 	"id": "com.othelloventures.feedspider2",
-	"version": "2.2.0",
+	"version": "2.3.3",
 	"vendor": "Othello Ventures",
 	"type": "web",
 	"main": "index-webos.html",
@@ -9,5 +9,6 @@
 	"miniicon": "iconff-48.png",
 	"splashicon": "iconff-256.png",
 	"noWindow": "true",
-	"uiRevision": 2
+	"uiRevision": 2,
+	"requiredPermissions": ["appmanager.management", "luna-sysmgr.operation", "networkconnection.query", "powerd.management", "preferences.system"]
 }

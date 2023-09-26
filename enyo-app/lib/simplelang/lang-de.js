@@ -12,6 +12,7 @@ $L.setStrings("de", {
     "All Accounts": "alle Konten",
     "All Items": "alle Artikel",
     "Allow Landscape": "Querformat zulassen",
+    "Allow Swipe Nav": "Gestennavigation zulassen",
     "Any feed": "beliebiger Feed",
     "Archived": "archiviert",
     "Article shared": "Artikel geteilt",
@@ -114,5 +115,6 @@ $L.setStrings("de", {
     "URL Copied": "Adresse kopiert",
     "Yes": "ja",
     "You have {unread} articles to read": "Du hast {unread} Artikel zu lesen",
-    "Website": "Webseite"
+    "Website": "Webseite",
+	"Share Space": "Share Space"
 });
