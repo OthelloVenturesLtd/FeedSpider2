@@ -26,6 +26,9 @@ plugins/
 platforms/
 www/
 
+# Android Studio
+.idea/
+
 # Bootplate and Build output
 /build
 /deploy
