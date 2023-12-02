@@ -8,9 +8,9 @@ $description = "FeedSpider is a cross platform news reader web app created by Ot
 $title = "FeedSpider 2";
 $subtitle = " | The coolest RSS Reader for webOS -- now available as a PWA";
 $github = "https://github.com/codepoet80/FeedSpider2";
-$pwaLink = "test";
-$playLink = "test";
-$museumLink = "test";
+$pwaLink = "https://store.app/feedspider-wosa-link";
+$playLink = "https://play.google.com/store/apps/details?id=com.othelloventures.feedspider2";
+$museumLink = "https://appcatalog.webosarchive.org/showMuseum.php?search=feedspider";
 $icon = "assets/icon.png";
 
 //Figure out what protocol the client wanted
