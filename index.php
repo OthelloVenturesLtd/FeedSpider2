@@ -10,7 +10,7 @@ $subtitle = " | The coolest RSS Reader for webOS -- now available as a PWA";
 $github = "https://github.com/codepoet80/FeedSpider2";
 $pwaLink = "https://store.app/feedspider-wosa-link";
 $playLink = "https://play.google.com/store/apps/details?id=com.othelloventures.feedspider2";
-$museumLink = "https://appcatalog.webosarchive.org/showMuseum.php?search=feedspider";
+$museumLink = "https://appcatalog.webosarchive.org/app/FeedSpider2";
 $icon = "assets/icon.png";
 
 //Figure out what protocol the client wanted
