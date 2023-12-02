@@ -5,7 +5,7 @@
 
 //App Details
 $description = "FeedSpider is a cross platform news reader web app created by Othello Ventures, and the coolest RSS app for retro mobile devices.";
-$title = "FeedSpider 2";
+$title = "FeedSpider";
 $subtitle = " | The coolest RSS Reader for webOS -- now available as a PWA";
 $github = "https://github.com/codepoet80/FeedSpider2";
 $pwaLink = "https://store.app/feedspider-wosa-link";
