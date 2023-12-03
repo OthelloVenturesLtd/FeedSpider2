@@ -84,7 +84,7 @@ echo file_get_contents("https://www.webosarchive.org/menu.php?docRoot=" . $docRo
   <div id="footer">
     &copy; Othello Ventures and webOSArchive.
     <div id="footer-links">
-      <a href="<?php echo $github . "/blob/master/PrivacyPolicy.md" ?>">Privacy Policy</a>
+      <a href="<?php echo $github . "/blob/main/PrivacyPolicy.md" ?>">Privacy Policy</a>
     </div>
   </div>
   </td></tr></table>
