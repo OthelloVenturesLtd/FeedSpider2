@@ -11,7 +11,7 @@ $github = "https://github.com/codepoet80/FeedSpider2";
 $pwaLink = "https://store.app/feedspider-wosa-link";
 $playId = "com.othelloventures.feedspider2";
 $playLink = "https://play.google.com/store/apps/details?id=" . $playId;
-$museumLink = "https://appcatalog.webosarchive.org/app/FeedSpider2";
+$museumLink = "https://appcatalog.webosarchive.org/showMuseum.php?search=feedspider";
 $icon = "assets/icon.png";
 
 //Figure out what protocol the client wanted
