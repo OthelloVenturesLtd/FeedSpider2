@@ -31,7 +31,7 @@ if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
   <meta name="author" content="webOS Archive">
   <meta property="og:title" content="<?php echo $title; ?>">
   <meta property="og:description" content="<?php echo $description; ?>">
-  <meta property="og:image" content="https://<?php echo $_SERVER['REQUEST_URI']; ?>/hero.png">
+  <meta property="og:image" content="https://<?php echo $_SERVER['SERVER_NAME'] ?>/hero.png">
 
   <meta name="twitter:card" content="app">
   <meta name="twitter:site" content="@webOSArchive">
