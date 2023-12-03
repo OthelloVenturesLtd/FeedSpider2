@@ -9,7 +9,8 @@ $title = "FeedSpider";
 $subtitle = " | The coolest RSS Reader for webOS -- now available as a PWA";
 $github = "https://github.com/codepoet80/FeedSpider2";
 $pwaLink = "https://store.app/feedspider-wosa-link";
-$playLink = "https://play.google.com/store/apps/details?id=com.othelloventures.feedspider2";
+$playId = "com.othelloventures.feedspider2";
+$playLink = "https://play.google.com/store/apps/details?id=" . $playId;
 $museumLink = "https://appcatalog.webosarchive.org/app/FeedSpider2";
 $icon = "assets/icon.png";
 
@@ -28,15 +29,15 @@ if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
   <meta name="description" content="<?php echo $description; ?>">
   <meta name="keywords" content="webos, firefoxos, pwa, rss">
   <meta name="author" content="webOS Archive">
-  <meta property="og:title" content="FeedSpider 2">
+  <meta property="og:title" content="<?php echo $title; ?>">
   <meta property="og:description" content="<?php echo $description; ?>">
-  <meta property="og:image" content="http://feedspider.wosa.link/screenshot.png">
+  <meta property="og:image" content="hero.png">
 
   <meta name="twitter:card" content="app">
   <meta name="twitter:site" content="@webOSArchive">
-  <meta name="twitter:title" content="FeedSpider 2">
+  <meta name="twitter:title" content="<?php echo $title; ?>">
   <meta name="twitter:description" content="<?php echo $description; ?>">
-  <meta name="twitter:app:id:googleplay" content="com.othelloventures.feedspider2">
+  <meta name="twitter:app:id:googleplay" content="<?php echo $playId; ?>">
 
   <title><?php echo $title . $subtitle; ?></title>
   
