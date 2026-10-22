@@ -7,5 +7,6 @@ enyo.depends(
 	"FS-Subscription.less",
 	"FS-Article.less",
 	"FS-Add.less",
-	"FS-Theme.less"
+	"FS-Theme.less",
+	"ios-pwa.css"
 );

@@ -18,13 +18,17 @@ enyo.kind({
 			{name: "viewTitle", tag: "span", style:"font-weight: bold; text-align: center", fit: true},
 			{kind: "onyx.Icon"}, //This is here to keep the header centered.
 		]},
-		{kind: "enyo.Scroller", fit: true, style: "padding: 10px", components: [
+		{kind: "enyo.Scroller", fit: true, style: "padding: 10px", touchOverscroll: true, touch: true, strategyKind:"TouchScrollStrategy", components: [
 			{tag: "div", classes: "feedspider-groupbox", components: [
 				{name: "generalHeader", tag: "div", classes: "feedspider-groupbox-header"},
 				{name: "generalGroupbox", tag: "div", classes: "feedspider-groupbox-body", style: "width: 100%", components:[
 					{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
 						{name: "allowLandscapeTitle", tag: "span", fit: true, classes: "feedspider-preference-title"},
 						{name: "allowLandscape", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setAllowLandscape"}
+					]},
+					{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
+						{name: "allowSwipeNavTitle", tag: "span", fit: true, classes: "feedspider-preference-title"},
+						{name: "allowSwipeNav", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setAllowSwipeNav"}
 					]},
 					//Nothing that we support right now supports a Palm-style gesture area
 					/*{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
@@ -104,6 +108,10 @@ enyo.kind({
 						{name: "hideReadArticlesTitle", tag: "span", fit: true, classes: "feedspider-preference-title"},
 						{name: "hideReadArticles", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setHideReadArticles"}
 					]},
+				{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
+					{name: "stripImagesTitle", tag: "span", fit: true, classes: "feedspider-preference-title"},
+					{name: "stripImages", kind: "onyx.Checkbox", classes: "feedspider-preference-checkbox", onchange: "setStripImages"}
+				]},
 					//This is not currently supported by the enyo list kind
 					/*{kind: "enyo.FittableColumns", noStretch: true, classes: "feedspider-preference-item", components: [
 						{tag: "span", fit: true, classes: "feedspider-preference-title", content: "Mark read as you scroll"},
@@ -198,6 +206,7 @@ enyo.kind({
     	this.$.viewTitle.setContent($L("Preferences"));
     	this.$.generalHeader.setContent($L("General"));
     	this.$.allowLandscapeTitle.setContent($L("Allow Landscape"));
+		this.$.allowSwipeNavTitle.setContent($L("Allow Swipe Nav"));
     	this.$.greyThemePickerItem.setContent($L("Grey Theme"));
     	this.$.lightThemePickerItem.setContent($L("Light Theme"));
     	this.$.darkThemePickerItem.setContent($L("Dark Theme"));
@@ -214,6 +223,7 @@ enyo.kind({
     	this.$.mediumFontPickerItem.setContent($L("Medium Font"));
     	this.$.largeFontPickerItem.setContent($L("Large Font"));
 		this.$.hideReadArticlesTitle.setContent($L("Hide Read Articles"));
+    	this.$.stripImagesTitle.setContent($L("Strip images from articles"));
     	this.$.foldersHeader.setContent($L("Folders"));
     	this.$.combineFoldersTitle.setContent($L("Combine Folders"));
     	this.$.sharingHeader.setContent($L("Sharing"));
@@ -264,9 +274,11 @@ enyo.kind({
 	{
 		//Cache Existing Values
 		this.originalAllowLandscape = FeedSpider2.Preferences.allowLandscape();
+		this.originalAllowSwipeNav = FeedSpider2.Preferences.allowSwipeNav();
 		this.originalSortOrder = FeedSpider2.Preferences.isOldestFirst();
 		this.originalHideReadFeeds = FeedSpider2.Preferences.hideReadFeeds();
 		this.originalHideReadArticles = FeedSpider2.Preferences.hideReadArticles();
+		this.originalStripImages = FeedSpider2.Preferences.isStripImages();
 		this.originalFontSize = FeedSpider2.Preferences.fontSize();
 		this.originalFeedSortOrder = FeedSpider2.Preferences.isManualFeedSort();
 		this.originalTheme = FeedSpider2.Preferences.getTheme();
@@ -275,9 +287,11 @@ enyo.kind({
 		
 		//Setup checkboxes
 		this.$.allowLandscape.checked = FeedSpider2.Preferences.allowLandscape();
+		this.$.allowSwipeNav.checked = FeedSpider2.Preferences.allowSwipeNav();
 		//this.$.gestureScrolling.checked = FeedSpider2.Preferences.gestureScrolling();
 		this.$.hideReadFeeds.checked = FeedSpider2.Preferences.hideReadFeeds();
 		this.$.hideReadArticles.checked = FeedSpider2.Preferences.hideReadArticles();
+		this.$.stripImages.checked = FeedSpider2.Preferences.isStripImages();
 		this.$.backAfterMarkRead.checked = FeedSpider2.Preferences.goBackAfterMarkAsRead();
 		this.$.combineFolders.checked = FeedSpider2.Preferences.combineFolders();
 		//this.$.markReadScroll.value = FeedSpider2.Preferences.markReadAsScroll();
@@ -379,6 +393,10 @@ enyo.kind({
 		FeedSpider2.Preferences.setAllowLandscape(this.$.allowLandscape.checked);
 	},
 
+	setAllowSwipeNav: function() {
+		FeedSpider2.Preferences.setAllowSwipeNav(this.$.allowSwipeNav.checked);
+	},
+
 	setGestureScrolling: function() {
 		FeedSpider2.Preferences.setGestureScrolling(this.$.gestureScrolling.checked);
 	},
@@ -408,6 +426,10 @@ enyo.kind({
 
 	setHideReadArticles: function() {
 		FeedSpider2.Preferences.setHideReadArticles(this.$.hideReadArticles.checked);
+	},
+
+	setStripImages: function() {
+		FeedSpider2.Preferences.setStripImages(this.$.stripImages.checked);
 	},
 
 	setBackAfterMarkRead: function() {
@@ -508,9 +530,11 @@ enyo.kind({
 			changes = {};
 
 			if (this.originalAllowLandscape != FeedSpider2.Preferences.allowLandscape()) changes.allowLandscapeChanged = true;
+			if (this.originalAllowSwipeNav != FeedSpider2.Preferences.allowSwipeNav()) changes.allowSwipeNavChanged = true;
 			if (this.originalSortOrder != FeedSpider2.Preferences.isOldestFirst()) changes.sortOrderChanged = true;
 			if (this.originalHideReadFeeds != FeedSpider2.Preferences.hideReadFeeds()) changes.hideReadFeedsChanged = true;
 			if (this.originalHideReadArticles != FeedSpider2.Preferences.hideReadArticles()) changes.hideReadArticlesChanged = true;
+			if (this.originalStripImages != FeedSpider2.Preferences.isStripImages()) changes.stripImagesChanged = true;
 			if (this.originalFontSize != FeedSpider2.Preferences.fontSize()) changes.fontSizeChanged = true;
 			if (this.originalFeedSortOrder != FeedSpider2.Preferences.isManualFeedSort()) changes.feedSortOrderChanged = true;
 			if (this.originalTheme != FeedSpider2.Preferences.getTheme()) changes.themeChanged = true;

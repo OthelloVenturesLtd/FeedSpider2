@@ -1,5 +1,6 @@
 enyo.depends(
 	"Notification.js",
 	"log.js",
-	"sharing.js"
+	"utils.js",
+	"sharing.js",
 );

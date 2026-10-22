@@ -12,6 +12,7 @@ $L.setStrings("br", {
     "All Accounts": "An holl gontoù",
     "All Items": "An holl elfennoù",
     "Allow Landscape": "Aotreañ ar gweledva ",
+    "Allow Swipe Nav": "Allow Swipe Nav",
     "Any feed": "N'eus forzh lanv",
     "Archived": "Diellaouet",
     "Article shared": "Pennad rannet",
@@ -114,5 +115,6 @@ $L.setStrings("br", {
     "URL Copied": "URL kopiet",
     "Yes": "Ya",
     "You have {unread} articles to read": "Chom a ra deoc'h {unread} pennadoù da lenn",
-    "Website": "Lec'hienn kenrouedad"
+    "Website": "Lec'hienn kenrouedad",
+	"Share Space": "Share Space"
 });

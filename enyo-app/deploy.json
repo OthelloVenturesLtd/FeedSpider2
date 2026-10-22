@@ -1,6 +1,6 @@
 {
 	"enyo": "./enyo",
 	"packagejs": "./package.js",
-	"assets": ["./manifest.webapp", "./iconff-16.png", "./iconff-32.png", "./iconff-64.png", "./iconff-128.png", "./iconff-256.png", "./iconff-512.png", "./index.html", "./index-webos.html", "./webos-dashboard.html", "./source/index.js", "./source/index-webos.js", "./source/webos-dashboard.js", "./assets"],
+	"assets": ["./manifest.webapp", "./manifest.json", "./iconff-16.png", "./iconff-32.png", "./iconff-64.png", "./iconff-128.png", "./iconff-256.png", "./iconff-512.png", "./index.html", "./index-webos.html", "./webos-dashboard.html", "./source/index.js", "./source/index-webos.js", "./source/webos-dashboard.js", "./assets", "./serviceworker.js"],
 	"libs": ["./lib/onyx", "./lib/layout", "./lib/NotificationTheme", "./lib/webos-lib"]
 }

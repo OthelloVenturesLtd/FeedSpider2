@@ -224,8 +224,8 @@ enyo.kind({
 			return true;
 		}
 		
-		this.$.articleName.setContent(item.title);
-		this.$.articleOrigin.setContent(item.origin);
+		this.$.articleName.setContent(Utils.decodeHtmlEntities(item.title));
+		this.$.articleOrigin.setContent(Utils.decodeHtmlEntities(item.origin));
 				
 		if (!item.isRead)
 		{
@@ -351,6 +351,8 @@ enyo.kind({
 		
 		this.tappedIndex = i;
 		this.doSwitchPanels({target: "article", article: item, scrollingIndex: 0, articleContainer: this.subscription, previousPage: this});
+		inEvent.preventDefault();
+		return false;
 	},
 
 	showError: function() {

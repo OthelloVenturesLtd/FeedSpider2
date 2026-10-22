@@ -5,7 +5,9 @@ enyo.kind({
 
 	published: {
 		auth: null,
-		baseURL: "https://theoldreader.com/reader/api/0/",
+		//Legacy webOS and FirefoxOS don't enforce CORS, everywhere else (including LuneOS) needs the proxy
+		//because TheOldReader doesn't allow the Authorization header. Keep in sync with LoginDialog's picker.
+		baseURL: (enyo.platform.webos || enyo.platform.firefoxOS) ? "https://theoldreader.com/reader/api/0/" : "https://feedspider.wosa.link/theoldreader/api/0/",
 		editToken: null,
 		editTokenTime: null,
 		titles: null
@@ -19,7 +21,8 @@ enyo.kind({
 		}.bind(this);
 
 		var request = new enyo.Ajax({
-			url: "https://theoldreader.com/reader/api/0/accounts/ClientLogin",
+			//use baseURL so this goes through the CORS proxy too, TheOldReader sends no CORS headers on ClientLogin
+			url: this.get("baseURL") + "accounts/ClientLogin",
 			method: "POST",
 			handleAs: "text",
 			postBody: {client: "FeedSpider2", accountType: "HOSTED_OR_GOOGLE", service: "reader", Email: credentials.get("email"), Passwd: credentials.get("password")},
@@ -206,7 +209,7 @@ enyo.kind({
 			});
 
 			request.go();
-		}.bind(this));
+		}.bind(this), failure);
 	},
 
 	getAllSubscriptions: function(success, failure) {
@@ -330,8 +333,9 @@ enyo.kind({
 
 	//UPDATED 2.0.0
 	_getArticles: function(id, exclude, continuation, success, failure) {
-		var parameters = {output: "json", n: 40};
-		
+		//pass stream as a parameter, escape() in the path mangles non-ASCII folder names
+		var parameters = {output: "json", n: 40, s: id};
+
 		if(id != "user/-/state/com.google/starred" &&
 		id != "user/-/state/com.google/broadcast" &&
 		FeedSpider2.Preferences.isOldestFirst()) {
@@ -347,7 +351,7 @@ enyo.kind({
 		}
 		
 		var request = new enyo.Ajax({
-			url: this.get("baseURL") + "stream/contents/" + escape(id),
+			url: this.get("baseURL") + "stream/contents",
 			headers: this._requestHeaders(),
 			xhrFields: {mozSystem: true},
 			cacheBust: false
@@ -427,7 +431,7 @@ enyo.kind({
 					var request = new enyo.Ajax({
 						url: this.get("baseURL") + "stream/items/contents",
 						method: "POST",
-						headers: self._requestHeaders(),
+						headers: this._requestHeaders(),
 						xhrFields: {mozSystem: true},
 						postBody: parameters,
 						cacheBust: false
@@ -440,7 +444,7 @@ enyo.kind({
 					});
 
 					request.go();
-				}
+				}.bind(this), failure
 			);
 		}
 		else {

@@ -26,8 +26,13 @@ plugins/
 platforms/
 www/
 
+# Android Studio
+.idea/
+
 # Bootplate and Build output
 /build
 /deploy
 /node_modules
 /bin
+/app
+/www

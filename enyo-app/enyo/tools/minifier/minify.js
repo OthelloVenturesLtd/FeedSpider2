@@ -3,7 +3,7 @@
 	var
 		fs = require("fs"),
 		path = require("path"),
-		walker = require("walker"),
+		walker = require("./walker"),
 		uglify = require("uglify-js"),
 		nopt = require("nopt"),
 		less = require("less");

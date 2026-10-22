@@ -51,11 +51,11 @@ enyo.kind({
     	
     	//Calculate list height
 		var windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);   	
-    	var dialogHeightPC = this.domStyles.height.replace('%', '') / 100;
-    	var dialogPadding = this.domStyles.padding.replace('px', '');
+    	//var dialogHeightPC = this.domStyles.height.replace('%', '') / 100;
+    	//var dialogPadding = this.domStyles.padding.replace('px', '');
 		
 		var listHeight = Math.round(windowHeight * dialogHeightPC) - (dialogPadding * 2);
-		
+		listHeight = 200;
     	this.$.SharingList.setStyle("width: 100%; height: " + listHeight + "px");
 
 		this.$.SharingList.setCount(this.sources.length);
@@ -67,6 +67,7 @@ enyo.kind({
 		var item = this.sources[i];
 		
 		this.$.sharingSourceCheckbox.setChecked(item.enabled);
+		this.$.sharingSourceCheckbox.setTitle(item.label);
 		
 		if (item.command)
     	{

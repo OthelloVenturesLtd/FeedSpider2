@@ -18,12 +18,15 @@ enyo.kind({
 				{tag: "br"},
 				{tag: "div", content: "It currently supports:"},
 				{tag: "ul", components: [
+					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://www.inoreader.com", "target": "_blank"}, content: "InoReader" }]},
+				]},
+				{tag: "div", content: "Future work includes restoring support for:"},
+				{tag: "ul", components: [
+					{tag: "li", components: [ {tag: "a", attributes: {"href": "http://www.theoldreader.com", "target": "_blank"}, content: "The Old Reader" }]},
+					{tag: "li", components: [ {tag: "a", attributes: {"href": "http://tt-rss.org", "target": "_blank"}, content: "Tiny Tiny RSS" }]},
+					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://nextcloud.com", "target": "_blank"}, content: "NextCloud News" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://bazqux.com", "target": "_blank"}, content: "BazQux Reader" }]},
 					{tag: "li", components: [ {tag: "a", attributes: {"href": "http://feedly.com", "target": "_blank"}, content: "Feedly" }]},
-					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://www.inoreader.com", "target": "_blank"}, content: "InoReader" }]},
-					{tag: "li", components: [ {tag: "a", attributes: {"href": "https://nextcloud.com", "target": "_blank"}, content: "NextCloud News" }]},
-					{tag: "li", components: [ {tag: "a", attributes: {"href": "http://tt-rss.org", "target": "_blank"}, content: "Tiny Tiny RSS" }]},
-					{tag: "li", components: [ {tag: "a", attributes: {"href": "http://www.theoldreader.com", "target": "_blank"}, content: "The Old Reader" }]},
 				]}
 			]},
 			{tag: "br"},
@@ -37,6 +40,29 @@ enyo.kind({
 			]},
 			{tag: "br"},
 			{tag: "div", content: "History", style: "font-size: 20px; font-weight: bold"},
+			{tag: "div", components: [
+				{tag: "div", content: "2.4.x", style: "font-weight: bold" },
+				{tag: "ul", components: [
+					{tag: "li", content: "Added The Old Reader support for web, Android and LuneOS via CORS proxy."},
+					{tag: "li", content: "Fixed The Old Reader's All Items, Starred and Shared lists showing no articles."}
+				]}
+			]},
+			{tag: "div", components: [
+				{tag: "div", content: "2.3.x", style: "font-weight: bold" },
+				{tag: "ul", components: [
+					{tag: "li", content: "Added option to remove images from articles to better support old devices."},
+					{tag: "li", content: "Backed-out Google Play support due to Google policy nightmare."},
+					{tag: "li", content: "Repaired build infrastructure for modern dev environments."}
+				]}
+			]},
+			{tag: "div", components: [
+				{tag: "div", content: "2.2.x", style: "font-weight: bold" },
+				{tag: "ul", components: [
+					{tag: "li", content: "Re-built as PWA for cross-platform support."},
+					{tag: "li", content: "Re-factored back-end to handle issues with CORS on the modern Internet, only Inoreader has been fixed so far."},
+					{tag: "li", content: "Packaging and signing for Google Play."}
+				]}
+			]},
 			{tag: "div", components: [
 				{tag: "div", content: "2.1.0", style: "font-weight: bold" },
 				{tag: "ul", components: [

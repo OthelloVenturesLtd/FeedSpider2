@@ -12,6 +12,7 @@ $L.setStrings("nlNL", {
     "All Accounts": "Alle accounts",
     "All Items": "Alle items",
     "Allow Landscape": "Landschapsmodus toestaan",
+    "Allow Swipe Nav": "Gebarennavigatie toestaan",
     "Any feed": "Elke feed",
     "Archived": "Gearchiveerd",
     "Article shared": "Artikel gedeeld",
@@ -114,5 +115,6 @@ $L.setStrings("nlNL", {
     "URL Copied": "URL gekopieerd",
     "Yes": "Ja",
     "You have {unread} articles to read": "U heeft {unread} artikelen om te lezen",
-    "Website": "Website"
+    "Website": "Website",
+	"Share Space": "Share Space"
 });

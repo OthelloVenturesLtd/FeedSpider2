@@ -12,6 +12,7 @@ $L.setStrings("bnBD", {
     "All Accounts": "সব একাউন্ট",
     "All Items": "সব আইটেম",
     "Allow Landscape": "ল্যান্ডস্কেপের অনুমতি দিন ",
+    "Allow Swipe Nav": "Allow Swipe Nav",
     "Any feed": "যেকোন ফিড",
     "Archived": "আর্কাইভড",
     "Article shared": "শেয়ারকৃত নিবন্ধ",
@@ -114,5 +115,6 @@ $L.setStrings("bnBD", {
     "URL Copied": "ইউআরএল কপি করা হয়েছে",
     "Yes": "হ্যাঁ",
     "You have {unread} articles to read": "আপনার  {unread}  নিবন্ধ পড়তে বাকী আছে",
-    "Website": "ওয়েবসাইট"
+    "Website": "ওয়েবসাইট",
+	"Share Space": "Share Space"
 });

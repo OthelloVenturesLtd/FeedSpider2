@@ -3,7 +3,7 @@
 # Alert the user of a failed build
 errored () {
 	errcode=$?
-	echo "Deploy encountered errors."
+	echo "Deploy encountered errors, code: $errcode"
 	exit $errcode
 }
 
@@ -38,8 +38,8 @@ while [ "$1" != "" ]; do
 			# copy appinfo.json and cordova*.js files
 			DEST="$TOOLS/../deploy/"
 			
-			cp "$SRC"/appinfo.json "$DEST" -v
-			cp "$SRC"/cordova*.js "$DEST" -v
+			cp -v "$SRC"/appinfo.json "$DEST"
+			cp -v "$SRC"/cordova*.js "$DEST"
 			
 			# package it up
 			mkdir -p "$DEST/bin"

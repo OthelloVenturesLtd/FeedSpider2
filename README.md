@@ -16,6 +16,61 @@ Feedspider Supports:
 
 Now, webOS and Firefox OS users can again sync their RSS feeds across all of their webOS and Firefox OS devices!
 
+Building
+========
+
+## Prerequisites
+
+You need the following installed:
+
+- **Node.js 14.x** (tested with v14.21.3) - Later versions may not work with the legacy Enyo framework
+- **npm** 6.x (comes with Node 14)
+- **Cordova CLI** 10.x: `npm install -g cordova`
+- **Android SDK** (for Android builds, see https://sdk.webosarchive.org/index.php?page=cordova)
+- **gradle** 7.x (for Android builds, see https://sdk.webosarchive.org/index.php?page=cordova)
+
+## Initial Setup
+
+After cloning the repository, run these commands:
+
+```bash
+# Install Enyo framework dependencies
+cd enyo-app/enyo
+npm install
+cd ../..
+```
+
+**Note**: The "walker" dependency is NOT an npm package, but a custom Enyo build tool that's included in this repository (found by digging through git history).
+
+## Building
+
+The build script will automatically install Cordova dependencies when needed.
+
+```bash
+# Build for web
+./build.sh www
+
+# Build for webOS/LuneOS
+./build.sh webos
+
+# Build for Android
+./build.sh android
+
+# Build for multiple targets
+./build.sh webos android www
+```
+
+Build output will be in the `bin/` directory:
+- `bin/www/` - Web build
+- `bin/*.ipk` - webOS/LuneOS package
+- `bin/*.apk` - Android package
+
+## Troubleshooting
+
+- If you get "this is not a cordova project" error, the build script will automatically install dependencies
+- If you get walker errors, make sure you ran `npm install` in `enyo-app/enyo/`
+- Use Node 14.x - newer versions may have compatibility issues with the legacy Enyo 2.5.0 framework
+
 Contact
 =======
 
